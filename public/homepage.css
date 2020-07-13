@@ -1,0 +1,11 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+h2 {
+    text-align: center;
+    text-decoration: underline gray solid;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
