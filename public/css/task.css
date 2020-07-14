@@ -1,13 +1,18 @@
 body {
-  margin: 3vh;
+  min-width: 480px;
+  padding: 30px;
 }
 
 body > div {
-  min-width: 500px;
+  /* min-width: 500px; */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   border: none;
+}
+
+body > div > div {
+  max-width: 1080px;
 }
 
 div {
@@ -15,7 +20,8 @@ div {
 }
 
 #top-container,
-#middle-container {
+#middle-container,
+#bottom-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -23,9 +29,12 @@ div {
   margin-bottom: 50px;
 }
 
+#bottom-container {
+  justify-content: center;
+}
+
 #top-container > div {
   width: 190px;
-  height: 100px;
 }
 
 #title {
@@ -46,11 +55,11 @@ div {
 
 #middle-container > div {
   width: 40%;
-  min-width: 250px;
+  min-width: 300px;
   min-height: 150px;
 }
 
-@media (max-width: 567px) {
+@media (max-width: 662px) {
   #middle-container {
     justify-content: center;
   }
@@ -59,5 +68,6 @@ div {
 #bottom-middle {
   width: 200px;
   height: 100px;
+  margin-left: 0px;
   justify-self: center;
 }
