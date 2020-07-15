@@ -27,7 +27,6 @@ async function loadTask() {
         </div>
       </div>`
     }
-    setUpViewTaskLink();
 }
 
 loadTask();
