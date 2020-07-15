@@ -3,6 +3,7 @@ import expressSession from "express-session";
 import path from "path";
 import dotenv from "dotenv";
 import pg from "pg";
+import bodyParser from "body-parser";
 dotenv.config();
 
 //configuring database setting
@@ -17,6 +18,10 @@ const client = new pg.Client({
 client.connect();
 //setting up web server app
 const app = express();
+
+//set up body parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //use session
 app.use(
@@ -42,6 +47,20 @@ app.get("/tasks", async (req, res) => {
   let tasks: Task[] = result.rows;
   res.json(tasks);
   // console.log(tasks)
+});
+
+//create task
+app.post("/create-task", async (req, res) => {
+  try {
+    await client.query(
+      `INSERT INTO task (title, content, category) VALUES
+  ($1,$2,$3);`,
+      [req.body.title, req.body.content, req.body.category]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    res.status(401);
+  }
 });
 
 // get public/index.html
