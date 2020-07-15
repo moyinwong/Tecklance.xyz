@@ -4,6 +4,7 @@ import path from "path";
 import dotenv from "dotenv";
 import pg from "pg";
 import bodyParser from "body-parser";
+import grant from "grant-express";
 dotenv.config();
 
 //configuring database setting
@@ -29,6 +30,24 @@ app.use(
     secret: "Tecky Academy teaches typescript",
     resave: true,
     saveUninitialized: true,
+  })
+);
+
+//user grant for google login
+app.use(
+  grant({
+    defaults: {
+      protocol: "http",
+      host: "localhost:8080",
+      transport: "session",
+      state: true,
+    },
+    google: {
+      key: process.env.GOOGLE_CLIENT_ID || "",
+      secret: process.env.GOOGLE_CLIENT_SECRET || "",
+      scope: ["profile", "email"],
+      callback: "/login/google",
+    },
   })
 );
 
