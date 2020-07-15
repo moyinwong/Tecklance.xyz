@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 dotenv.config();
 
 //configuring database setting
-const client = new pg.Client({
+export const client = new pg.Client({
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
@@ -53,6 +53,7 @@ app.get("/tasks", async (req, res) => {
 app.post("/create-task", async (req, res) => {
   try {
     await client.query(
+      /*sql*/
       `INSERT INTO task (title, content, category) VALUES
   ($1,$2,$3);`,
       [req.body.title, req.body.content, req.body.category]
@@ -66,10 +67,22 @@ app.post("/create-task", async (req, res) => {
 // get public/index.html
 app.use(express.static("public"));
 
+import { userRoutes } from "./userRoutes";
+app.use("/", userRoutes);
+
 //get method for loading all tasks from database
 app.get("/createtask", async (req, res) => {
   try {
     res.sendFile(path.join(__dirname, "./public/create_task.html"));
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//redirect to login page
+app.get("/loginpage", async (req, res) => {
+  try {
+    res.sendFile(path.join(__dirname, "./public/login.html"));
   } catch (err) {
     console.log(err);
   }

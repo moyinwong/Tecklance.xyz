@@ -17,6 +17,7 @@
   },
   "homepage": "https://gitlab.com/siuclau4/tecky-group-project-1#readme",
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.0",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.7",
@@ -24,6 +25,7 @@
     "@types/multer": "^1.4.3",
     "@types/node": "^14.0.22",
     "@types/pg": "^7.14.4",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
