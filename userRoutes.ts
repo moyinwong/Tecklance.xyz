@@ -75,6 +75,39 @@ async function loginGoogle(req: express.Request, res: express.Response) {
   return res.redirect("/");
 }
 
+//login with github
+userRoutes.get("/login/github", loginGithub);
+
+async function loginGithub(req: express.Request, res: express.Response) {
+  const accessToken = req.session?.grant.response.access_token;
+
+  //The access token allows you to make requests to the API on a behalf of a user.
+  const fetchRes = await fetch("https://api.github.com/user", {
+    method: "get",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const result = await fetchRes.json();
+  const users = (
+    await client.query(
+      /*sql*/ `SELECT * FROM users WHERE users.username = $1`,
+      [result.login]
+    )
+  ).rows;
+  const user = users[0];
+  if (!user) {
+    return res.status(401).json({ success: false });
+  }
+  if (req.session) {
+    req.session.user = {
+      id: user.id,
+    };
+  }
+  console.log(user.username + " successfully login by Github");
+  return res.redirect("/");
+}
+
 //logout
 userRoutes.get("/logout", async function (
   req: express.Request,

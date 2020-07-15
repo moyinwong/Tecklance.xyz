@@ -1,3 +1,4 @@
+//login form
 document
   .querySelector("#login-form")
   .addEventListener("submit", async function (event) {

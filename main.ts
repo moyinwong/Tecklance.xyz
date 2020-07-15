@@ -48,6 +48,12 @@ app.use(
       scope: ["profile", "email"],
       callback: "/login/google",
     },
+    github: {
+      key: process.env.GITHUB_CLIENT_ID || "",
+      secret: process.env.GITHUB_CLIENT_SECRET || "",
+      scope: ["profile", "email"],
+      callback: "/login/github",
+    },
   })
 );
 
