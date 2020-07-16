@@ -13,23 +13,27 @@ userRoutes.post("/login", async (req, res, next) => {
 
   const passwordEntered: string = req.body.password;
 
-  let users: User = await (
+  let users = (
     await client.query(/*sql*/ `SELECT * FROM users WHERE email = $1`, [
       userEmailEntered,
     ])
-  ).rows[0];
+  ).rows;
+
+  const user: User = users[0];
+  if (!user) {
+    return res.status(401).send("user is not exist");
+  }
 
   //use hash check password
-  const pwIsCorrect = await checkPassword(passwordEntered, users.password);
+  const pwIsCorrect = await checkPassword(passwordEntered, user.password);
 
   if (req.session && pwIsCorrect) {
-    req.session.user = req.body.email;
-    console.log(users.username + " successfully login");
-    res.json({ success: true });
-  } else {
-    console.log("login failed");
-    res.sendStatus(401).json({ success: false });
+    req.session.user = user.id;
+    console.log(user.username + " successfully login");
+    return res.json({ success: true });
   }
+  console.log("password is not correct login failed");
+  return res.status(401).send("password is not correct");
 });
 
 //check if is logged in
@@ -66,7 +70,7 @@ async function loginGoogle(req: express.Request, res: express.Response) {
       result.email,
     ])
   ).rows;
-  const user = users[0];
+  const user: User = users[0];
   if (!user) {
     return res.status(401).json({ success: false });
   }
