@@ -1,6 +1,10 @@
 
 loadTask();
 
+document.querySelector('.login-button').onclick = () => {
+  location.href="/login.html"
+}
+
 //load tasks from database and show on homepage
 async function loadTask() {
   let res = await fetch('/tasks');
