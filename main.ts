@@ -54,6 +54,12 @@ app.use(
       scope: ["profile", "email"],
       callback: "/login/github",
     },
+    gitlab: {
+      key: process.env.GITLAB_CLIENT_ID || "",
+      secret: process.env.GITLAB_CLIENT_SECRET || "",
+      scope: ["read_user"],
+      callback: "/login/gitlab",
+    },
   })
 );
 

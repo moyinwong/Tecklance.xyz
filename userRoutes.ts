@@ -57,8 +57,12 @@ async function loginGoogle(req: express.Request, res: express.Response) {
     }
   );
   const result = await fetchRes.json();
+
+  //to check what information we can use
+  console.log(result);
+
   const users = (
-    await client.query(/*sql*/ `SELECT * FROM users WHERE users.email = $1`, [
+    await client.query(/*sql*/ `SELECT * FROM users WHERE users.google = $1`, [
       result.email,
     ])
   ).rows;
@@ -89,11 +93,14 @@ async function loginGithub(req: express.Request, res: express.Response) {
     },
   });
   const result = await fetchRes.json();
+
+  //to check what information we can use
+  console.log(result);
+
   const users = (
-    await client.query(
-      /*sql*/ `SELECT * FROM users WHERE users.username = $1`,
-      [result.login]
-    )
+    await client.query(/*sql*/ `SELECT * FROM users WHERE users.github = $1`, [
+      result.id,
+    ])
   ).rows;
   const user = users[0];
   if (!user) {
@@ -105,6 +112,42 @@ async function loginGithub(req: express.Request, res: express.Response) {
     };
   }
   console.log(user.username + " successfully login by Github");
+  return res.redirect("/");
+}
+
+//login with gitlab
+userRoutes.get("/login/gitlab", loginGitlab);
+
+async function loginGitlab(req: express.Request, res: express.Response) {
+  const accessToken = req.session?.grant.response.access_token;
+
+  //The access token allows you to make requests to the API on a behalf of a user.
+  const fetchRes = await fetch("https://gitlab.com/api/v4/user", {
+    method: "get",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const result = await fetchRes.json();
+
+  //to check what information we can use
+  console.log(result);
+
+  const users = (
+    await client.query(/*sql*/ `SELECT * FROM users WHERE users.gitlab = $1`, [
+      result.id,
+    ])
+  ).rows;
+  const user = users[0];
+  if (!user) {
+    return res.status(401).json({ success: false });
+  }
+  if (req.session) {
+    req.session.user = {
+      id: user.id,
+    };
+  }
+  console.log(user.username + " successfully login by Gitlab");
   return res.redirect("/");
 }
 
