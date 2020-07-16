@@ -53,6 +53,7 @@ async function loadTask() {
 
 loadTask();
 
+//Main page slider logic
 function loadTaskSlider() {
   $('#recipeCarousel').carousel({
     interval: 10000
