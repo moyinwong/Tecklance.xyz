@@ -7,6 +7,23 @@ body {
     justify-content: space-between;
 }
 
+.login-button-container {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.login-button {
+    height: 50px;
+    width: 100px;
+    border-color: transparent;
+}
+
+.login-button:hover {
+    background-color: orange;
+    color: white;
+}
+
 h2 {
     text-align: center;
     text-decoration: underline gray solid;
