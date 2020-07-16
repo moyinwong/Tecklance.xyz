@@ -7,6 +7,17 @@ body {
     justify-content: space-between;
 }
 
+.logo {
+    margin-left: 50px;
+}
+
+.logo-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
 .login-button-container {
     display: flex;
     align-items: center;

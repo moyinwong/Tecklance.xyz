@@ -119,6 +119,14 @@ app.get("/loginpage", async (req, res) => {
   }
 });
 
+//getting tasks of particular category
+app.get('/category', async (req, res) => {
+  let category = req.query.category;
+  let result = await client.query(`SELECT * FROM task WHERE category = $1`, [category]);
+  let categoryResult = result.rows;
+  res.json(categoryResult);
+})
+
 //redirect to 404 page
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "./public/404.html"));

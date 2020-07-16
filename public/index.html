@@ -12,32 +12,38 @@
 
 <body>
   <div class="header">
-    <div class="logo"><img src='/asset/logo.png'></div>
+    <button class="logo logo-button"><img src='/asset/logo.png'></button>
     <div class="login-button-container">
       <button class="login-button" type="button">LOG IN</button>
     </div>
   </div>
+  
   <div class="category-navbar">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Programming <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Video & Animation</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Music & Audio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Writing & Translation</a>
-          </li>
-        </ul>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample11"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-center" id="navbarsExample11">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link category-programming category-link" href="#">Programming</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link category-link" href="#">Writing/Translation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link category-link" href="#">Animal Caring</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link category-link" href="#">Video/Animation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link category-link" href="#">Physical Work</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </div>
