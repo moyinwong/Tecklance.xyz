@@ -154,7 +154,7 @@ async function checkLogin() {
   // console.log(user);
   if (res.status == 200 && user) {
     document.querySelector('.login-button-container').innerHTML = `<div>User ${user} successfully logged in</div>
-    <a href="/logout">Logout</a>`
+    <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`
   }
 }
 
