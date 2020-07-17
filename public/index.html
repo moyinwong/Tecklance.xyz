@@ -12,10 +12,16 @@
 </head>
 
 <body>
-  <div class="header">
-    <button class="logo logo-button"><img src='/asset/logo.png'></button>
-    <div class="login-button-container">
-      <button class="login-button" type="button">LOG IN</button>
+  <div class="container-fluid">
+    <div class="row header-row">
+      <div class="col header-col">
+        <div class="header">
+          <button class="logo logo-button"><img src='/asset/logo.png'></button>
+          <div class="login-button-container">
+            <button class="login-button" type="button">LOG IN</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -112,9 +118,9 @@
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#">About</a>
-    <a href="#">Dashboard</a>
-    <a href="#">Payment Record</a>
-    <a href="#">Setting</a>
+    <a href="/admin/cms.html">Dashboard</a>
+    <a href="#">Payment</a>
+    <a href="/setting.html">Setting</a>
   </div>
   
 
