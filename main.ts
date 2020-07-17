@@ -116,6 +116,7 @@ app.use(express.static("public"));
 import { userRoutes } from "./userRoutes";
 import { paymentRoutes } from "./paymentRoutes";
 import { isLoggedIn } from "./guards";
+import { logger } from "./logger";
 app.use("/", userRoutes);
 app.use("/", paymentRoutes);
 
@@ -165,5 +166,5 @@ app.use((req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log(`Listening at http://localhost:8080/`);
+  logger.info(`Listening at http://localhost:8080/`);
 });

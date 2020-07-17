@@ -23,7 +23,7 @@ userRoutes.post("/login", async (req, res, next) => {
 
     const user: User = users[0];
     if (!user) {
-      console.log("user does not exist");
+      logger.error("user does not exist");
       return res.status(401).send("user is not exist");
     }
 
@@ -32,10 +32,10 @@ userRoutes.post("/login", async (req, res, next) => {
 
     if (req.session && pwIsCorrect) {
       req.session.userId = user.id;
-      console.log(user.username + " successfully login");
+      logger.info(user.username + " successfully login");
       return res.json({ success: true });
     }
-    console.log("password is not correct login failed");
+    logger.info("password is not correct login failed");
     return res.status(401).send("password is not correct");
   } catch (err) {
     logger.error(err.toString());
@@ -47,7 +47,7 @@ userRoutes.post("/login", async (req, res, next) => {
 userRoutes.get("/current-user", async function (req, res) {
   try {
     if (req.session && req.session.userId) {
-      console.log(req.session);
+      logger.debug(req.session);
 
       let users = (
         await client.query(/*sql*/ `SELECT * FROM users WHERE id = $1`, [
@@ -59,7 +59,7 @@ userRoutes.get("/current-user", async function (req, res) {
 
       return res.status(200).json(user.username);
     } else {
-      console.log("not logged in");
+      logger.info("not logged in");
       return res.status(401).json({ message: "Not logged in" });
     }
   } catch (err) {
@@ -120,7 +120,7 @@ async function loginGoogle(req: express.Request, res: express.Response) {
     if (req.session) {
       req.session.userId = user.id;
     }
-    console.log(user.username + " successfully login by Google");
+    logger.info(user.username + " successfully login by Google");
     return res.redirect("/");
   } catch (err) {
     logger.error(err.toString());
@@ -179,7 +179,7 @@ async function loginGithub(req: express.Request, res: express.Response) {
     if (req.session) {
       req.session.userId = user.id;
     }
-    console.log(user.username + " successfully login by Github");
+    logger.info(user.username + " successfully login by Github");
     return res.redirect("/");
   } catch (err) {
     logger.error(err.toString());
@@ -233,7 +233,7 @@ async function loginGitlab(req: express.Request, res: express.Response) {
       }
       return res.redirect("/signup.html");
     }
-    console.log(user.username + " successfully login by Gitlab");
+    logger.info(user.username + " successfully login by Gitlab");
     return res.redirect("/");
   } catch (err) {
     logger.error(err.toString());
@@ -319,7 +319,7 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
       delete req.session.temp;
     }
 
-    console.log(req.session);
+    logger.debug(req.session);
 
     return res.status(201).json("User is successfully created");
   } catch (err) {
