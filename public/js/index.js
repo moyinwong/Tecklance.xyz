@@ -153,7 +153,8 @@ async function checkLogin() {
   let user = await res.json();
   // console.log(user);
   if (res.status == 200 && user) {
-    document.querySelector('.login-button-container').innerHTML = `<div>User ${user} successfully logged in</div>`
+    document.querySelector('.login-button-container').innerHTML = `<div>User ${user} successfully logged in</div>
+    <a href="/logout">Logout</a>`
   }
 }
 
