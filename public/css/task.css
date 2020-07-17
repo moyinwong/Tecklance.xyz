@@ -6,14 +6,22 @@ body {
   margin-bottom: 50px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .main-body {
   padding: 30px;
 }
 
 body > div {
   /* min-width: 500px; */
-  display: flex;
-  flex-wrap: wrap;
+  /* display: flex;
+  flex-wrap: wrap; */
   justify-content: center;
   border: none;
 }
@@ -22,18 +30,13 @@ div {
   border: solid 2px black;
 }
 
-#top-container,
+
 #middle-container,
 #bottom-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-between;
-}
-
-#top-container {
-  margin-bottom: 50px;
-  padding: 0;
 }
 
 .logo {
@@ -50,10 +53,11 @@ div {
 
 .login-button-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-right: 50px;
-  border: none;
+  max-width: 150px;
 }
 
 .login-button {
@@ -65,6 +69,25 @@ div {
 
 .login-button:hover {
   background-color: orange;
+  color: white;
+}
+
+
+/* user logo for side navbar */
+.user-profile-button {
+  background-color: rgb(231, 230, 230);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  height: 45px;
+  width: 45px;
+  border-radius: 22px;
+  margin-bottom: 5px;
+}
+
+.user-profile-button:hover {
+  background-color: rgb(182, 180, 180);
   color: white;
 }
 
@@ -107,3 +130,44 @@ div {
   margin-left: 0px;
   justify-self: center;
 }
+
+
+/* side navbar */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+
+/* side navbar */
+.sidenav a {
+  padding: 8x 32x 8x 8px;
+  margin-left: 30px;
+  text-decoration: none;
+  font-size: 30px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  left: 25px;
+  font-size: 36px;
+  margin-right: 50px;
+  margin-left: 0;
+}
+
