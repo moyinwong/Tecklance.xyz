@@ -1,12 +1,16 @@
 export interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  created_at: Date;
-  updated_at: Date;
+  id: number; //required
+  username: string; //required
+  password: string; //required
+  image: string | null;
+  email: string | null;
+  google: string | null;
+  github: string | null;
+  gitlab: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  created_at: Date | null;
+  updated_at: Date | null;
 }
 
 export interface Task {

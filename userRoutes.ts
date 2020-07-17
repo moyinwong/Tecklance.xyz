@@ -1,7 +1,7 @@
 import express from "express";
 import { User } from "./models";
-import { client } from "./main";
-import { checkPassword } from "./hash";
+import { client, upload } from "./main";
+import { checkPassword, hashPassword } from "./hash";
 import fetch from "node-fetch";
 
 export const userRoutes = express.Router();
@@ -39,7 +39,6 @@ userRoutes.post("/login", async (req, res, next) => {
 
 //check if is logged in
 userRoutes.get("/current-user", function (req, res) {
-  console.log(req.session);
   if (req.session && req.session.userId) {
     res.json(req.session.userId);
   } else {
@@ -71,9 +70,28 @@ async function loginGoogle(req: express.Request, res: express.Response) {
       result.email,
     ])
   ).rows;
+
   const user: User = users[0];
+
   if (!user) {
-    return res.status(401).json({ success: false });
+    const tempInformation: Object = {
+      id: null,
+      username: null,
+      password: null,
+      image: null,
+      email: result.email,
+      google: result.email,
+      github: null,
+      gitlab: null,
+      first_name: result.given_name,
+      last_name: result.family_name,
+      created_at: null,
+      updated_at: null,
+    };
+    if (req.session) {
+      req.session.temp = tempInformation;
+    }
+    return res.redirect("/signup.html");
   }
   if (req.session) {
     req.session.userId = user.id;
@@ -105,9 +123,28 @@ async function loginGithub(req: express.Request, res: express.Response) {
       result.id,
     ])
   ).rows;
+
   const user = users[0];
+
   if (!user) {
-    return res.status(401).json({ success: false });
+    const tempInformation: Object = {
+      id: null,
+      username: null,
+      password: null,
+      image: null,
+      email: result.email,
+      google: null,
+      github: result.id,
+      gitlab: null,
+      first_name: result.given_name,
+      last_name: result.family_name,
+      created_at: null,
+      updated_at: null,
+    };
+    if (req.session) {
+      req.session.temp = tempInformation;
+    }
+    return res.redirect("/signup.html");
   }
   if (req.session) {
     req.session.userId = user.id;
@@ -141,10 +178,24 @@ async function loginGitlab(req: express.Request, res: express.Response) {
   ).rows;
   const user = users[0];
   if (!user) {
-    return res.status(401).json({ success: false });
-  }
-  if (req.session) {
-    req.session.userId = user.id;
+    const tempInformation: Object = {
+      id: null,
+      username: null,
+      password: null,
+      image: null,
+      email: result.email,
+      google: null,
+      github: null,
+      gitlab: result.id,
+      first_name: result.name.split(" ")[0],
+      last_name: result.name.replace(result.name.split(" ")[0], ""),
+      created_at: null,
+      updated_at: null,
+    };
+    if (req.session) {
+      req.session.temp = tempInformation;
+    }
+    return res.redirect("/signup.html");
   }
   console.log(user.username + " successfully login by Gitlab");
   return res.redirect("/");
@@ -159,4 +210,92 @@ userRoutes.get("/logout", async function (
     delete req.session.userId;
   }
   res.redirect("/");
+});
+
+//create user
+userRoutes.post("/signup", upload.single("image"), async function (req, res) {
+  const {
+    username,
+    email,
+    first_name,
+    last_name,
+    google,
+    github,
+    gitlab,
+  } = req.body;
+
+  const password = await hashPassword(req.body.password);
+
+  let image: string | null;
+  if (req.file) {
+    image = req.file.filename;
+  } else {
+    image = null;
+  }
+
+  //check duplicate username
+  const duplicateUsername = (
+    await client.query(/*sql*/ `SELECT * FROM users WHERE username = $1`, [
+      username,
+    ])
+  ).rows[0];
+
+  if (duplicateUsername) {
+    return res.status(400).json("username is already exists");
+  }
+
+  //insert user into sql
+  await client.query(
+    /*sql*/ `INSERT INTO users (username,password,email,google,github,gitlab,image,first_name,last_name,created_at,updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,NOW(),NOW());`,
+    [
+      username,
+      password,
+      email,
+      google,
+      github,
+      gitlab,
+      image,
+      first_name,
+      last_name,
+    ]
+  );
+
+  const userId = client.query(/*sql*/ `SELECT * FROM users WHERE username=$1`, [
+    username,
+  ]);
+
+  //put the userID in session
+  if (req.session) {
+    req.session.userId = userId;
+  }
+
+  //clear temp info
+  if (req.session && req.session.temp) {
+    delete req.session.temp;
+  }
+
+  console.log(req.session);
+
+  return res.status(201).json("User is successfully created");
+});
+
+//get temp info
+userRoutes.get("/getTempInfo", async function (req, res) {
+  if (req.session && req.session.temp) {
+    return res.json(req.session.temp);
+  }
+  return res.json({
+    id: null,
+    username: null,
+    password: null,
+    image: null,
+    email: null,
+    google: null,
+    github: null,
+    gitlab: null,
+    first_name: null,
+    last_name: null,
+    created_at: null,
+    updated_at: null,
+  });
 });
