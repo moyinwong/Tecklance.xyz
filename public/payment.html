@@ -9,15 +9,20 @@
 
 <body>
     <div>
+
+    </div>
+    <div>
         <form action="/charge" method="POST">
+            <input name="chargeAmount" placeholder="Please enter the amount">
             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="pk_test_51H5XpOHTdw6tu9ehsd9bMptA9hvCutIylWtuAxXDSGfSvWogRdEnWHdWBc8cacItTR8TsfamlvMeUXX3k2lNEtkf00dIJl0dvT"
-                data-amount="30000" data-name="Pop up" data-description="Pop up now" data-locale="auto"
-                data-currency="hkd">
+                data-name="Pop up" data-locale="auto" data-currency="hkd">
                 </script>
-            <input name="chargeAmount" value="30000">
+            <!-- <input name="chargeAmount" value="30000"> -->
         </form>
     </div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="./public/js/payment.js"></script>
 </body>
 
 </html>
