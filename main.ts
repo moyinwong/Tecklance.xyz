@@ -131,6 +131,15 @@ app.get("/category", async (req, res) => {
   res.json(categoryResult);
 });
 
+//redirect to cms page
+app.get("/cms", async (req, res) => {
+  try {
+    res.sendFile(path.join(__dirname, "./public/cms.html"));
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 //redirect to 404 page
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "./public/404.html"));
