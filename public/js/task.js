@@ -16,7 +16,7 @@ async function main() {
     method: "GET",
   });
   let task = await res.json();
-  console.log(task);
+  //console.log(task);
   document.title = task.title;
   let titleContainer = document.querySelector("#title");
   let contentContainer = document.querySelector("#content");
@@ -53,27 +53,32 @@ async function checkLogin() {
   }
 }
 
+//user apply task
 document.querySelector("#apply-button").onclick = async () => {
   const getUserRes = await fetch("/getUserId");
-
+  if (getUserRes.status === 401) {
+    const resObj = await getUserRes.json();
+    alert(resObj.message);
+    return;
+  }
   const userId = await getUserRes.json();
 
   console.log(userId);
 
-  // let urlParams = new URLSearchParams(window.location.search);
-  // let taskId = urlParams.get("id");
+  let urlParams = new URLSearchParams(window.location.search);
+  let taskId = urlParams.get("id");
 
-  // console.log(taskId);
+  console.log(taskId);
 
-  // const res = await fetch(`/apply/${id}`, {
-  //   method: "PUT",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     applied_user: applied_user
-  //   }),
-  // })
+  const res = await fetch(`/apply/${taskId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      applied_user_id: userId,
+    }),
+  });
 };
 
 main();

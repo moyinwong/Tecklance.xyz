@@ -7,6 +7,8 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import grant from "grant-express";
 import { Task } from "./models";
+import { isLoggedIn } from "./guards";
+import { logger } from "./logger";
 dotenv.config();
 
 //configuring database setting
@@ -115,10 +117,11 @@ app.use(express.static("public"));
 
 import { userRoutes } from "./userRoutes";
 import { paymentRoutes } from "./paymentRoutes";
-import { isLoggedIn } from "./guards";
-import { logger } from "./logger";
+import { taskRoutes } from "./taskRoutes";
+
 app.use("/", userRoutes);
 app.use("/", paymentRoutes);
+app.use("/", taskRoutes);
 
 //get method for loading all tasks from database
 app.get("/createtask", async (req, res) => {
