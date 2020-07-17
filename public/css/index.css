@@ -38,6 +38,18 @@ body {
     color: white;
 }
 
+.user-profile-button {
+    background-color: rgb(231, 230, 230);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 20px;
+    height: 45px;
+    width: 45px;
+    border-radius: 22px;
+    margin-bottom: 5px;
+}
+
 h2 {
     text-align: center;
     text-decoration: underline gray solid;
@@ -95,4 +107,42 @@ h2 {
 
 
 
+/* side navbar */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+}
+
+/* side navbar */
+.sidenav a {
+    padding: 8x 32x 8x 8px;
+    margin-left: 30px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    font-size: 36px;
+    margin-right: 50px;
+    margin-left: 0;
+}
 
