@@ -29,7 +29,7 @@ userRoutes.post("/login", async (req, res, next) => {
   const pwIsCorrect = await checkPassword(passwordEntered, user.password);
 
   if (req.session && pwIsCorrect) {
-    req.session.user = user.email;
+    req.session.userId = user.id;
     console.log(user.username + " successfully login");
     return res.json({ success: true });
   }
@@ -40,8 +40,8 @@ userRoutes.post("/login", async (req, res, next) => {
 //check if is logged in
 userRoutes.get("/current-user", function (req, res) {
   console.log(req.session);
-  if (req.session && req.session.user) {
-    res.json(req.session.user);
+  if (req.session && req.session.userId) {
+    res.json(req.session.userId);
   } else {
     res.status(401).json({ message: "Not logged in" });
   }
@@ -76,9 +76,7 @@ async function loginGoogle(req: express.Request, res: express.Response) {
     return res.status(401).json({ success: false });
   }
   if (req.session) {
-    req.session.user = {
-      id: user.id,
-    };
+    req.session.userId = user.id;
   }
   console.log(user.username + " successfully login by Google");
   return res.redirect("/");
@@ -112,9 +110,7 @@ async function loginGithub(req: express.Request, res: express.Response) {
     return res.status(401).json({ success: false });
   }
   if (req.session) {
-    req.session.user = {
-      id: user.id,
-    };
+    req.session.userId = user.id;
   }
   console.log(user.username + " successfully login by Github");
   return res.redirect("/");
@@ -148,9 +144,7 @@ async function loginGitlab(req: express.Request, res: express.Response) {
     return res.status(401).json({ success: false });
   }
   if (req.session) {
-    req.session.user = {
-      id: user.id,
-    };
+    req.session.userId = user.id;
   }
   console.log(user.username + " successfully login by Gitlab");
   return res.redirect("/");
@@ -162,7 +156,7 @@ userRoutes.get("/logout", async function (
   res: express.Response
 ) {
   if (req.session) {
-    delete req.session.user;
+    delete req.session.userId;
   }
   res.redirect("/");
 });
