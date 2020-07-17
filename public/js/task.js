@@ -1,3 +1,13 @@
+//login button
+document.querySelector('.login-button').onclick = () => {
+  location.href = "/login.html"
+}
+
+//home logo button
+document.querySelector('.logo-button').onclick = () => {
+  location.href = "/"
+}
+
 //load info of particular task from database
 async function main() {
   let urlParams = new URLSearchParams(window.location.search);
