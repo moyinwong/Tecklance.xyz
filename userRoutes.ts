@@ -21,6 +21,7 @@ userRoutes.post("/login", async (req, res, next) => {
 
   const user: User = users[0];
   if (!user) {
+    console.log("user does not exist");
     return res.status(401).send("user is not exist");
   }
 
