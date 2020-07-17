@@ -29,7 +29,7 @@ userRoutes.post("/login", async (req, res, next) => {
   const pwIsCorrect = await checkPassword(passwordEntered, user.password);
 
   if (req.session && pwIsCorrect) {
-    req.session.user = user.id;
+    req.session.user = user.email;
     console.log(user.username + " successfully login");
     return res.json({ success: true });
   }
