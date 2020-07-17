@@ -99,7 +99,9 @@ app.post("/create-task", async (req, res) => {
 app.use(express.static("public"));
 
 import { userRoutes } from "./userRoutes";
+import { paymentRoutes } from "./paymentRoutes";
 app.use("/", userRoutes);
+app.use("/", paymentRoutes);
 
 //get method for loading all tasks from database
 app.get("/createtask", async (req, res) => {
@@ -120,12 +122,14 @@ app.get("/loginpage", async (req, res) => {
 });
 
 //getting tasks of particular category
-app.get('/category', async (req, res) => {
+app.get("/category", async (req, res) => {
   let category = req.query.category;
-  let result = await client.query(`SELECT * FROM task WHERE category = $1`, [category]);
+  let result = await client.query(`SELECT * FROM task WHERE category = $1`, [
+    category,
+  ]);
   let categoryResult = result.rows;
   res.json(categoryResult);
-})
+});
 
 //redirect to 404 page
 app.use((req, res) => {

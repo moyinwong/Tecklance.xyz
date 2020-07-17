@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+</head>
+
+<body>
+    <div>
+        <form action="/charge" method="POST">
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_51H5XpOHTdw6tu9ehsd9bMptA9hvCutIylWtuAxXDSGfSvWogRdEnWHdWBc8cacItTR8TsfamlvMeUXX3k2lNEtkf00dIJl0dvT"
+                data-amount="30000" data-name="Pop up" data-description="Pop up now" data-locale="auto"
+                data-currency="hkd">
+                </script>
+            <input name="chargeAmount" value="30000">
+        </form>
+    </div>
+</body>
+
+</html>
