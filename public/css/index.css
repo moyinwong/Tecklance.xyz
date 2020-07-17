@@ -38,6 +38,7 @@ body {
     color: white;
 }
 
+/* user logo for side navbar */
 .user-profile-button {
     background-color: rgb(231, 230, 230);
     border: none;
@@ -48,6 +49,11 @@ body {
     width: 45px;
     border-radius: 22px;
     margin-bottom: 5px;
+}
+
+.user-profile-button:hover {
+    background-color: rgb(182, 180, 180);
+    color: white;
 }
 
 h2 {
@@ -70,7 +76,7 @@ h2 {
     min-width: 150px;
 }
 
-
+/* carousel */
 @media (max-width: 768px) {
     .carousel-inner .carousel-item > div {
         display: none;
