@@ -115,7 +115,7 @@ app.use(express.static("public"));
 
 import { userRoutes } from "./userRoutes";
 import { paymentRoutes } from "./paymentRoutes";
-
+import { isLoggedIn } from "./guards";
 app.use("/", userRoutes);
 app.use("/", paymentRoutes);
 
@@ -155,6 +155,9 @@ app.get("/cms", async (req, res) => {
     console.log(err);
   }
 });
+
+//serve dashboard if user is logged in
+app.use("/admin", isLoggedIn, express.static("admin"));
 
 //redirect to 404 page
 app.use((req, res) => {
