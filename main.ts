@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import pg from "pg";
 import bodyParser from "body-parser";
 import grant from "grant-express";
+import {Task} from "./models";
 dotenv.config();
 
 //configuring database setting
@@ -131,6 +132,15 @@ app.get("/category", async (req, res) => {
   res.json(categoryResult);
 });
 
+//redirect to cms page
+app.get("/cms", async (req, res) => {
+  try {
+    res.sendFile(path.join(__dirname, "./public/cms.html"));
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 //redirect to 404 page
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "./public/404.html"));
@@ -139,11 +149,3 @@ app.use((req, res) => {
 app.listen(8080, () => {
   console.log(`Listening at http://localhost:8080/`);
 });
-
-//add type checking for task info returned fromm database
-interface Task {
-  id: number;
-  title: string;
-  category: string;
-  content: string;
-}
