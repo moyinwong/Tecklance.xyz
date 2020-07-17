@@ -12,17 +12,6 @@ document.querySelector('.logo-button').onclick = () => {
 }
 
 
-//login button
-document.querySelector('.login-button').onclick = () => {
-  location.href = "/login.html"
-}
-
-//home logo button
-document.querySelector('.logo-button').onclick = () => {
-  location.href = "/"
-}
-
-
 //select all navbar links
 let inputs = document.querySelectorAll('.category-link');
 
