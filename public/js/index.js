@@ -1,5 +1,6 @@
 
 loadTask();
+checkLogin();
 
 //login button
 document.querySelector('.login-button').onclick = () => {
@@ -120,7 +121,6 @@ async function loadTask() {
   loadTaskSlider();
 }
 
-loadTask();
 
 // Main page slider logic
 function loadTaskSlider() {
@@ -148,4 +148,14 @@ function loadTaskSlider() {
   
 }
 
+async function checkLogin() {
+  let res = await fetch('/current-user');
+  let user = await res.json();
+  // console.log(user);
+  if (res.status == 200 && user) {
+    document.querySelector('.login-button-container').innerHTML = `<div>User ${user} successfully logged in</div>`
+  }
+}
 
+loadTask();
+checkLogin();

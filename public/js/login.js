@@ -24,8 +24,8 @@ document
 
     if (res.status === 200) {
       //do something if login success
-      //
-      //
+      console.log('ok');
+      window.location = '/';
     } else if (res.status === 401) {
       //do something if login fail
       //
