@@ -99,18 +99,19 @@ async function loginGoogle(req: express.Request, res: express.Response) {
 
     if (!user) {
       const tempInformation: Object = {
-        id: null,
-        username: null,
-        password: null,
-        image: null,
+        id: "",
+        username: "",
+        password: "",
+        image: "",
         email: result.email,
+        popup_amt: 0,
         google: result.email,
-        github: null,
-        gitlab: null,
+        github: "",
+        gitlab: "",
         first_name: result.given_name,
         last_name: result.family_name,
-        created_at: null,
-        updated_at: null,
+        created_at: "",
+        updated_at: "",
       };
       if (req.session) {
         req.session.temp = tempInformation;
@@ -158,18 +159,19 @@ async function loginGithub(req: express.Request, res: express.Response) {
 
     if (!user) {
       const tempInformation: Object = {
-        id: null,
-        username: null,
-        password: null,
-        image: null,
+        id: "",
+        username: "",
+        password: "",
+        image: "",
         email: result.email,
-        google: null,
+        popup_amt: 0,
+        google: "",
         github: result.id,
-        gitlab: null,
+        gitlab: "",
         first_name: result.given_name,
         last_name: result.family_name,
-        created_at: null,
-        updated_at: null,
+        created_at: "",
+        updated_at: "",
       };
       if (req.session) {
         req.session.temp = tempInformation;
@@ -215,18 +217,19 @@ async function loginGitlab(req: express.Request, res: express.Response) {
     const user = users[0];
     if (!user) {
       const tempInformation: Object = {
-        id: null,
-        username: null,
-        password: null,
-        image: null,
+        id: "",
+        username: "",
+        password: "",
+        image: "",
         email: result.email,
-        google: null,
-        github: null,
+        popup_amt: 0,
+        google: "",
+        github: "",
         gitlab: result.id,
         first_name: result.name.split(" ")[0],
         last_name: result.name.replace(result.name.split(" ")[0], ""),
-        created_at: null,
-        updated_at: null,
+        created_at: "",
+        updated_at: "",
       };
       if (req.session) {
         req.session.temp = tempInformation;
@@ -270,11 +273,11 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
 
     const password = await hashPassword(req.body.password);
 
-    let image: string | null;
+    let image: string | "";
     if (req.file) {
       image = req.file.filename;
     } else {
-      image = null;
+      image = "";
     }
 
     //check duplicate username
@@ -290,11 +293,12 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
 
     //insert user into sql
     await client.query(
-      /*sql*/ `INSERT INTO users (username,password,email,google,github,gitlab,image,first_name,last_name,created_at,updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,NOW(),NOW());`,
+      /*sql*/ `INSERT INTO users (username,password,email,popup_amt,google,github,gitlab,image,first_name,last_name,created_at,updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,NOW(),NOW());`,
       [
         username,
         password,
         email,
+        0,
         google,
         github,
         gitlab,
@@ -304,10 +308,14 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
       ]
     );
 
-    const userId = client.query(
+    const users = await client.query(
       /*sql*/ `SELECT * FROM users WHERE username=$1`,
       [username]
     );
+
+    const user = users.rows[0];
+
+    const userId = user.id;
 
     //put the userID in session
     if (req.session) {
@@ -335,19 +343,32 @@ userRoutes.get("/getTempInfo", function (req, res) {
       return res.json(req.session.temp);
     }
     return res.json({
-      id: null,
-      username: null,
-      password: null,
-      image: null,
-      email: null,
-      google: null,
-      github: null,
-      gitlab: null,
-      first_name: null,
-      last_name: null,
-      created_at: null,
-      updated_at: null,
+      id: "",
+      username: "",
+      password: "",
+      image: "",
+      email: "",
+      popup_amt: 0,
+      google: "",
+      github: "",
+      gitlab: "",
+      first_name: "",
+      last_name: "",
+      created_at: "",
+      updated_at: "",
     });
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json({ message: "internal Server Error" });
+  }
+});
+
+userRoutes.get("/getUserId", function (req, res) {
+  try {
+    if (req.session && req.session.userId) {
+      return res.status(200).json(req.session.userId);
+    }
+    return res.status(401).json({ message: "Please login" });
   } catch (err) {
     logger.error(err.toString());
     return res.status(500).json({ message: "internal Server Error" });

@@ -48,17 +48,17 @@ async function signup(event) {
   if (form.email.value) {
     formData.append("email", form.email.value);
   } else {
-    formData.append("email", null);
+    formData.append("email", "");
   }
   if (form.first_name.value) {
     formData.append("first_name", form.first_name.value);
   } else {
-    formData.append("first_name", null);
+    formData.append("first_name", "");
   }
   if (form.last_name.value) {
     formData.append("last_name", form.last_name.value);
   } else {
-    formData.append("last_name", null);
+    formData.append("last_name", "");
   }
   formData.append("google", tempInfo.google);
   formData.append("github", tempInfo.github);

@@ -4,6 +4,7 @@ export interface User {
   password: string; //required
   image: string | null;
   email: string | null;
+  popup_amt: number;
   google: string | null;
   github: string | null;
   gitlab: string | null;
