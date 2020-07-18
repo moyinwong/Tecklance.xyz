@@ -15,7 +15,7 @@ export const isLoggedIn = (
   } else {
     // redirect to index page
     console.log("not logged in");
-    res.status(401);
+    res.status(401).redirect('/');
   }
 };
 
