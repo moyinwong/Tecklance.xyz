@@ -7,7 +7,7 @@ export const isLoggedIn = (
   next: express.NextFunction
 ) => {
   console.log(req.session);
-  if (req.session && req.session.user) {
+  if (req.session && req.session.userId) {
     //called Next here
     console.log(req.session);
     console.log(`${req.session.socketId} is logged in`);
