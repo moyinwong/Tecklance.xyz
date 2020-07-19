@@ -211,3 +211,15 @@ h2 {
     margin-top: 30px;
     color: #303030;
 }
+
+@media (max-width: 400px) {
+    .login-form-container {
+        height: 500px;
+        width: 350px;
+        box-shadow: 0px 0px 23px -3px rgba(0,0,0,0.19);
+        padding: 48px 48px 32px 48px;
+        border-radius: 4px;
+        color: #303030;
+        z-index: 1;
+    }
+}
