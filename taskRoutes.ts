@@ -1,7 +1,7 @@
 import express from "express";
 import { Task } from "./models";
 import { client } from "./main";
-import { Usertask } from "./models";
+// import { Usertask } from "./models";
 
 export const taskRoutes = express.Router();
 
@@ -34,7 +34,7 @@ taskRoutes.get('/usertask/:userId', async function(req, res) {
       JOIN users on users.id = applied_post.user_id
           WHERE user_id = $1;`, [userId])
 
-  let userTasks:Usertask[] = result.rows;
+  let userTasks = result.rows;
   res.json(userTasks);
 })
 
