@@ -11,7 +11,7 @@ export const isLoggedIn = (
   if (req.session && req.session.userId) {
     //called Next here
     //console.log(req.session);
-    logger.info(`${req.session.userId} is logged in`);
+    logger.info(`User ${req.session.userId} is logged in`);
     next();
   } else {
     // redirect to index page

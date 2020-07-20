@@ -91,7 +91,7 @@ userRoutes.post("/login", async (req, res, next) => {
 userRoutes.get("/current-user", async function (req, res) {
   try {
     if (req.session && req.session.userId) {
-      logger.debug(req.session);
+      //console.log(req.session);
 
       let users = (
         await client.query(/*sql*/ `SELECT * FROM users WHERE id = $1`, [
@@ -440,6 +440,48 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
     );
 
     return res.status(201).json("User information is successfully updated");
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json({ message: "internal Server Error" });
+  }
+});
+
+//check PW and login
+userRoutes.put("/change-password", async (req, res) => {
+  try {
+    //read SQL server table users
+    if (!req.session) {
+      return res.status(401).json({ message: "Please login" });
+    }
+    const userId = req.session.userId;
+
+    const current_password = req.body.current_password;
+
+    const hashNewPassword = await hashPassword(req.body.password);
+
+    let users = (
+      await client.query(/*sql*/ `SELECT * FROM users WHERE id = $1`, [userId])
+    ).rows;
+
+    const user: User = users[0];
+    if (!user) {
+      logger.error("user does not exist");
+      return res.status(401).json("user is not exist");
+    }
+
+    //use hash check password
+    const pwIsCorrect = await checkPassword(current_password, user.password);
+
+    if (!pwIsCorrect) {
+      return res.status(401).json("Current password is wrong");
+    }
+
+    await client.query(/*sql*/ `UPDATE users SET password=$1 WHERE id = $2`, [
+      hashNewPassword,
+      userId,
+    ]);
+
+    return res.status(200).json("Password was successful changed");
   } catch (err) {
     logger.error(err.toString());
     return res.status(500).json({ message: "internal Server Error" });
