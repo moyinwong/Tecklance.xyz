@@ -22,7 +22,7 @@ export interface Task {
   creator_id: number;
 }
 
-export interface Usertask{
+export interface Usertask {
   id: number;
   user_id: number;
   task_id: number;
