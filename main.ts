@@ -89,14 +89,7 @@ app.get("/task/:id", async (req, res) => {
   console.log(task[0]);
 });
 
-//get method for displaying particular task page created by specific users
-app.get("/task/:id", async (req, res) => {
-  let id = parseInt(req.params.id);
-  let result = await client.query(`SELECT * FROM task WHERE id = $1`, [id]);
-  let task: Task[] = result.rows;
-  res.json(task[0]);
-  console.log(task[0]);
-});
+
 
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
