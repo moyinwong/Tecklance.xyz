@@ -47,11 +47,17 @@ async function createTask(event) {
       formData.append("image", form.image.files[0]);
     }
 
+    let userRes = await fetch("/current-user");
+    let user = await userRes.json();
+
     //app.post
-    let res = await fetch("/create-task", {
+    let res = await fetch(`/create-task/${user}`, {
       method: "POST",
       body: formData,
     });
+    if (res.success && res.status == 200) {
+      console.log('task created')
+    }
     if ((res.status = 401)) {
       console.log(res);
     }

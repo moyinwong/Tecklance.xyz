@@ -25,10 +25,10 @@ document.querySelector('.category-all').onclick = async () => {
   freelanceContainer.innerHTML = "";
 
   for (task of tasks) {
-    taskContainer.innerHTML += `
+      taskContainer.innerHTML += `
     <div class="col-md-3">
     <div class="card">
-<!-- <img src="..." class="card-img-top" alt="..."> -->
+      <img src="/uploads/${task.image}" class="card-img-top img-thumbnail" alt="...">
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.content}</p>
@@ -40,7 +40,9 @@ document.querySelector('.category-all').onclick = async () => {
       <a href="/task.html?id=${tasks.id}" class="card-link task-link">VIEW TASK</a>
     </div>
   </div>`
-  }
+    } 
+    
+  
 
 };
 
@@ -72,33 +74,38 @@ for (let i = 0; i < inputs.length; i++) {
 
     let carouselContainer = document.querySelector(".carousel-inner");
     carouselContainer.innerHTML = "";
-    carouselContainer.innerHTML += `
+
+
+      carouselContainer.innerHTML += `
     <div class="carousel-item active">
-  <div class="col-md-4">
-  <div class="card">
-  <!-- <img src="..." class="card-img-top" alt="..."> -->
-  <div class="card-body">
-    <h5 class="card-title">${tasks[0].title}</h5>
-    <p class="card-text">${tasks[0].content}</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">${tasks[0].category}</li>
-  </ul>
-  <div class="card-body">
-    <a href="/task.html?id=${tasks[0].id}" class="card-link task-link">VIEW TASK</a>
-  </div>
-</div>
-</div>
-  </div>
-</div>`
+      <div class="col-md-4">
+      <div class="card">
+        <img src="/uploads/${tasks[0].image}" class="card-img-top" alt="..."> 
+        <div class="card-body">
+          <h5 class="card-title">${tasks[0].title}</h5>
+          <p class="card-text">${tasks[0].content}</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">${tasks[0].category}</li>
+      </ul>
+      <div class="card-body">
+        <a href="/task.html?id=${tasks[0].id}" class="card-link task-link">VIEW TASK</a>
+      </div>
+    </div>
+    </div>
+      </div>
+    </div>`
+    
+    
 
     for (let i = 1; i < tasks.length; i++) {
       let task = tasks[i];
-      carouselContainer.innerHTML += `
+
+        carouselContainer.innerHTML += `
         <div class="carousel-item">
         <div class="col-md-4">
         <div class="card">
-          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <img src="/uploads/${task.image}" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">${task.title}</h5>
             <p class="card-text">${task.content}</p>
@@ -111,7 +118,8 @@ for (let i = 0; i < inputs.length; i++) {
           </div>
         </div>
       </div>
-      </div>`;
+      </div>`
+      
     }
 
     loadTaskSlider();
@@ -128,7 +136,7 @@ async function loadTask() {
   taskContainer.innerHTML += `<div class="carousel-item active">
   <div class="col-md-4">
   <div class="card">
-  <!-- <img src="..." class="card-img-top" alt="..."> -->
+  <img src="/uploads/${tasks[0].image}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">${tasks[0].title}</h5>
     <p class="card-text">${tasks[0].content}</p>
@@ -146,11 +154,12 @@ async function loadTask() {
 
   for (let i = 1; i < tasks.length; i++) {
     let task = tasks[i];
-    taskContainer.innerHTML += `
+    
+      taskContainer.innerHTML += `
     <div class="carousel-item">
     <div class="col-md-4">
     <div class="card">
-      <!-- <img src="..." class="card-img-top" alt="..."> -->
+      <img src="/uploads/${task.image}" class="card-img-top" alt="..."> 
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.content}</p>
@@ -163,7 +172,8 @@ async function loadTask() {
       </div>
     </div>
   </div>
-  </div>`;
+  </div>`
+    
   }
   loadTaskSlider();
 }
