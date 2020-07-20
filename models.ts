@@ -19,4 +19,11 @@ export interface Task {
   title: string;
   category: string;
   content: string;
+  creator_id: number;
+}
+
+export interface Usertask{
+  id: number;
+  user_id: number;
+  task_id: number;
 }

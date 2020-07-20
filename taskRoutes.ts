@@ -1,6 +1,7 @@
 import express from "express";
 import { Task } from "./models";
 import { client, upload } from "./main";
+import { Usertask } from "./models";
 
 export const taskRoutes = express.Router();
 
@@ -35,8 +36,8 @@ taskRoutes.get("/usertask/:userId", async function (req, res) {
     [userId]
   );
 
-  let userTasks = result.rows;
-
+  let userTasks: Usertask[] = result.rows;
+  userTasks = result.rows;
   res.json(userTasks);
 });
 
