@@ -25,7 +25,6 @@ function checkPassword() {
 async function getFullInfo() {
   const res = await fetch("/getFullInfo");
   fullInfo = await res.json();
-  console.log(fullInfo);
   await fillInFullInfo(fullInfo);
 }
 

@@ -42,6 +42,8 @@ async function signup(event) {
 
   const form = event.target;
 
+  console.log(tempInfo.google);
+
   const formData = new FormData();
 
   for (let i = 0; i < form.length; i++) {
