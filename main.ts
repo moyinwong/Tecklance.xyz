@@ -90,7 +90,6 @@ app.get("/task/:id", async (req, res) => {
 });
 
 
-
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
   let result = await client.query("SELECT * FROM task");
