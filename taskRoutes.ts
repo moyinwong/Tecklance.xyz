@@ -42,7 +42,8 @@ taskRoutes.get("/usertask/:userId", async function (req, res) {
 });
 
 //create task
-taskRoutes.post("/create-task", upload.single("image"), async (req, res) => {
+taskRoutes.post("/create-task/:user", upload.single("image"), async (req, res) => {
+  let user = (req.params.user).toString();
   try {
     const { title, content, category } = req.body;
 
@@ -52,11 +53,12 @@ taskRoutes.post("/create-task", upload.single("image"), async (req, res) => {
     } else {
       image = "";
     }
-
+    console.log(content);
+    console.log(user)
     await client.query(
       /*sql*/ `INSERT INTO task (title, content, category, image, creator_id) VALUES
-    ($1,$2,$3,(SELECT id from users where username = $4 LIMIT 1))`,
-      [title, content, category, image, req.body.creator_id]
+    ($1,$2,$3,$4, (SELECT id from users where username = $5 LIMIT 1))`,
+      [title, content, category, image, user]
     );
     //
     //
@@ -64,7 +66,7 @@ taskRoutes.post("/create-task", upload.single("image"), async (req, res) => {
     //Add response after created
     //
     //
-    res.json({ success: true });
+    res.status(200).json({ success: true });
   } catch (err) {
     res.status(401);
   }

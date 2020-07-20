@@ -6,35 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css"
+        integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/task.css">
-    <title>Create Task
-    </title>
+    <title>Create Task</title>
 </head>
 
 <body>
     <div>
-        <div id="top-container">
-            <div id="logo-div">
-                LOGO
-            </div>
-            <div class="login-form">
-                <form action='/login' method="POST" id="login">
-                    <div class="form-group">
-                        <label>
-                            Username: <input class="form-control" type="text" name="username">
-                        </label>
+        <div class="container-fluid">
+            <div class="row header-row">
+                <div class="col header-col">
+                    <div class="header">
+                        <button class="logo logo-button"><img src='/asset/logo.png'></button>
+                        <div class="login-button-container">
+                            <button class="login-button" type="button">LOG IN</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>
-                            Password: <input class="form-control" type="password" name="password">
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <input type='submit' class="btn btn-primary login-button" value="Submit" />
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
+
         <form id="task-form" action="/create-task" method="POST" enctype="multipart/form-data">
             <label>
                 task image:
@@ -53,10 +45,11 @@
 
                     <label for="category">Category:</label>
                     <select id="category" name="category">
-                        <option value="category1">category1</option>
-                        <option value="category2">category2</option>
-                        <option value="category3">category3</option>
-                        <option value="category4">category4</option>
+                        <option value="programming">programming</option>
+                        <option value="writing/translation">writing/translation</option>
+                        <option value="animal caring">animal caring</option>
+                        <option value="video/animation">video/animation</option>
+                        <option value="physical work">physical work</option>
                     </select>
 
                 </div>
@@ -73,7 +66,14 @@
         </form>
     </div>
 
-
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">About</a>
+        <a href="#">Dashboard</a>
+        <a href="/createtask">Create Task</a>
+        <a href="#">Payment</a>
+        <a href="/setting.html">Setting</a>
+    </div>
 
 
 
