@@ -27,9 +27,6 @@ body > div {
   border: none;
 }
 
-div {
-  border: solid 2px black;
-}
 
 
 #middle-container,
@@ -90,6 +87,14 @@ div {
 .user-profile-button:hover {
   background-color: rgb(182, 180, 180);
   color: white;
+}
+
+.title-container,
+.content-container,
+.info-container,
+#bottom-middle {
+  border: 5px solid #ddd;
+  border-image: linear-gradient(red, orange) 30 30; 
 }
 
 #title {
