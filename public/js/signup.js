@@ -18,11 +18,11 @@ function checkPassword() {
 async function checkIfTempInfo() {
   const res = await fetch("/getTempInfo");
   tempInfo = await res.json();
-  await fillInInfo(tempInfo);
+  await fillInTempInfo(tempInfo);
 }
 
 //auto fill in
-async function fillInInfo(info) {
+async function fillInTempInfo(info) {
   if (info.email) {
     document.getElementById("email").value = info.email;
   }
@@ -73,4 +73,4 @@ async function signup(event) {
   }
 }
 
-document.querySelector("#signup-form").addEventListener("submit", signup);
+document.querySelector("#user-form").addEventListener("submit", signup);

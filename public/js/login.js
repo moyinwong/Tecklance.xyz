@@ -25,15 +25,11 @@ document
       body: JSON.stringify(formObject),
     });
 
-    console.log(res.status);
-
     if (res.status === 200) {
       //do something if login success
-      console.log('ok');
-      window.location = '/';
+      alert("Welcome back!");
+      window.location = "/";
     } else if (res.status === 401) {
-      //do something if login fail
-      //
-      //
+      alert(await res.json());
     }
   });

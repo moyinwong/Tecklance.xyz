@@ -4,6 +4,7 @@ import { client, upload } from "./main";
 import { checkPassword, hashPassword } from "./hash";
 import fetch from "node-fetch";
 import { logger } from "./logger";
+import fs from "fs";
 
 export const userRoutes = express.Router();
 
@@ -44,7 +45,7 @@ userRoutes.post("/login", async (req, res, next) => {
     const user: User = users[0];
     if (!user) {
       logger.error("user does not exist");
-      return res.status(401).send("user is not exist");
+      return res.status(401).json("user is not exist");
     }
 
     //use hash check password
@@ -56,7 +57,7 @@ userRoutes.post("/login", async (req, res, next) => {
       return res.json({ success: true });
     }
     logger.info("password is not correct login failed");
-    return res.status(401).send("password is not correct");
+    return res.status(401).json("password is not correct");
   } catch (err) {
     logger.error(err.toString());
     return res.status(500).json({ message: "internal Server Error" });
@@ -245,6 +246,9 @@ async function loginGitlab(req: express.Request, res: express.Response) {
 userRoutes.get("/logout", async function (req, res) {
   try {
     if (req.session) {
+      if (req.session.temp) {
+        delete req.session.temp;
+      }
       delete req.session.userId;
     }
     logger.debug(req.session);
@@ -370,6 +374,99 @@ userRoutes.get("/getUserId", function (req, res) {
       return res.status(200).json(req.session.userId);
     }
     return res.status(401).json({ message: "Please login" });
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json({ message: "internal Server Error" });
+  }
+});
+
+//get full info
+userRoutes.get("/getFullInfo", async function (req, res) {
+  try {
+    if (req.session && req.session.userId) {
+      console.log(req.session);
+      const user = (
+        await client.query(/*sql*/ `SELECT * FROM users WHERE id=$1`, [
+          req.session.userId,
+        ])
+      ).rows[0];
+      delete user.password;
+      return res.json(user);
+    }
+    return res.status(401).json({ message: "Please login" });
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json({ message: "internal Server Error" });
+  }
+});
+
+//create user
+userRoutes.put("/editUserInfo", upload.single("image"), async function (
+  req,
+  res
+) {
+  try {
+    const {
+      username,
+      first_name,
+      last_name,
+      bank_name,
+      bank_account,
+      freelancer_intro,
+    } = req.body;
+
+    const getUserSessionid = async () => {
+      if (req.session) {
+        return req.session.userId;
+      }
+    };
+
+    const id = await getUserSessionid();
+
+    //check duplicate name
+    const duplicateUsername = (
+      await client.query(
+        /*sql*/ `SELECT * FROM users WHERE username = $1 AND id <> $2`,
+        [username, id]
+      )
+    ).rows[0];
+
+    if (duplicateUsername) {
+      return res.status(400).json("username is already exists");
+    }
+
+    //get user info
+    const currentUser = (
+      await client.query(/*sql*/ `SELECT * FROM users WHERE id=$1;`, [id])
+    ).rows[0];
+
+    //after checking user name, del image if new image is uploaded
+    const currentImage: string = currentUser.image;
+
+    let image: string | "";
+    if (req.file) {
+      image = req.file.filename;
+      await fs.unlinkSync("./public/uploads/" + currentImage);
+    } else {
+      image = "";
+    }
+
+    //insert user into sql
+    await client.query(
+      /*sql*/ `UPDATE users SET username=$1,image=$2,first_name=$3,last_name=$4,bank_name=$5,bank_account=$6,freelancer_intro=$7 WHERE id=$8;`,
+      [
+        username,
+        image,
+        first_name,
+        last_name,
+        bank_name,
+        bank_account,
+        freelancer_intro,
+        id,
+      ]
+    );
+
+    return res.status(201).json("User information is successfully updated");
   } catch (err) {
     logger.error(err.toString());
     return res.status(500).json({ message: "internal Server Error" });

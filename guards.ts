@@ -1,4 +1,5 @@
 import express from "express";
+import { logger } from "./logger";
 
 //if logged in, can access protected folder
 export const isLoggedIn = (
@@ -9,13 +10,13 @@ export const isLoggedIn = (
   console.log(req.session);
   if (req.session && req.session.userId) {
     //called Next here
-    console.log(req.session);
-    console.log(`${req.session.socketId} is logged in`);
+    //console.log(req.session);
+    logger.info(`${req.session.userId} is logged in`);
     next();
   } else {
     // redirect to index page
     console.log("not logged in");
-    res.status(401).redirect('/');
+    res.status(401).redirect("/");
   }
 };
 
