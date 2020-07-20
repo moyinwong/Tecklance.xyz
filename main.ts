@@ -89,6 +89,15 @@ app.get("/task/:id", async (req, res) => {
   console.log(task[0]);
 });
 
+//get method for displaying particular task page created by specific users
+app.get("/task/:id", async (req, res) => {
+  let id = parseInt(req.params.id);
+  let result = await client.query(`SELECT * FROM task WHERE id = $1`, [id]);
+  let task: Task[] = result.rows;
+  res.json(task[0]);
+  console.log(task[0]);
+});
+
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
   let result = await client.query("SELECT * FROM task");
@@ -102,9 +111,9 @@ app.post("/create-task", async (req, res) => {
   try {
     await client.query(
       /*sql*/
-      `INSERT INTO task (title, content, category) VALUES
-  ($1,$2,$3);`,
-      [req.body.title, req.body.content, req.body.category]
+      `INSERT INTO task (title, content, category, creator_id) VALUES
+  ($1,$2,$3,(SELECT id from users where username = $4 LIMIT 1))`,
+      [req.body.title, req.body.content, req.body.category, req.body.creator_id]
     );
     res.json({ success: true });
   } catch (err) {
@@ -151,14 +160,6 @@ app.get("/category", async (req, res) => {
   res.json(categoryResult);
 });
 
-//redirect to cms page
-app.get("/cms", async (req, res) => {
-  try {
-    res.sendFile(path.join(__dirname, "./public/cms.html"));
-  } catch (err) {
-    console.log(err);
-  }
-});
 
 //serve dashboard if user is logged in
 app.use("/admin", isLoggedIn, express.static("admin"));

@@ -4,10 +4,11 @@ import { client } from "./main";
 
 export const taskRoutes = express.Router();
 
-taskRoutes.get("/cms", async function (req, res) {
-  const result = await client.query(`SELECT * FROM task`);
-  const memos: Task[] = result.rows;
-  res.json(memos);
+taskRoutes.get("/tasks", async (req, res) => {
+  let result = await client.query("SELECT * FROM task");
+  let tasks: Task[] = result.rows;
+  res.json(tasks);
+  // console.log(tasks)
 });
 
 taskRoutes.put("/apply/:taskId", async function (req, res) {
