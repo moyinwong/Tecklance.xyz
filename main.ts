@@ -40,7 +40,7 @@ export const upload = multer({ storage });
 //use session
 app.use(
   expressSession({
-    secret: "Tecky Academy teaches typescript",
+    secret: "Tecklance",
     resave: true,
     saveUninitialized: true,
   })
@@ -89,29 +89,12 @@ app.get("/task/:id", async (req, res) => {
   console.log(task[0]);
 });
 
-
-
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
   let result = await client.query("SELECT * FROM task");
   let tasks: Task[] = result.rows;
   res.json(tasks);
   // console.log(tasks)
-});
-
-//create task
-app.post("/create-task", async (req, res) => {
-  try {
-    await client.query(
-      /*sql*/
-      `INSERT INTO task (title, content, category, creator_id) VALUES
-  ($1,$2,$3,(SELECT id from users where username = $4 LIMIT 1))`,
-      [req.body.title, req.body.content, req.body.category, req.body.creator_id]
-    );
-    res.json({ success: true });
-  } catch (err) {
-    res.status(401);
-  }
 });
 
 // get public/index.html
@@ -152,7 +135,6 @@ app.get("/category", async (req, res) => {
   let categoryResult = result.rows;
   res.json(categoryResult);
 });
-
 
 //serve dashboard if user is logged in
 app.use("/admin", isLoggedIn, express.static("admin"));

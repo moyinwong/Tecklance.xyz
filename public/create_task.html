@@ -35,15 +35,22 @@
                 </form>
             </div>
         </div>
-        <div id="title">
-            <textarea id="title-input" placeholder="Please enter the title"></textarea>
-        </div>
-        <div id="content">
-            <textarea id="content-input" placeholder="Please enter the content"></textarea></div>
-        <div id="middle-container">
-            <div id="info">
-                INFO
-                <form action="select_category">
+        <form id="task-form" action="/create-task" method="POST" enctype="multipart/form-data">
+            <label>
+                task image:
+                <input type='file' name="image" />
+            </label>
+
+            <div id="title">
+                <textarea id="title_input" name="title_input" placeholder="Please enter the title"></textarea>
+            </div>
+            <div id="content">
+                <textarea id="content_input" name="content_input" placeholder="Please enter the content"></textarea>
+            </div>
+            <div id="middle-container">
+                <div id="info">
+                    INFO
+
                     <label for="category">Category:</label>
                     <select id="category" name="category">
                         <option value="category1">category1</option>
@@ -51,18 +58,19 @@
                         <option value="category3">category3</option>
                         <option value="category4">category4</option>
                     </select>
-                </form>
-            </div>
 
-            <div id="detail">
-                Detail
+                </div>
+
+                <div id="detail">
+                    Detail
+                </div>
             </div>
-        </div>
-        <div id="bottom-container">
-            <div id="bottom-middle">
-                <input class="btn btn-primary" type="submit" value="Submit" id="submit">
+            <div id="bottom-container">
+                <div id="bottom-middle">
+                    <input class="btn btn-primary" type="submit" value="Submit" id="submit">
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
 

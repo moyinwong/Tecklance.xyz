@@ -1,6 +1,6 @@
 import express from "express";
 import { Task } from "./models";
-import { client } from "./main";
+import { client, upload } from "./main";
 
 export const taskRoutes = express.Router();
 
@@ -17,23 +17,54 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
   const applyUserId = req.body.applied_user_id;
 
   await client.query(
-    /*sql*/`INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
+    /*sql*/ `INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
     [applyUserId, taskId]
   );
-  
 });
 
 //getting all applied task of that particular user
-taskRoutes.get('/usertask/:userId', async function(req, res) {
+taskRoutes.get("/usertask/:userId", async function (req, res) {
   let userId = parseInt(req.params.userId);
-  
-  let result = await client.query(`SELECT *
+
+  let result = await client.query(
+    `SELECT *
   FROM applied_post
       JOIN task on task.id = applied_post.task_id
       JOIN users on users.id = applied_post.user_id
-          WHERE user_id = $1;`, [userId])
+          WHERE user_id = $1;`,
+    [userId]
+  );
 
   let userTasks = result.rows;
-  
+
   res.json(userTasks);
-})
+});
+
+//create task
+taskRoutes.post("/create-task", upload.single("image"), async (req, res) => {
+  try {
+    const { title, content, category } = req.body;
+
+    let image: string | "";
+    if (req.file) {
+      image = req.file.filename;
+    } else {
+      image = "";
+    }
+
+    await client.query(
+      /*sql*/ `INSERT INTO task (title, content, category, image, creator_id) VALUES
+    ($1,$2,$3,(SELECT id from users where username = $4 LIMIT 1))`,
+      [title, content, category, image, req.body.creator_id]
+    );
+    //
+    //
+    //
+    //Add response after created
+    //
+    //
+    res.json({ success: true });
+  } catch (err) {
+    res.status(401);
+  }
+});
