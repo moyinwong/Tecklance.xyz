@@ -38,7 +38,8 @@
     "pg": "^8.3.0",
     "stripe": "^8.75.0",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.6",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.7"

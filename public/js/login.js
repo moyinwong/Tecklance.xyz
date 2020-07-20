@@ -1,3 +1,8 @@
+//home logo button
+document.querySelector(".logo-button").onclick = () => {
+  location.href = "/";
+};
+
 //login form
 document
   .querySelector("#login-form")

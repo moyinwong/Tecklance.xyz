@@ -4,8 +4,11 @@ import path from "path";
 import dotenv from "dotenv";
 import pg from "pg";
 import bodyParser from "body-parser";
+import multer from "multer";
 import grant from "grant-express";
-import {Task} from "./models";
+import { Task } from "./models";
+import { isLoggedIn } from "./guards";
+import { logger } from "./logger";
 dotenv.config();
 
 //configuring database setting
@@ -18,12 +21,21 @@ export const client = new pg.Client({
 
 //connecting to database
 client.connect();
+
 //setting up web server app
 const app = express();
 
-//set up body parser
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+//storage file
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, `${__dirname}/public/uploads`);
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${file.fieldname}-${Date.now()}.${file.mimetype.split("/")[1]}`);
+  },
+});
+
+export const upload = multer({ storage });
 
 //use session
 app.use(
@@ -64,6 +76,10 @@ app.use(
   })
 );
 
+//set up body parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 //get method for displaying particular task page
 app.get("/task/:id", async (req, res) => {
   let id = parseInt(req.params.id);
@@ -101,8 +117,11 @@ app.use(express.static("public"));
 
 import { userRoutes } from "./userRoutes";
 import { paymentRoutes } from "./paymentRoutes";
+import { taskRoutes } from "./taskRoutes";
+
 app.use("/", userRoutes);
 app.use("/", paymentRoutes);
+app.use("/", taskRoutes);
 
 //get method for loading all tasks from database
 app.get("/createtask", async (req, res) => {
@@ -141,11 +160,14 @@ app.get("/cms", async (req, res) => {
   }
 });
 
+//serve dashboard if user is logged in
+app.use("/admin", isLoggedIn, express.static("admin"));
+
 //redirect to 404 page
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "./public/404.html"));
 });
 
 app.listen(8080, () => {
-  console.log(`Listening at http://localhost:8080/`);
+  logger.info(`Listening at http://localhost:8080/`);
 });

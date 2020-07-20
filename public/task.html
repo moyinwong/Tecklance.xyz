@@ -7,26 +7,35 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/task.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css"
+        integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
     <title>Task</title>
 </head>
 
 <body>
     <div>
 
-        <div id="top-container">
-            <button class="logo logo-button"><img src='./asset/logo.png'></button>
-            <div class="login-button-container">
-              <button class="login-button" type="button">LOG IN</button>
+        <div class="container-fluid">
+            <div class="row header-row">
+                <div class="col header-col">
+                    <div class="header">
+                        <button class="logo logo-button"><img src='/asset/logo.png'></button>
+                        <div class="login-button-container">
+                            <button class="login-button" type="button">LOG IN</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
+
         <div class="container-fluid main-body">
             <div class="row">
-              <div class="col-lg-12 title-container">
+                <div class="col-lg-12 title-container">
                     <div id="title">
                         <p>TITLE</p>
                     </div>
-              </div>
+                </div>
             </div>
 
             <div class="row">
@@ -52,16 +61,24 @@
                 <div class="col-lg-12">
                     <div id="bottom-container">
 
-                        <div id="bottom-middle"></div>
+                        <div id="bottom-middle">
+                            <input id="apply-button" type="button" value="Apply">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </div>
 
 
-
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">ABOUT</a>
+        <a href="/admin/cms.html">DASHBOARD</a>
+        <a href="#">PAYMENT</a>
+        <a href="/setting.html">SETTING</a>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

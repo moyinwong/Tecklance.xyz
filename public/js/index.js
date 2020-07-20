@@ -1,28 +1,26 @@
-
 loadTask();
 checkLogin();
 
 //login button
-document.querySelector('.login-button').onclick = () => {
-  location.href = "/login.html"
-}
+document.querySelector(".login-button").onclick = () => {
+  location.href = "/login.html";
+};
 
 //home logo button
-document.querySelector('.logo-button').onclick = () => {
-  location.href = "/"
-}
-
+document.querySelector(".logo-button").onclick = () => {
+  location.href = "/";
+};
 
 //select all navbar links
-let inputs = document.querySelectorAll('.category-link');
+let inputs = document.querySelectorAll(".category-link");
 
 //populate load tasks logic over each link
 for (let i = 0; i < inputs.length; i++) {
   inputs[i].onclick = async () => {
-      let categoryName = (inputs[i].innerHTML).toLowerCase();
-      let res = await fetch(`/category?category=${categoryName}`);
+    let categoryName = inputs[i].innerHTML.toLowerCase();
+    let res = await fetch(`/category?category=${categoryName}`);
 
-      let tasks = await res.json();
+    let tasks = await res.json();
 
     let taskContainer = document.querySelector(".carousel-inner");
     taskContainer.innerHTML = "";
@@ -65,15 +63,15 @@ for (let i = 0; i < inputs.length; i++) {
           </div>
         </div>
       </div>
-      </div>`
-    };
+      </div>`;
+    }
     loadTaskSlider();
-  }
+  };
 }
 
 //load tasks from database and show on homepage
 async function loadTask() {
-  let res = await fetch('/tasks');
+  let res = await fetch("/tasks");
   let tasks = await res.json();
 
   let taskContainer = document.querySelector(".carousel-inner");
@@ -95,8 +93,8 @@ async function loadTask() {
 </div>
 </div>
   </div>
-</div>`
-  
+</div>`;
+
   for (let i = 1; i < tasks.length; i++) {
     let task = tasks[i];
     taskContainer.innerHTML += `
@@ -116,58 +114,55 @@ async function loadTask() {
       </div>
     </div>
   </div>
-  </div>`
+  </div>`;
   }
   loadTaskSlider();
 }
 
-
 // Main page slider logic
 function loadTaskSlider() {
-  $('#recipeCarousel').carousel({
-    interval: 10000
-  })
-  
-  $('.carousel .carousel-item').each(function(){
-      var minPerSlide = 3;
-      var next = $(this).next();
-      if (!next.length) {
-      next = $(this).siblings(':first');
-      }
-      next.children(':first-child').clone().appendTo($(this));
-      
-      for (var i=0;i<minPerSlide;i++) {
-          next=next.next();
-          if (!next.length) {
-            next = $(this).siblings(':first');
-          }
-          
-          next.children(':first-child').clone().appendTo($(this));
-        }
+  $("#recipeCarousel").carousel({
+    interval: 10000,
   });
-  
+
+  $(".carousel .carousel-item").each(function () {
+    var minPerSlide = 3;
+    var next = $(this).next();
+    if (!next.length) {
+      next = $(this).siblings(":first");
+    }
+    next.children(":first-child").clone().appendTo($(this));
+
+    for (var i = 0; i < minPerSlide; i++) {
+      next = next.next();
+      if (!next.length) {
+        next = $(this).siblings(":first");
+      }
+
+      next.children(":first-child").clone().appendTo($(this));
+    }
+  });
 }
 
 async function checkLogin() {
-  let res = await fetch('/current-user');
+  let res = await fetch("/current-user");
   let user = await res.json();
   // console.log(user);
+  console.log(res);
   if (res.status == 200 && user) {
-
-    document.querySelector('.login-button-container').innerHTML = `
+    document.querySelector(".login-button-container").innerHTML = `
     <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
     <div>${user}</div>
-    <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`
-
+    <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
   }
 }
 
 function openNav() {
-  document.getElementById('mySidenav').style.width = "200px";
+  document.getElementById("mySidenav").style.width = "250px";
 }
 
 function closeNav() {
-  document.getElementById('mySidenav').style.width = "0";
+  document.getElementById("mySidenav").style.width = "0";
 }
 
 loadTask();
