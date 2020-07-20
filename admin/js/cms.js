@@ -29,6 +29,7 @@ async function checkLogin() {
     <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
   }
 }
+
 async function loadTask() {
   let res = await fetch("/tasks");
   let tasks = await res.json();
@@ -103,3 +104,4 @@ function loadTaskSlider() {
 
   loadTask();
   checkLogin();
+

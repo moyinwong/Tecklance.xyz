@@ -280,7 +280,7 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
       image = "";
     }
 
-    //check duplicate username
+    //check duplicate name
     const duplicateUsername = (
       await client.query(/*sql*/ `SELECT * FROM users WHERE username = $1`, [
         username,
@@ -289,6 +289,17 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
 
     if (duplicateUsername) {
       return res.status(400).json("username is already exists");
+    }
+
+    //check duplicate email
+    const duplicateUserEmail = (
+      await client.query(/*sql*/ `SELECT * FROM users WHERE email = $1`, [
+        email,
+      ])
+    ).rows[0];
+
+    if (duplicateUserEmail) {
+      return res.status(400).json("Email is already registered");
     }
 
     //insert user into sql

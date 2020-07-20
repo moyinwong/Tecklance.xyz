@@ -1,3 +1,35 @@
+//login button
+document.querySelector('.login-button').onclick = () => {
+  location.href = "/login.html"
+}
+
+//home logo button
+document.querySelector('.logo-button').onclick = () => {
+  location.href = "/"
+}
+
+//sidebar function
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+//check login function
+async function checkLogin() {
+  let res = await fetch("/current-user");
+  let user = await res.json();
+  // console.log(user);
+  if (res.status == 200 && user) {
+    document.querySelector(".login-button-container").innerHTML = `
+    <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
+    <div>${user}</div>
+    <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
+  }
+}
+
 async function createTask(event) {
   try {
     event.preventDefault();
@@ -29,3 +61,6 @@ async function createTask(event) {
 }
 
 document.querySelector("#task-form").addEventListener("submit", createTask);
+
+
+checkLogin();
