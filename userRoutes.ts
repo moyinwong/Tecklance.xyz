@@ -7,6 +7,26 @@ import { logger } from "./logger";
 
 export const userRoutes = express.Router();
 
+const blankInfo: User = {
+  id: 0,
+  username: "",
+  password: "",
+  image: "",
+  email: "",
+  popup_amt: 0,
+  google: "",
+  github: "",
+  gitlab: "",
+  first_name: "",
+  last_name: "",
+  bank_name: "",
+  bank_account: "",
+  freelancer_intro: "",
+  isAdmin: false,
+  created_at: "",
+  updated_at: "",
+};
+
 //check PW and login
 userRoutes.post("/login", async (req, res, next) => {
   try {
@@ -91,28 +111,18 @@ async function loginGoogle(req: express.Request, res: express.Response) {
     const users = (
       await client.query(
         /*sql*/ `SELECT * FROM users WHERE users.google = $1`,
-        [result.email]
+        [result.id]
       )
     ).rows;
 
     const user: User = users[0];
-
+    const tempInformation = blankInfo;
     if (!user) {
-      const tempInformation: Object = {
-        id: "",
-        username: "",
-        password: "",
-        image: "",
-        email: result.email,
-        popup_amt: 0,
-        google: result.email,
-        github: "",
-        gitlab: "",
-        first_name: result.given_name,
-        last_name: result.family_name,
-        created_at: "",
-        updated_at: "",
-      };
+      tempInformation.email = result.email;
+      tempInformation.google = result.id;
+      tempInformation.first_name = result.given_name;
+      tempInformation.last_name = result.family_name;
+
       if (req.session) {
         req.session.temp = tempInformation;
       }
@@ -156,23 +166,13 @@ async function loginGithub(req: express.Request, res: express.Response) {
     ).rows;
 
     const user = users[0];
-
+    const tempInformation = blankInfo;
     if (!user) {
-      const tempInformation: Object = {
-        id: "",
-        username: "",
-        password: "",
-        image: "",
-        email: result.email,
-        popup_amt: 0,
-        google: "",
-        github: result.id,
-        gitlab: "",
-        first_name: result.given_name,
-        last_name: result.family_name,
-        created_at: "",
-        updated_at: "",
-      };
+      tempInformation.email = result.email;
+      tempInformation.github = result.id;
+      tempInformation.first_name = result.given_name;
+      tempInformation.last_name = result.family_name;
+
       if (req.session) {
         req.session.temp = tempInformation;
       }
@@ -215,26 +215,23 @@ async function loginGitlab(req: express.Request, res: express.Response) {
       )
     ).rows;
     const user = users[0];
+    const tempInformation = blankInfo;
     if (!user) {
-      const tempInformation: Object = {
-        id: "",
-        username: "",
-        password: "",
-        image: "",
-        email: result.email,
-        popup_amt: 0,
-        google: "",
-        github: "",
-        gitlab: result.id,
-        first_name: result.name.split(" ")[0],
-        last_name: result.name.replace(result.name.split(" ")[0], ""),
-        created_at: "",
-        updated_at: "",
-      };
+      tempInformation.email = result.email;
+      tempInformation.gitlab = result.id;
+      tempInformation.first_name = result.name.split(" ")[0];
+      tempInformation.last_name = result.name.replace(
+        result.name.split(" ")[0],
+        ""
+      );
+
       if (req.session) {
         req.session.temp = tempInformation;
       }
       return res.redirect("/signup.html");
+    }
+    if (req.session) {
+      req.session.userId = user.id;
     }
     logger.info(user.username + " successfully login by Gitlab");
     return res.redirect("/");
@@ -269,6 +266,9 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
       google,
       github,
       gitlab,
+      bank_name,
+      bank_account,
+      freelancer_intro,
     } = req.body;
 
     const password = await hashPassword(req.body.password);
@@ -304,7 +304,8 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
 
     //insert user into sql
     await client.query(
-      /*sql*/ `INSERT INTO users (username,password,email,popup_amt,google,github,gitlab,image,first_name,last_name,created_at,updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,NOW(),NOW());`,
+      /*sql*/ `INSERT INTO users (username,password,email,popup_amt,google,github,gitlab,image,first_name,last_name,bank_name,bank_account,freelancer_intro,isAdmin,created_at,updated_at) 
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,FALSE,NOW(),NOW());`,
       [
         username,
         password,
@@ -316,6 +317,9 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
         image,
         first_name,
         last_name,
+        bank_name,
+        bank_account,
+        freelancer_intro,
       ]
     );
 
@@ -353,21 +357,7 @@ userRoutes.get("/getTempInfo", function (req, res) {
     if (req.session && req.session.temp) {
       return res.json(req.session.temp);
     }
-    return res.json({
-      id: "",
-      username: "",
-      password: "",
-      image: "",
-      email: "",
-      popup_amt: 0,
-      google: "",
-      github: "",
-      gitlab: "",
-      first_name: "",
-      last_name: "",
-      created_at: "",
-      updated_at: "",
-    });
+    return res.json(blankInfo);
   } catch (err) {
     logger.error(err.toString());
     return res.status(500).json({ message: "internal Server Error" });

@@ -43,23 +43,13 @@ async function signup(event) {
   const form = event.target;
 
   const formData = new FormData();
-  formData.append("username", form.username.value);
-  formData.append("password", form.password.value);
-  if (form.email.value) {
-    formData.append("email", form.email.value);
-  } else {
-    formData.append("email", "");
+
+  for (let i = 0; i < form.length; i++) {
+    if (form[i].value) {
+      formData.append(form[i].name, form[i].value);
+    }
   }
-  if (form.first_name.value) {
-    formData.append("first_name", form.first_name.value);
-  } else {
-    formData.append("first_name", "");
-  }
-  if (form.last_name.value) {
-    formData.append("last_name", form.last_name.value);
-  } else {
-    formData.append("last_name", "");
-  }
+
   formData.append("google", tempInfo.google);
   formData.append("github", tempInfo.github);
   formData.append("gitlab", tempInfo.gitlab);

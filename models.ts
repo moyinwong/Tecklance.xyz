@@ -1,17 +1,21 @@
 export interface User {
-  id: number; //required
+  id: number;
   username: string; //required
   password: string; //required
-  image: string | null;
-  email: string | null;
+  image: string;
+  email: string; //required
   popup_amt: number;
-  google: string | null;
-  github: string | null;
-  gitlab: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  created_at: Date | null;
-  updated_at: Date | null;
+  google: string;
+  github: string;
+  gitlab: string;
+  first_name: string;
+  last_name: string;
+  bank_name: string;
+  bank_account: string;
+  freelancer_intro: string;
+  isAdmin: Boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Task {
@@ -22,7 +26,7 @@ export interface Task {
   creator_id: number;
 }
 
-export interface Usertask{
+export interface Usertask {
   id: number;
   user_id: number;
   task_id: number;

@@ -5,7 +5,7 @@ const logFormat = winston.format.printf(function (info) {
   return `${date}[${info.level}]: ${info.message}\n`;
 });
 export const logger = winston.createLogger({
-  level: "info",
+  level: "debug",
   format: winston.format.combine(winston.format.colorize(), logFormat),
   transports: [new winston.transports.Console()],
 });
