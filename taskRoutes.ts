@@ -1,6 +1,7 @@
 import express from "express";
 import { Task } from "./models";
 import { client } from "./main";
+import { Usertask } from "./models";
 
 export const taskRoutes = express.Router();
 
@@ -33,7 +34,15 @@ taskRoutes.get('/usertask/:userId', async function(req, res) {
       JOIN users on users.id = applied_post.user_id
           WHERE user_id = $1;`, [userId])
 
-  let userTasks = result.rows;
-  
+  let userTasks:Usertask[] = result.rows;
   res.json(userTasks);
 })
+
+//getting all applied task of that particular creator
+taskRoutes.get("/posted_task/:creator_id", async (req, res) => {
+  let creator_id = parseInt(req.params.creator_id);
+  let result = await client.query(`SELECT * FROM task WHERE creator_id = $1`,[creator_id]);
+  let postedTasks: Task[] = result.rows;
+  res.json(postedTasks);
+  // console.log(tasks)
+});
