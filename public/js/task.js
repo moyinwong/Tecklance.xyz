@@ -19,14 +19,17 @@ async function main() {
   //console.log(task);
   document.title = task.title;
   let titleContainer = document.querySelector("#title");
+  let imageContainer = document.querySelector("#image");
   let contentContainer = document.querySelector("#content");
   let categoryContainer = document.querySelector("#info");
 
   titleContainer.innerHTML = "";
+  imageContainer.innerHTML = "";
   contentContainer.innerHTML = "";
   categoryContainer.innerHTML = "";
 
   titleContainer.innerHTML += task.title;
+  imageContainer.innerHTML += `<img class="img-fluid" src="/uploads/${task.image}">`
   contentContainer.innerHTML += task.content;
   categoryContainer.innerHTML += task.category;
 }

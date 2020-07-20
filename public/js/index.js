@@ -19,6 +19,9 @@ document.querySelector('.category-all').onclick = async () => {
   let res = await fetch("/tasks");
   let tasks = await res.json();
 
+  let taskHeader = document.querySelector('.task-container h2')
+  taskHeader.innerHTML = 'TASKS'
+
   let taskContainer = document.querySelector(".task-container .container .row");
   let freelanceContainer = document.querySelector('.freelancer-container');
   taskContainer.innerHTML = "";
@@ -37,7 +40,7 @@ document.querySelector('.category-all').onclick = async () => {
       <li class="list-group-item">${task.category}</li>
     </ul>
     <div class="card-body">
-      <a href="/task.html?id=${tasks.id}" class="card-link task-link">VIEW TASK</a>
+      <a href="/task.html?id=${task.id}" class="card-link task-link">VIEW TASK</a>
     </div>
   </div>`
     } 
@@ -53,7 +56,10 @@ for (let i = 0; i < inputs.length; i++) {
     let res = await fetch(`/category?category=${categoryName}`);
 
     let tasks = await res.json();
-
+    
+    let taskHeader = document.querySelector('.task-container h2')
+    taskHeader.innerHTML = categoryName;
+    
     let taskContainer = document.querySelector(".task-container .container .row");
     taskContainer.innerHTML = "";
     taskContainer.innerHTML += `
