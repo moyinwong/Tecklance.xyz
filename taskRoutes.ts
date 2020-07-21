@@ -1,18 +1,18 @@
 import express from "express";
-// import { Task } from "./models";
+import { Task } from "./models";
 import { client, upload } from "./main";
 import { Usertask } from "./models";
 
 export const taskRoutes = express.Router();
 
-// taskRoutes.get("/tasks/:userId", async (req, res) => {
-//   let user = (req.params.creator_id).toString();
-//   let result = await client.query(/*sql*/ `SELECT * FROM task where creator_id = $1`,
-//   [user]);
-//   let tasks: Task[] = result.rows;
-//   res.json(tasks);
-//   // console.log(tasks)
-// });
+taskRoutes.get("/create-task/:user", async (req, res) => {
+  let creator_id = (req.params.user).toString();
+  let result = await client.query(/*sql*/ `SELECT * FROM task where creator_id = $1`,
+  [creator_id]);
+  let tasks: Task[] = result.rows;
+  res.json(tasks);
+  // console.log(tasks)
+});
 
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {

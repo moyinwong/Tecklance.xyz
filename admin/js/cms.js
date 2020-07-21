@@ -94,7 +94,7 @@ async function loadAppliedTask() {
 async function loadPostedTask() {
   let userRes = await fetch("/current-user");
   let user = await userRes.json();
-  let res = await fetch(`/usertask/${user.id}`);
+  let res = await fetch(`/create-task/${user.id}`);
   let tasks = await res.json();
   let taskContainer = document.getElementById("posted");
   taskContainer.innerHTML = "";
