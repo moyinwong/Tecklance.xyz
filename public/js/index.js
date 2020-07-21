@@ -32,7 +32,8 @@ document.querySelector('.category-all').onclick = async () => {
       taskContainer.innerHTML += `
     <div class="col-md-3">
     <div class="card">
-      <img src="/uploads/${task.image_task}" class="card-img-top img-thumbnail" alt="...">
+    <div class="image">
+      <img src="/uploads/${task.image_task}" class="card-img-top img-thumbnail" alt="..."></div>
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.content}</p>
@@ -87,7 +88,8 @@ for (let i = 0; i < inputs.length; i++) {
     <div class="carousel-item active">
       <div class="col-md-4">
       <div class="card">
-        <img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."> 
+      <div class="image">
+        <img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></div>
         <div class="card-body">
           <h5 class="card-title">${tasks[0].title}</h5>
           <p class="card-text">${tasks[0].content}</p>
@@ -112,7 +114,8 @@ for (let i = 0; i < inputs.length; i++) {
         <div class="carousel-item">
         <div class="col-md-4">
         <div class="card">
-          <img src="/uploads/${task.image_task}" class="card-img-top" alt="...">
+        <div class="image">
+          <img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></div>
           <div class="card-body">
             <h5 class="card-title">${task.title}</h5>
             <p class="card-text">${task.content}</p>
@@ -143,7 +146,8 @@ async function loadTask() {
   taskContainer.innerHTML += `<div class="carousel-item active">
   <div class="col-md-4">
   <div class="card">
-  <img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="...">
+  <div class="image">
+  <a href="/task.html?id=${tasks[0].id}"><img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></a></div>
   <div class="card-body">
     <h5 class="card-title">${tasks[0].title}</h5>
     <p class="card-text">${tasks[0].content}</p>
@@ -166,7 +170,8 @@ async function loadTask() {
     <div class="carousel-item">
     <div class="col-md-4">
     <div class="card">
-      <img src="/uploads/${task.image_task}" class="card-img-top" alt="..."> 
+    <div class="image">
+    <a href="/task.html?id=${task.id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.content}</p>
@@ -195,7 +200,8 @@ async function loadFreelancer() {
   <div class="carousel-item active">
     <div class="col-md-4">
       <div class="card">
-        <img src="/uploads/${freelancers[0].image_user}" class="card-img-top" alt="...">
+      <div class="image">
+        <img src="/uploads/${freelancers[0].image_user}" class="card-img-top" alt="..."></div>
         <div class="card-body">
           <h5 class="card-title">${freelancers[0].first_name + " " +freelancers[0].last_name}</h5>
           <p class="card-text">${freelancers[0].freelancer_intro}</p>
@@ -214,7 +220,8 @@ async function loadFreelancer() {
       <div class="carousel-item">
       <div class="col-md-4">
         <div class="card">
-          <img src="/uploads/${freelancer.image_user}" class="card-img-top" alt="...">
+        <div class="image">
+          <img src="/uploads/${freelancer.image_user}" class="card-img-top" alt="..."></div>
           <div class="card-body">
             <h5 class="card-title">${freelancer.first_name + " " + freelancer.last_name}</h5>
             <p class="card-text">${freelancer.freelancer_intro}</p>

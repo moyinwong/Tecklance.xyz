@@ -49,7 +49,8 @@ async function loadAppliedTask() {
   taskContainer.innerHTML += `<div class="carousel-item active">
   <div class="col-md-4">
   <div class="card">
-  <img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="...">
+  <div class="image">
+  <a href="../task.html?id=${tasks[0].task_id}"><img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></a></div>
   <div class="card-body">
     <h5 class="card-title">${tasks[0].title}</h5>
     <p class="card-text">${tasks[0].content}</p>
@@ -72,7 +73,8 @@ async function loadAppliedTask() {
     <div class="carousel-item">
     <div class="col-md-4">
     <div class="card">
-      <img src="/uploads/${task.image_task}" class="card-img-top" alt="..."> 
+    <div class="image">
+      <a href="../task.html?id=${tasks.task_id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.content}</p>
@@ -101,7 +103,8 @@ async function loadPostedTask() {
   taskContainer.innerHTML += `<div class="carousel-item active">
   <div class="col-md-4">
   <div class="card">
-  <img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="...">
+  <div class="image">
+  <a href="../task.html?id=${tasks[0].task_id}"><img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></a></div>
   <div class="card-body">
     <h5 class="card-title">${tasks[0].title}</h5>
     <p class="card-text">${tasks[0].content}</p>
@@ -124,7 +127,8 @@ async function loadPostedTask() {
     <div class="carousel-item">
     <div class="col-md-4">
     <div class="card">
-      <img src="/uploads/${task.image_task}" class="card-img-top" alt="..."> 
+    <div class="image">
+    <a href="../task.html?id=${task.task_id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.content}</p>
