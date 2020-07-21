@@ -4,7 +4,7 @@ export interface User {
   password: string; //required
   image_user: string;
   email: string; //required
-  popup_amt: number;
+  remind_amt: number;
   google: string;
   github: string;
   gitlab: string;
