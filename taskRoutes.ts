@@ -1,16 +1,18 @@
 import express from "express";
-import { Task } from "./models";
+// import { Task } from "./models";
 import { client, upload } from "./main";
 import { Usertask } from "./models";
 
 export const taskRoutes = express.Router();
 
-taskRoutes.get("/tasks", async (req, res) => {
-  let result = await client.query("SELECT * FROM task");
-  let tasks: Task[] = result.rows;
-  res.json(tasks);
-  // console.log(tasks)
-});
+// taskRoutes.get("/tasks/:userId", async (req, res) => {
+//   let user = (req.params.creator_id).toString();
+//   let result = await client.query(/*sql*/ `SELECT * FROM task where creator_id = $1`,
+//   [user]);
+//   let tasks: Task[] = result.rows;
+//   res.json(tasks);
+//   // console.log(tasks)
+// });
 
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {
@@ -43,7 +45,7 @@ taskRoutes.get("/usertask/:userId", async function (req, res) {
 
 //create task
 taskRoutes.post("/create-task/:user", upload.single("image"), async (req, res) => {
-  let user = (req.params.user).toString();
+  let email = (req.params.user).toString();
   try {
     const { title, content, category } = req.body;
 
@@ -53,13 +55,12 @@ taskRoutes.post("/create-task/:user", upload.single("image"), async (req, res) =
     } else {
       image = "";
     }
-    console.log(content);
-    console.log(user)
     await client.query(
-      /*sql*/ `INSERT INTO task (title, content, category, image, creator_id) VALUES
-    ($1,$2,$3,$4, (SELECT id from users where username = $5 LIMIT 1))`,
-      [title, content, category, image, user]
+      /*sql*/ `INSERT INTO task (title, content, category, image_task, creator_id) VALUES
+    ($1,$2,$3,$4, (SELECT id from users where email = $5 LIMIT 1))`,
+      [title, content, category, image, email]
     );
+
     //
     //
     //
