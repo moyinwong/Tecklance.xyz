@@ -415,10 +415,6 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
     //after checking user name, del image if new image is uploaded
     const currentImage: string = currentUser.image;
 
-    console.log("currentImage: " + currentImage);
-
-    console.log("req.file: " + req.file);
-
     let image: string | "";
     if (req.file) {
       image = req.file.filename;
