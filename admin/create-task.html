@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css"
+        integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/task.css">
+    <title>Create Task</title>
+</head>
+
+<body>
+
+    <div class="alert alert-warning fixed-top fade" id="response" role="alert">
+    </div>
+
+    <div class="container-fluid">
+        <div class="row header-row">
+            <div class="col header-col">
+                <div class="header">
+                    <button class="logo logo-button"><img src='/asset/logo.png'></button>
+                    <div class="login-button-container">
+                        <button class="login-button" type="button">LOG IN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="create-body-container">
+
+        <div class="create-form-container">
+            <form id="task-form" action="/create-task" method="POST" enctype="multipart/form-data">
+                <label>
+                    task image:
+                    <input type='file' name="image" />
+                </label>
+
+                <div id="title">
+                    <textarea id="title_input" name="title_input" placeholder="Please enter the title"></textarea>
+                </div>
+
+                <div id="content">
+                    <textarea id="content_input" name="content_input" placeholder="Please enter the content"></textarea>
+                </div>
+
+                <div id="middle-container">
+                    <div id="info">
+
+                        <label for="category">Category:</label>
+                        <select id="category" name="category">
+                            <option value="programming">programming</option>
+                            <option value="writing/translation">writing/translation</option>
+                            <option value="animal caring">animal caring</option>
+                            <option value="video/animation">video/animation</option>
+                            <option value="physical work">physical work</option>
+                        </select>
+                        <p>The remaining amount is HK$<span id="remain_amt"></span></p>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+
+                            <input id="offered_amt" name="offered_amt" type="number" class="form-control"
+                                aria-label="Amount (to the nearest dollar)" placeholder="Offer Amount (HK$)">
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                            <div class="alert alert-warning fixed-top fade" id="offered_amt_alert" role="alert">
+                                The remaining amount is not enough!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div id="bottom-container">
+                    <div id="bottom-middle">
+                        <input class="btn btn-primary" type="submit" value="Submit" id="submit">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">About</a>
+        <a href="/admin/cms.html">Dashboard</a>
+        <a href="/admin/create_task.html">Create Task</a>
+        <a href="#">Payment</a>
+        <a href="/admin/setting.html">Setting</a>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script src="/js/createtask.js" type='text/javascript'></script>
+</body>
+
+</html>

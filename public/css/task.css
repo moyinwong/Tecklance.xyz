@@ -27,7 +27,9 @@ body > div {
   border: none;
 }
 
-
+.alert {
+  text-align: center;
+}
 
 #middle-container,
 #bottom-container {
@@ -48,7 +50,6 @@ body > div {
   cursor: pointer;
 }
 
-
 .login-button-container {
   display: flex;
   flex-direction: column;
@@ -66,10 +67,9 @@ body > div {
 }
 
 .login-button:hover {
-  background-color: #6347FF;
+  background-color: #6347ff;
   color: white;
 }
-
 
 /* user logo for side navbar */
 .user-profile-button {
@@ -153,7 +153,7 @@ body > div {
 }
 
 #bottom-middle > input:hover {
-  background-color: #6347FF;
+  background-color: #6347ff;
 }
 
 /* side navbar */
@@ -218,7 +218,7 @@ body > div {
   align-items: center;
   border: 5px solid #ddd;
   border-image: linear-gradient(red, orange) 30 30;
-  box-shadow: 0px 0px 23px -3px rgba(0,0,0,0.19);
+  box-shadow: 0px 0px 23px -3px rgba(0, 0, 0, 0.19);
   padding: 50px;
 }
 
@@ -240,7 +240,7 @@ body > div {
 }
 
 #content_input {
-  height: 300px
+  height: 300px;
 }
 
 #info {
