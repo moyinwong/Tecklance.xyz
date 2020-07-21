@@ -1,31 +1,7 @@
-//to check if the password is match
-function checkPassword() {
-  if (
-    document.getElementById("password").value ==
-    document.getElementById("confirm_password").value
-  ) {
-    if (!document.getElementById("password").value) {
-      document.getElementById("message").style.display = "none";
-      document.getElementById("submit").disabled = false;
-    } else {
-      document.getElementById("message").style.display = "inline-block";
-      document.getElementById("message").style.color = "green";
-      document.getElementById("message").innerHTML = "matching";
-      document.getElementById("submit").disabled = false;
-    }
-  } else {
-    document.getElementById("message").style.display = "inline-block";
-    document.getElementById("message").style.color = "red";
-    document.getElementById("message").innerHTML = "not matching";
-    document.getElementById("submit").disabled = true;
-  }
-}
-
 //auto fill in data
 async function getFullInfo() {
   const res = await fetch("/getFullInfo");
   fullInfo = await res.json();
-  console.log(fullInfo);
   await fillInFullInfo(fullInfo);
 }
 

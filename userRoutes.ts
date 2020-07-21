@@ -8,7 +8,30 @@ import fs from "fs";
 
 export const userRoutes = express.Router();
 
-const blankInfo: User = {
+const checkDuplicate = async (username: string, email: string, res) => {
+  //check duplicate name
+  const duplicateUsername = (
+    await client.query(/*sql*/ `SELECT * FROM users WHERE username = $1`, [
+      username,
+    ])
+  ).rows[0];
+
+  if (duplicateUsername) {
+    return res.status(400).json("username is already exists");
+  }
+
+  //check duplicate email
+  const duplicateUserEmail = (
+    await client.query(/*sql*/ `SELECT * FROM users WHERE email = $1`, [email])
+  ).rows[0];
+
+  if (duplicateUserEmail) {
+    return res.status(400).json("Email is already registered");
+  }
+  return;
+};
+
+const blankInfo = {
   id: 0,
   username: "",
   password: "",
@@ -68,7 +91,7 @@ userRoutes.post("/login", async (req, res, next) => {
 userRoutes.get("/current-user", async function (req, res) {
   try {
     if (req.session && req.session.userId) {
-      logger.debug(req.session);
+      //console.log(req.session);
 
       let users = (
         await client.query(/*sql*/ `SELECT * FROM users WHERE id = $1`, [
@@ -90,134 +113,90 @@ userRoutes.get("/current-user", async function (req, res) {
 });
 
 //login with google
-userRoutes.get("/login/google", loginGoogle);
+userRoutes.get("/login/:socialLoginMethod", socialLogin);
 
-async function loginGoogle(req: express.Request, res: express.Response) {
+async function socialLogin(req, res) {
   try {
-    const accessToken = req.session?.grant.response.access_token;
-    const fetchRes = await fetch(
-      "https://www.googleapis.com/oauth2/v2/userinfo",
-      {
-        method: "get",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    const socialLoginMethod: string = req.params.socialLoginMethod;
+    const getTokenAPI = async (socialLoginMethod) => {
+      if (socialLoginMethod === "google") {
+        return "https://www.googleapis.com/oauth2/v2/userinfo";
+      } else if (socialLoginMethod === "github") {
+        return "https://api.github.com/user";
+      } else if (socialLoginMethod === "gitlab") {
+        return "https://gitlab.com/api/v4/user";
       }
-    );
+      return "";
+    };
+
+    const tokenAPI = await getTokenAPI(socialLoginMethod);
+
+    const accessToken = req.session?.grant.response.access_token;
+    const fetchRes = await fetch(tokenAPI, {
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     const result = await fetchRes.json();
 
     //to check what information we can use
-    logger.debug(result);
+    logger.debug(result.id);
 
-    const users = (
-      await client.query(
-        /*sql*/ `SELECT * FROM users WHERE users.google = $1`,
-        [result.id]
-      )
-    ).rows;
+    const tempInformation = {
+      id: 0,
+      username: "",
+      password: "",
+      image: "",
+      email: "",
+      popup_amt: 0,
+      google: "",
+      github: "",
+      gitlab: "",
+      first_name: "",
+      last_name: "",
+      bank_name: "",
+      bank_account: "",
+      freelancer_intro: "",
+      isAdmin: false,
+      created_at: "",
+      updated_at: "",
+    };
 
-    const user: User = users[0];
-    const tempInformation = blankInfo;
-    if (!user) {
+    //query users
+    const getUserBySocialId = async (socialLoginMethod) => {
+      if (socialLoginMethod === "google") {
+        return await client.query(
+          /*sql*/ `SELECT * FROM users WHERE users.google = $1`,
+          [result.id]
+        );
+      } else if (socialLoginMethod === "github") {
+        return await client.query(
+          /*sql*/ `SELECT * FROM users WHERE users.github = $1`,
+          [result.id]
+        );
+      } else {
+        return await client.query(
+          /*sql*/ `SELECT * FROM users WHERE users.gitlab = $1`,
+          [result.id]
+        );
+      }
+    };
+
+    const user = (await getUserBySocialId(socialLoginMethod)).rows[0];
+
+    //each social login will provide different info
+    if (!user && socialLoginMethod === "google") {
       tempInformation.email = result.email;
       tempInformation.google = result.id;
       tempInformation.first_name = result.given_name;
       tempInformation.last_name = result.family_name;
-
-      if (req.session) {
-        req.session.temp = tempInformation;
-      }
-      return res.redirect("/signup.html");
-    }
-    if (req.session) {
-      req.session.userId = user.id;
-    }
-    logger.info(user.username + " successfully login by Google");
-    return res.redirect("/");
-  } catch (err) {
-    logger.error(err.toString());
-    return res.status(500).json({ message: "internal Server Error" });
-  }
-}
-
-//login with github
-userRoutes.get("/login/github", loginGithub);
-
-async function loginGithub(req: express.Request, res: express.Response) {
-  try {
-    const accessToken = req.session?.grant.response.access_token;
-
-    //The access token allows you to make requests to the API on a behalf of a user.
-    const fetchRes = await fetch("https://api.github.com/user", {
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const result = await fetchRes.json();
-
-    //to check what information we can use
-    logger.debug(result);
-
-    const users = (
-      await client.query(
-        /*sql*/ `SELECT * FROM users WHERE users.github = $1`,
-        [result.id]
-      )
-    ).rows;
-
-    const user = users[0];
-    const tempInformation = blankInfo;
-    if (!user) {
+    } else if (!user && socialLoginMethod === "github") {
       tempInformation.email = result.email;
       tempInformation.github = result.id;
       tempInformation.first_name = result.given_name;
       tempInformation.last_name = result.family_name;
-
-      if (req.session) {
-        req.session.temp = tempInformation;
-      }
-      return res.redirect("/signup.html");
-    }
-    if (req.session) {
-      req.session.userId = user.id;
-    }
-    logger.info(user.username + " successfully login by Github");
-    return res.redirect("/");
-  } catch (err) {
-    logger.error(err.toString());
-    return res.status(500).json({ message: "internal Server Error" });
-  }
-}
-
-//login with gitlab
-userRoutes.get("/login/gitlab", loginGitlab);
-
-async function loginGitlab(req: express.Request, res: express.Response) {
-  try {
-    const accessToken = req.session?.grant.response.access_token;
-
-    //The access token allows you to make requests to the API on a behalf of a user.
-    const fetchRes = await fetch("https://gitlab.com/api/v4/user", {
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const result = await fetchRes.json();
-
-    //to check what information we can use
-    logger.debug(result);
-
-    const users = (
-      await client.query(
-        /*sql*/ `SELECT * FROM users WHERE users.gitlab = $1`,
-        [result.id]
-      )
-    ).rows;
-    const user = users[0];
-    const tempInformation = blankInfo;
-    if (!user) {
+    } else if (!user && socialLoginMethod === "gitlab") {
       tempInformation.email = result.email;
       tempInformation.gitlab = result.id;
       tempInformation.first_name = result.name.split(" ")[0];
@@ -225,16 +204,17 @@ async function loginGitlab(req: express.Request, res: express.Response) {
         result.name.split(" ")[0],
         ""
       );
+    }
 
-      if (req.session) {
-        req.session.temp = tempInformation;
-      }
+    if (!user && req.session) {
+      req.session.temp = tempInformation;
       return res.redirect("/signup.html");
     }
+
     if (req.session) {
       req.session.userId = user.id;
     }
-    logger.info(user.username + " successfully login by Gitlab");
+    logger.info(user.username + ` successfully login by ${socialLoginMethod}`);
     return res.redirect("/");
   } catch (err) {
     logger.error(err.toString());
@@ -284,27 +264,7 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
       image = "";
     }
 
-    //check duplicate name
-    const duplicateUsername = (
-      await client.query(/*sql*/ `SELECT * FROM users WHERE username = $1`, [
-        username,
-      ])
-    ).rows[0];
-
-    if (duplicateUsername) {
-      return res.status(400).json("username is already exists");
-    }
-
-    //check duplicate email
-    const duplicateUserEmail = (
-      await client.query(/*sql*/ `SELECT * FROM users WHERE email = $1`, [
-        email,
-      ])
-    ).rows[0];
-
-    if (duplicateUserEmail) {
-      return res.status(400).json("Email is already registered");
-    }
+    await checkDuplicate(username, email, res);
 
     //insert user into sql
     await client.query(
@@ -384,7 +344,6 @@ userRoutes.get("/getUserId", function (req, res) {
 userRoutes.get("/getFullInfo", async function (req, res) {
   try {
     if (req.session && req.session.userId) {
-      console.log(req.session);
       const user = (
         await client.query(/*sql*/ `SELECT * FROM users WHERE id=$1`, [
           req.session.userId,
@@ -408,6 +367,7 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
   try {
     const {
       username,
+      email,
       first_name,
       last_name,
       bank_name,
@@ -415,13 +375,13 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
       freelancer_intro,
     } = req.body;
 
-    const getUserSessionid = async () => {
+    const getUserSessionId = async () => {
       if (req.session) {
         return req.session.userId;
       }
     };
 
-    const id = await getUserSessionid();
+    const id = await getUserSessionId();
 
     //check duplicate name
     const duplicateUsername = (
@@ -433,6 +393,18 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
 
     if (duplicateUsername) {
       return res.status(400).json("username is already exists");
+    }
+
+    //check duplicate name
+    const duplicateEmail = (
+      await client.query(
+        /*sql*/ `SELECT * FROM users WHERE email = $1 AND id <> $2`,
+        [email, id]
+      )
+    ).rows[0];
+
+    if (duplicateEmail) {
+      return res.status(400).json("Email is already registered");
     }
 
     //get user info
@@ -453,7 +425,7 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
 
     //insert user into sql
     await client.query(
-      /*sql*/ `UPDATE users SET username=$1,image=$2,first_name=$3,last_name=$4,bank_name=$5,bank_account=$6,freelancer_intro=$7 WHERE id=$8;`,
+      /*sql*/ `UPDATE users SET username=$1,image=$2,first_name=$3,last_name=$4,bank_name=$5,bank_account=$6,freelancer_intro=$7,email=$8 WHERE id=$9;`,
       [
         username,
         image,
@@ -462,11 +434,54 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
         bank_name,
         bank_account,
         freelancer_intro,
+        email,
         id,
       ]
     );
 
     return res.status(201).json("User information is successfully updated");
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json({ message: "internal Server Error" });
+  }
+});
+
+//check PW and login
+userRoutes.put("/change-password", async (req, res) => {
+  try {
+    //read SQL server table users
+    if (!req.session) {
+      return res.status(401).json({ message: "Please login" });
+    }
+    const userId = req.session.userId;
+
+    const current_password = req.body.current_password;
+
+    const hashNewPassword = await hashPassword(req.body.password);
+
+    let users = (
+      await client.query(/*sql*/ `SELECT * FROM users WHERE id = $1`, [userId])
+    ).rows;
+
+    const user: User = users[0];
+    if (!user) {
+      logger.error("user does not exist");
+      return res.status(401).json("user is not exist");
+    }
+
+    //use hash check password
+    const pwIsCorrect = await checkPassword(current_password, user.password);
+
+    if (!pwIsCorrect) {
+      return res.status(401).json("Current password is wrong");
+    }
+
+    await client.query(/*sql*/ `UPDATE users SET password=$1 WHERE id = $2`, [
+      hashNewPassword,
+      userId,
+    ]);
+
+    return res.status(200).json("Password was successful changed");
   } catch (err) {
     logger.error(err.toString());
     return res.status(500).json({ message: "internal Server Error" });
