@@ -249,7 +249,7 @@ h2 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 1080px;
+    height: 1240px;
 }
 
 .user-form-container {
@@ -275,6 +275,10 @@ h2 {
     margin-bottom: 30px;
     color: rgb(37, 37, 37);
     font-weight: bold;
+}
+
+#user-form > label > div {
+    margin-bottom: 10px;
 }
 
 #user-form > label > input,
