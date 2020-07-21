@@ -1,3 +1,8 @@
+//home logo button
+document.querySelector(".logo-button").onclick = () => {
+  location.href = "/";
+};
+
 //to check if the password is match
 function checkPassword() {
   if (
