@@ -23,9 +23,9 @@ async function checkLogin() {
   let user = await res.json();
   
   if (res.status == 200 && user) {
-    if (user.image) {
+    if (user.image_user) {
       document.querySelector(".login-button-container").innerHTML = `
-    <div><button onclick="openNav()" class="user-profile-button" type="button"><img class="img-fluid" src="/uploads/${user.image}"></button></div>
+    <div><button onclick="openNav()" class="user-profile-button" type="button"><img class="img-fluid" src="/uploads/${user.image_user}"></button></div>
     <div>${user.username}</div>
     <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
     } 
@@ -49,7 +49,7 @@ async function loadTask() {
   taskContainer.innerHTML += `<div class="carousel-item active">
   <div class="col-md-4">
   <div class="card">
-  <!-- <img src="..." class="card-img-top" alt="..."> -->
+  <img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">${tasks[0].title}</h5>
     <p class="card-text">${tasks[0].content}</p>
@@ -67,11 +67,12 @@ async function loadTask() {
 
   for (let i = 1; i < tasks.length; i++) {
     let task = tasks[i];
-    taskContainer.innerHTML += `
+    
+      taskContainer.innerHTML += `
     <div class="carousel-item">
     <div class="col-md-4">
     <div class="card">
-      <!-- <img src="..." class="card-img-top" alt="..."> -->
+      <img src="/uploads/${task.image_task}" class="card-img-top" alt="..."> 
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.content}</p>
@@ -84,7 +85,8 @@ async function loadTask() {
       </div>
     </div>
   </div>
-  </div>`;
+  </div>`
+    
   }
   loadTaskSlider();
 }
