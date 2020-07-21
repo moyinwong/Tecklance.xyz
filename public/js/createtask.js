@@ -58,14 +58,17 @@ async function createTask(event) {
 
     let userRes = await fetch("/current-user");
     let user = await userRes.json();
+    const getUserRes = await fetch("/getUserId");
 
     //app.post
     let res = await fetch(`/create-task/${user.email}`, {
       method: "POST",
       body: formData,
     });
-    if (res.success && res.status == 200) {
-      console.log('task created')
+    
+    if (res.status == 200) {
+      alert('Success');
+      window.location = "/index.html";
     }
     if ((res.status = 401)) {
       console.log(res);
