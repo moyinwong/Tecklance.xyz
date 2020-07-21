@@ -229,6 +229,7 @@ h2 {
 .register {
     margin-top: 30px;
     color: #303030;
+    text-align: center;
 }
 
 @media (max-width: 400px) {
