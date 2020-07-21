@@ -2,7 +2,7 @@ export interface User {
   id: number;
   username: string; //required
   password: string; //required
-  image: string;
+  image_user: string;
   email: string; //required
   popup_amt: number;
   google: string;
@@ -23,6 +23,7 @@ export interface Task {
   title: string;
   category: string;
   content: string;
+  image_task: string;
   creator_id: number;
 }
 
