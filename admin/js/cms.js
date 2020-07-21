@@ -40,7 +40,9 @@ async function checkLogin() {
 }
 
 async function loadTask() {
-  let res = await fetch("/tasks");
+  let userRes = await fetch("/current-user");
+  let user = await userRes.json();
+  let res = await fetch(`/usertask/${user.id}`);
   let tasks = await res.json();
   let taskContainer = document.querySelector(".carousel-inner");
   taskContainer.innerHTML = "";
