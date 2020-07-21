@@ -97,6 +97,18 @@ app.get("/tasks", async (req, res) => {
   // console.log(tasks)
 });
 
+//get method for loading freelancers from database
+app.get("/freelancers", async (req, res) => {
+  try {
+    let result = await client.query(`SELECT * FROM users WHERE freelancer_intro IS NOT NULL`);
+    let freelancers = result.rows;
+    res.json(freelancers);
+  } catch (err) {
+    console.log(err);
+  }
+  
+})
+
 // get public/index.html
 app.use(express.static("public"));
 

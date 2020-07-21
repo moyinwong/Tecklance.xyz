@@ -1,5 +1,6 @@
 loadTask();
 checkLogin();
+loadFreelancer();
 
 //login button
 document.querySelector(".login-button").onclick = () => {
@@ -184,9 +185,79 @@ async function loadTask() {
   loadTaskSlider();
 }
 
+async function loadFreelancer() {
+  let res = await fetch("/freelancers");
+  let freelancers = await res.json();
+
+  let freelancerContainer = document.querySelector(".freelancer-carousel");
+  freelancerContainer.innerHTML = "";
+  freelancerContainer.innerHTML += `
+  <div class="carousel-item active">
+    <div class="col-md-4">
+      <div class="card">
+        <img src="/uploads/${freelancers[0].image_user}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">${freelancers[0].first_name + " " +freelancers[0].last_name}</h5>
+          <p class="card-text">${freelancers[0].freelancer_intro}</p>
+         </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">${freelancers[0].email}</li>
+        </ul>
+      </div>
+    </div>
+  </div>`;
+
+  for (let i = 1; i < freelancers.length; i++) {
+    let freelancer = freelancers[i];
+    
+      freelancerContainer.innerHTML += `
+      <div class="carousel-item">
+      <div class="col-md-4">
+        <div class="card">
+          <img src="/uploads/${freelancer.image_user}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">${freelancer.first_name + " " + freelancer.last_name}</h5>
+            <p class="card-text">${freelancer.freelancer_intro}</p>
+           </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">${freelancer.email}</li>
+          </ul>
+        </div>
+      </div>
+    </div>`;
+    
+  }
+  loadFreelancerSlider();
+}
+
 // Main page slider logic
 function loadTaskSlider() {
   $("#recipeCarousel").carousel({
+    interval: 10000,
+  });
+
+  $(".carousel .carousel-item").each(function () {
+    var minPerSlide = 3;
+    var next = $(this).next();
+    if (!next.length) {
+      next = $(this).siblings(":first");
+    }
+    next.children(":first-child").clone().appendTo($(this));
+
+    for (var i = 0; i < minPerSlide; i++) {
+      next = next.next();
+      if (!next.length) {
+        next = $(this).siblings(":first");
+      }
+
+      next.children(":first-child").clone().appendTo($(this));
+    }
+  });
+}
+
+// Main page freelancer slider logic
+function loadFreelancerSlider() {
+  $("#recipeCarousel-freelancer").carousel({
     interval: 10000,
   });
 
@@ -241,3 +312,4 @@ function closeNav() {
 
 loadTask();
 checkLogin();
+loadFreelancer();

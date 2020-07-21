@@ -50,7 +50,7 @@ async function createTask(event) {
     formData.append("title", form.title_input.value);
     formData.append("content", form.content_input.value);
     formData.append("category", form.category.value);
-
+    
     //append image in the last step
     if (form.image) {
       formData.append("image", form.image.files[0]);
@@ -60,7 +60,7 @@ async function createTask(event) {
     let user = await userRes.json();
 
     //app.post
-    let res = await fetch(`/create-task/${user}`, {
+    let res = await fetch(`/create-task/${user.email}`, {
       method: "POST",
       body: formData,
     });
