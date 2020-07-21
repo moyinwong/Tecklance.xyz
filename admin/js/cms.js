@@ -144,10 +144,12 @@ async function loadPostedTask() {
 }
 
 function loadTaskSlider() {
-  $("#recipeCarousel").carousel({
-    interval: 10000,
+  $("#recipeCarousel-apply").carousel({
+    interval: 20000,
   });
-
+  $("#recipeCarousel-post").carousel({
+    interval: 20000,
+  });
   $(".carousel .carousel-item").each(function () {
     var minPerSlide = 3;
     var next = $(this).next();
