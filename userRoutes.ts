@@ -268,7 +268,7 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
 
     //insert user into sql
     await client.query(
-      /*sql*/ `INSERT INTO users (username,password,email,popup_amt,google,github,gitlab,image,first_name,last_name,bank_name,bank_account,freelancer_intro,isAdmin,created_at,updated_at) 
+      /*sql*/ `INSERT INTO users (username,password,email,popup_amt,google,github,gitlab,image_user,first_name,last_name,bank_name,bank_account,freelancer_intro,isAdmin,created_at,updated_at) 
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,FALSE,NOW(),NOW());`,
       [
         username,
@@ -427,7 +427,7 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
 
     //insert user into sql
     await client.query(
-      /*sql*/ `UPDATE users SET username=$1,image=$2,first_name=$3,last_name=$4,bank_name=$5,bank_account=$6,freelancer_intro=$7,email=$8 WHERE id=$9;`,
+      /*sql*/ `UPDATE users SET username=$1,image_user=$2,first_name=$3,last_name=$4,bank_name=$5,bank_account=$6,freelancer_intro=$7,email=$8 WHERE id=$9;`,
       [
         username,
         image,
