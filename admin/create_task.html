@@ -13,7 +13,9 @@
 </head>
 
 <body>
-    <div>
+    
+
+
         <div class="container-fluid">
             <div class="row header-row">
                 <div class="col header-col">
@@ -27,52 +29,63 @@
             </div>
         </div>
 
-        <form id="task-form" action="/create-task" method="POST" enctype="multipart/form-data">
-            <label>
-                task image:
-                <input type='file' name="image" />
-            </label>
+        <div class="create-body-container">
 
-            <div id="title">
-                <textarea id="title_input" name="title_input" placeholder="Please enter the title"></textarea>
-            </div>
-            <div id="content">
-                <textarea id="content_input" name="content_input" placeholder="Please enter the content"></textarea>
-            </div>
-            <div id="middle-container">
-                <div id="info">
-                    INFO
+            <div class="create-form-container">
+                <form id="task-form" action="/create-task" method="POST" enctype="multipart/form-data">
+                    <label>
+                        task image:
+                        <input type='file' name="image" />
+                    </label>
+        
+                    <div id="title">
+                        <textarea id="title_input" name="title_input" placeholder="Please enter the title"></textarea>
+                    </div>
 
-                    <label for="category">Category:</label>
-                    <select id="category" name="category">
-                        <option value="programming">programming</option>
-                        <option value="writing/translation">writing/translation</option>
-                        <option value="animal caring">animal caring</option>
-                        <option value="video/animation">video/animation</option>
-                        <option value="physical work">physical work</option>
-                    </select>
+                    <div id="content">
+                        <textarea id="content_input" name="content_input" placeholder="Please enter the content"></textarea>
+                    </div>
 
-                </div>
+                    <div id="middle-container">
+                        <div id="info">
+        
+                            <label for="category">Category:</label>
+                            <select id="category" name="category">
+                                <option value="programming">programming</option>
+                                <option value="writing/translation">writing/translation</option>
+                                <option value="animal caring">animal caring</option>
+                                <option value="video/animation">video/animation</option>
+                                <option value="physical work">physical work</option>
+                            </select>
+        
+                        </div>
+                    </div>
 
-                <div id="detail">
-                    Detail
-                </div>
+                    <div id="bottom-container">
+                        <div id="bottom-middle">
+                            <input class="btn btn-primary" type="submit" value="Submit" id="submit">
+                        </div>
+                    </div>
+                    
+                </form>
             </div>
-            <div id="bottom-container">
-                <div id="bottom-middle">
-                    <input class="btn btn-primary" type="submit" value="Submit" id="submit">
-                </div>
-            </div>
-        </form>
-    </div>
+
+        </div>
+        
+
+    
+
+
+
+
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="#">About</a>
-        <a href="#">Dashboard</a>
+        <a href="/admin/cms.html">Dashboard</a>
         <a href="/createtask">Create Task</a>
         <a href="#">Payment</a>
-        <a href="/setting.html">Setting</a>
+        <a href="/admin/setting.html">Setting</a>
     </div>
 
 
