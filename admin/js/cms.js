@@ -58,7 +58,7 @@ async function loadTask() {
     <li class="list-group-item">${tasks[0].category}</li>
   </ul>
   <div class="card-body">
-    <a href="/task.html?id=${tasks[0].id}" class="card-link task-link">VIEW TASK</a>
+    <a href="/task.html?id=${tasks[0].task_id}" class="card-link task-link">VIEW TASK</a>
   </div>
 </div>
 </div>
