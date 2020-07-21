@@ -212,13 +212,21 @@ function loadTaskSlider() {
 async function checkLogin() {
   let res = await fetch("/current-user");
   let user = await res.json();
-  // console.log(user);
-  console.log(res);
+  
   if (res.status == 200 && user) {
-    document.querySelector(".login-button-container").innerHTML = `
-    <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
-    <div>${user}</div>
+    if (user.image) {
+      document.querySelector(".login-button-container").innerHTML = `
+    <div><button onclick="openNav()" class="user-profile-button" type="button"><img class="img-fluid" src="/uploads/${user.image}"></button></div>
+    <div>${user.username}</div>
     <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
+    } 
+    
+    else {
+      document.querySelector(".login-button-container").innerHTML = `
+      <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
+      <div>${user.username}</div>
+      <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
+    }
   }
 }
 
