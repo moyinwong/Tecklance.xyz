@@ -6,6 +6,12 @@ export const paymentRoutes = express.Router();
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
+export const getCurrentUserId = async (req) => {
+  if (req.session) {
+    return req.session.userId;
+  }
+};
+
 export const charge = (token: string, amount: number) => {
   return stripe.charges.create(
     {
@@ -30,12 +36,6 @@ paymentRoutes.post("/charge", async (req, res) => {
     });
     logger.debug(data);
 
-    const getCurrentUserId = async (req) => {
-      if (req.session) {
-        return req.session.userId;
-      }
-    };
-
     const userId = await getCurrentUserId(req);
 
     logger.debug(userId);
@@ -50,4 +50,21 @@ paymentRoutes.post("/charge", async (req, res) => {
   }
 
   return res.send("Payment was successful");
+});
+
+paymentRoutes.get("/getRemainAmt", async (req, res) => {
+  try {
+    const userId = await getCurrentUserId(req);
+
+    const users = (
+      await client.query(/*sql*/ `SELECT * FROM users WHERE id = $1`, [userId])
+    ).rows;
+
+    const remainAmt = users[0].remain_amt;
+
+    return res.status(200).json(remainAmt);
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode).send(err.decline_code);
+  }
 });
