@@ -101,7 +101,7 @@ userRoutes.get("/current-user", async function (req, res) {
 
       const user: User = users[0];
 
-      return res.status(200).json(user.username);
+      return res.status(200).json(user);
     } else {
       logger.info("not logged in");
       return res.status(401).json({ message: "Not logged in" });
