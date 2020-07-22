@@ -46,7 +46,7 @@
 
                 <div id="content">
                     <textarea id="content_input" name="content_input" placeholder="Please enter the content"
-                        maxlength="1000"></textarea>
+                        maxlength="10000"></textarea>
                 </div>
 
                 <div id="middle-container">
@@ -67,7 +67,8 @@
                             </div>
 
                             <input id="offered_amt" name="offered_amt" type="number" class="form-control"
-                                aria-label="Amount (to the nearest dollar)" placeholder="Offer Amount (HK$)">
+                                aria-label="Amount (to the nearest dollar)" placeholder="Offer Amount (HK$), Min: HK$20"
+                                min="20">
                             <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                             </div>
