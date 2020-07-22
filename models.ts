@@ -32,3 +32,12 @@ export interface Usertask {
   user_id: number;
   task_id: number;
 }
+
+export interface Message {
+  id: number;
+  sender_id: number;
+  recipient_id: number;
+  message_content: string;
+  created_at: string;
+  updated_at: string;
+}

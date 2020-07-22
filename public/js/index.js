@@ -16,20 +16,20 @@ document.querySelector(".logo-button").onclick = () => {
 let inputs = document.querySelectorAll(".category-link");
 
 //navbar show all button
-document.querySelector('.category-all').onclick = async () => {
+document.querySelector(".category-all").onclick = async () => {
   let res = await fetch("/tasks");
   let tasks = await res.json();
 
-  let taskHeader = document.querySelector('.task-container h2')
-  taskHeader.innerHTML = 'TASKS'
+  let taskHeader = document.querySelector(".task-container h2");
+  taskHeader.innerHTML = "TASKS";
 
   let taskContainer = document.querySelector(".task-container .container .row");
-  let freelanceContainer = document.querySelector('.freelancer-container');
+  let freelanceContainer = document.querySelector(".freelancer-container");
   taskContainer.innerHTML = "";
   freelanceContainer.innerHTML = "";
 
   for (task of tasks) {
-      taskContainer.innerHTML += `
+    taskContainer.innerHTML += `
     <div class="col-md-3">
     <div class="card">
     <div class="image">
@@ -41,11 +41,8 @@ document.querySelector('.category-all').onclick = async () => {
     <ul class="list-group list-group-flush">
       <li class="list-group-item">${task.category}</li>
     </ul>
-  </div>`
-    } 
-    
-  
-
+  </div>`;
+  }
 };
 
 //populate load tasks logic over each link
@@ -55,11 +52,13 @@ for (let i = 0; i < inputs.length; i++) {
     let res = await fetch(`/category?category=${categoryName}`);
 
     let tasks = await res.json();
-    
-    let taskHeader = document.querySelector('.task-container h2')
+
+    let taskHeader = document.querySelector(".task-container h2");
     taskHeader.innerHTML = categoryName;
-    
-    let taskContainer = document.querySelector(".task-container .container .row");
+
+    let taskContainer = document.querySelector(
+      ".task-container .container .row"
+    );
     taskContainer.innerHTML = "";
     taskContainer.innerHTML += `
     <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
@@ -80,8 +79,7 @@ for (let i = 0; i < inputs.length; i++) {
     let carouselContainer = document.querySelector(".carousel-inner");
     carouselContainer.innerHTML = "";
 
-
-      carouselContainer.innerHTML += `
+    carouselContainer.innerHTML += `
     <div class="carousel-item active">
       <div class="col-md-4">
       <div class="card">
@@ -97,14 +95,12 @@ for (let i = 0; i < inputs.length; i++) {
     </div>
     </div>
       </div>
-    </div>`
-    
-    
+    </div>`;
 
     for (let i = 1; i < tasks.length; i++) {
       let task = tasks[i];
 
-        carouselContainer.innerHTML += `
+      carouselContainer.innerHTML += `
         <div class="carousel-item">
         <div class="col-md-4">
         <div class="card">
@@ -119,8 +115,7 @@ for (let i = 0; i < inputs.length; i++) {
           </ul>
         </div>
       </div>
-      </div>`
-      
+      </div>`;
     }
 
     loadTaskSlider();
@@ -154,8 +149,8 @@ async function loadTask() {
 
   for (let i = 1; i < tasks.length; i++) {
     let task = tasks[i];
-    
-      taskContainer.innerHTML += `
+
+    taskContainer.innerHTML += `
     <div class="carousel-item">
       <div class="col-md-4">
         <div class="card">
@@ -171,8 +166,7 @@ async function loadTask() {
           </ul>
         </div>
       </div>
-    </div>`
-    
+    </div>`;
   }
   loadTaskSlider();
 }
@@ -188,9 +182,13 @@ async function loadFreelancer() {
     <div class="col-md-4">
       <div class="card">
       <div class="image">
-        <img src="/uploads/${freelancers[0].image_user}" class="card-img-top" alt="..."></div>
+        <img src="/uploads/${
+          freelancers[0].image_user
+        }" class="card-img-top" alt="..."></div>
         <div class="card-body">
-          <h5 class="card-title">${freelancers[0].first_name + " " +freelancers[0].last_name}</h5>
+          <h5 class="card-title">${
+            freelancers[0].first_name + " " + freelancers[0].last_name
+          }</h5>
           <p class="card-text">${freelancers[0].freelancer_intro}</p>
          </div>
         <ul class="list-group list-group-flush">
@@ -202,15 +200,19 @@ async function loadFreelancer() {
 
   for (let i = 1; i < freelancers.length; i++) {
     let freelancer = freelancers[i];
-    
-      freelancerContainer.innerHTML += `
+
+    freelancerContainer.innerHTML += `
       <div class="carousel-item">
       <div class="col-md-4">
         <div class="card">
         <div class="image">
-          <img src="/uploads/${freelancer.image_user}" class="card-img-top" alt="..."></div>
+          <img src="/uploads/${
+            freelancer.image_user
+          }" class="card-img-top" alt="..."></div>
           <div class="card-body">
-            <h5 class="card-title">${freelancer.first_name + " " + freelancer.last_name}</h5>
+            <h5 class="card-title">${
+              freelancer.first_name + " " + freelancer.last_name
+            }</h5>
             <p class="card-text">${freelancer.freelancer_intro}</p>
            </div>
           <ul class="list-group list-group-flush">
@@ -219,7 +221,6 @@ async function loadFreelancer() {
         </div>
       </div>
     </div>`;
-    
   }
   loadFreelancerSlider();
 }
@@ -277,16 +278,14 @@ function loadFreelancerSlider() {
 async function checkLogin() {
   let res = await fetch("/current-user");
   let user = await res.json();
-  
+
   if (res.status == 200 && user) {
     if (user.image_user) {
       document.querySelector(".login-button-container").innerHTML = `
     <div><button onclick="openNav()" class="user-profile-button" type="button"><img class="img-fluid" src="/uploads/${user.image_user}"></button></div>
     <div>${user.username}</div>
     <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
-    } 
-    
-    else {
+    } else {
       document.querySelector(".login-button-container").innerHTML = `
       <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
       <div>${user.username}</div>

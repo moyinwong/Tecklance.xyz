@@ -107,10 +107,12 @@ app.use(express.static("public"));
 import { userRoutes } from "./userRoutes";
 import { paymentRoutes } from "./paymentRoutes";
 import { taskRoutes } from "./taskRoutes";
+import { messageRoutes } from "./messageRoutes";
 
 app.use("/", userRoutes);
 app.use("/", paymentRoutes);
 app.use("/", taskRoutes);
+app.use("/", messageRoutes);
 
 //get method for loading all tasks from database
 app.get("/createtask", async (req, res) => {
