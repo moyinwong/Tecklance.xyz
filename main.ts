@@ -80,15 +80,6 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//get method for displaying particular task page
-app.get("/task/:id", async (req, res) => {
-  let id = parseInt(req.params.id);
-  let result = await client.query(`SELECT * FROM task WHERE id = $1`, [id]);
-  let task: Task[] = result.rows;
-  res.json(task[0]);
-  console.log(task[0]);
-});
-
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
   let result = await client.query("SELECT * FROM task");
@@ -100,14 +91,15 @@ app.get("/tasks", async (req, res) => {
 //get method for loading freelancers from database
 app.get("/freelancers", async (req, res) => {
   try {
-    let result = await client.query(`SELECT * FROM users WHERE freelancer_intro IS NOT NULL`);
+    let result = await client.query(
+      `SELECT * FROM users WHERE freelancer_intro IS NOT NULL`
+    );
     let freelancers = result.rows;
     res.json(freelancers);
   } catch (err) {
     console.log(err);
   }
-  
-})
+});
 
 // get public/index.html
 app.use(express.static("public"));

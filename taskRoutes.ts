@@ -85,3 +85,12 @@ taskRoutes.post(
     }
   }
 );
+
+//get method for displaying particular task page
+taskRoutes.get("/task/:id", async (req, res) => {
+  let id = parseInt(req.params.id);
+  let result = await client.query(`SELECT * FROM task WHERE id = $1`, [id]);
+  let task: Task[] = result.rows;
+  res.json(task[0]);
+  console.log(task[0]);
+});
