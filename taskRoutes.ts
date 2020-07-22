@@ -38,7 +38,7 @@ taskRoutes.get("/usertask/:userId", async function (req, res) {
 
 //get all tasks created by a particular user
 taskRoutes.get("/create-task/:user", async (req, res) => {
-  let creator_id = req.params.user.toString();
+  let creator_id = parseInt(req.params.user);
   let result = await client.query(
     /*sql*/ `SELECT * FROM task where creator_id = $1`,
     [creator_id]
