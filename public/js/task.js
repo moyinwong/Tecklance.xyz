@@ -91,6 +91,13 @@ document.querySelector("#apply-button").onclick = async () => {
       applied_user_id: userId,
     }),
   });
+
+  if (res.status == 200) {
+    alert('Successfully applied');
+    window.location = "/";
+  } else if (res.status == 400) {
+    alert(await res.json)
+  }
 };
 
 main();

@@ -15,6 +15,7 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
     /*sql*/ `INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
     [applyUserId, taskId]
   );
+  res.status(200).json({success:true});
 });
 
 //getting all applied task of that particular user
