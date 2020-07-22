@@ -11,7 +11,7 @@ async function fillInFullInfo(info) {
   for (let i = 0; i < keys.length; i++) {
     if (info[keys[i]]) {
       //if user has icon
-      if (keys[i] == "image") {
+      if (keys[i] == "image_user") {
         const formElement = document.getElementById("user_image");
         formElement.src = `../uploads/${info[keys[i]]}`;
       } else {

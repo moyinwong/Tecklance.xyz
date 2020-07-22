@@ -359,7 +359,7 @@ userRoutes.get("/getFullInfo", async function (req, res) {
   }
 });
 
-//create user
+//edit user info
 userRoutes.put("/editUserInfo", upload.single("image"), async function (
   req,
   res
@@ -448,7 +448,7 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
   }
 });
 
-//check PW and login
+//change password
 userRoutes.put("/change-password", async (req, res) => {
   try {
     //read SQL server table users
