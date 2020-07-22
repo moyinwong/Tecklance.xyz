@@ -17,15 +17,19 @@
                 image:
                 <input type='file' name="image_user" />
             </label>
-            <div><label>Username</label><input type="" name="username" id="username" placeholder="Username" required>
+            <div><label>Username</label><input type="" name="username" id="username" placeholder="Username"
+                    maxlength="15" required>
             </div>
 
             <div><label>Password</label><a class="btn btn-danger" href="./change-password.html" role="button">Change
                     Password</a></div>
-            <div><label>Email</label><input id="email" type="email" name="email" placeholder="Email"></div>
-            <div><label>First Name</label><input id="first_name" type="" name="first_name" placeholder="First name">
+            <div><label>Email</label><input id="email" type="email" name="email" placeholder="Email" maxlength="25">
             </div>
-            <div><label>Last Name</label><input id="last_name" type="" name="last_name" placeholder="Last name"></div>
+            <div><label>First Name</label><input id="first_name" type="" name="first_name" placeholder="First name"
+                    maxlength="20">
+            </div>
+            <div><label>Last Name</label><input id="last_name" type="" name="last_name" placeholder="Last name"
+                    maxlength="20"></div>
 
             <p>
                 <!-- <a class="btn btn-primary" data-toggle="collapse" href="#" role="button" aria-expanded="false"
@@ -41,11 +45,13 @@
                 <div class="card card-body">
                     <p>Please fill in the below information</p>
                     <label>Bank Name</label>
-                    <input id="bank_name" type="text" name="bank_name" placeholder="Bank Name">
+                    <input id="bank_name" type="text" name="bank_name" placeholder="Bank Name" maxlength="30">
                     <label>Bank Account No</label>
-                    <input id="bank_account" type="text" name="bank_account" placeholder="bank Account Number">
+                    <input id="bank_account" type="text" name="bank_account" placeholder="bank Account Number"
+                        maxlength="20">
                     <textarea id="freelancer_intro" name="freelancer_intro"
-                        placeholder="Please introduce your self. (skills, experience, e.g.)"></textarea>
+                        placeholder="Please introduce your self. (skills, experience, e.g.)"
+                        maxlength="1000"></textarea>
                 </div>
             </div>
 

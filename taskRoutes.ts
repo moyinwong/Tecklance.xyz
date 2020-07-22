@@ -69,8 +69,8 @@ taskRoutes.post(
 
       //create task in SQL
       await client.query(
-        /*sql*/ `INSERT INTO task (title, category, content, image_task, creator_id, offered_amt,created_at,updated_at) VALUES
-    ($1,$2,$3,$4,$5, $6,NOW(),NOW())`,
+        /*sql*/ `INSERT INTO task (title, category, content, image_task, creator_id, offered_amt,status,created_at,updated_at) VALUES
+    ($1,$2,$3,$4,$5, $6,'open',NOW(),NOW())`,
         [title, category, content, image, user_id, offered_amt]
       );
 

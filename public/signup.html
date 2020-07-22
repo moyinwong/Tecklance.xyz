@@ -11,64 +11,79 @@
 </head>
 
 <body>
-    
-        <div class="user-form-body container-fluid">
-                <button class="logo login-logo-button logo-button"><img src='/asset/logo.png'></button>
-                <h2>Create your account</h2>
-                <div class="user-form-container">
-                    <form id="user-form" action="/signup" method="POST" enctype="multipart/form-data">
-                        <label>
-                            <div>User Profile Image</div>
-                            <input type='file' name="image" />
-                        </label>
-                        <label><div>Username</div><input type="" name="username" placeholder="Username" required></label>
-                        <label><div>Password</div><input id="password" type="password" name="password" placeholder="Password"
-                                onkeyup='checkPassword()' required></label>
-                        <label>
-                            <div>Re-enter Password</div>
-                            <input id="confirm_password" type="password" name="confirm_password" placeholder="Confirm password"
-                                onkeyup='checkPassword()' required>
-                            <span id='message'></span>
-                        </label>
-                            
-                        
 
-                        <label><div>Email</div><input id="email" type="email" name="email" placeholder="Email" required></label>
-                        <label><div>First Name</div><input id="first_name" type="" name="first_name" placeholder="First name"></label>
-                        <label><div>Last Name</div><input id="last_name" type="" name="last_name" placeholder="Last name"></label>
+    <div class="user-form-body container-fluid">
+        <button class="logo login-logo-button logo-button"><img src='/asset/logo.png'></button>
+        <h2>Create your account</h2>
+        <div class="user-form-container">
+            <form id="user-form" action="/signup" method="POST" enctype="multipart/form-data">
+                <label>
+                    <div>User Profile Image</div>
+                    <input type='file' name="image" />
+                </label>
+                <label>
+                    <div>Username</div><input type="" name="username" placeholder="Username" maxlength="15" required>
+                </label>
+                <label>
+                    <div>Password</div><input id="password" type="password" name="password" placeholder="Password"
+                        maxlength="20" onkeyup='checkPassword()' required>
+                </label>
+                <label>
+                    <div>Re-enter Password</div>
+                    <input id="confirm_password" type="password" name="confirm_password" placeholder="Confirm password"
+                        maxlength="20" onkeyup='checkPassword()' required>
+                    <span id='message'></span>
+                </label>
 
-                        <p>
-                            <!-- <a class="btn btn-primary" data-toggle="collapse" href="#" role="button" aria-expanded="false"
+
+
+                <label>
+                    <div>Email</div><input id="email" type="email" name="email" placeholder="Email" maxlength="25"
+                        required>
+                </label>
+                <label>
+                    <div>First Name</div><input id="first_name" type="" name="first_name" placeholder="First name"
+                        maxlength="20">
+                </label>
+                <label>
+                    <div>Last Name</div><input id="last_name" type="" name="last_name" placeholder="Last name"
+                        maxlength="20">
+                </label>
+
+                <p>
+                    <!-- <a class="btn btn-primary" data-toggle="collapse" href="#" role="button" aria-expanded="false"
                                     aria-controls="collapseExample">
                                     Link with href
                                 </a> -->
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
-                                aria-expanded="false" aria-controls="collapseExample">
-                                For Freelancer Only
-                            </button>
-                        </p>
-                        <div class="collapse" id="collapseExample">
-                            <div class="card card-body freelancer-signup">
-                                <p>Please fill in the below information</p>
-                                <label>Bank Name</label>
-                                <input id="bank_name" type="text" name="bank_name" placeholder="Bank Name">
-                                <label>Bank Account No</label>
-                                <input id="bank_account" type="text" name="bank_account" placeholder="bank Account Number">
-                                <textarea id="freelancer_intro" name="freelancer_intro"
-                                    placeholder="Please introduce your self. (skills, experience, e.g.)"></textarea>
-                            </div>
-                        </div>
-
-                        <div><input id="submit" class="signup-button" type='submit' value="Submit" /></div>
-                    </form>
-                    <div class="register">
-                        Already have an account? 
-                        <a href="/login.html">Sign in</a>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        For Freelancer Only
+                    </button>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body freelancer-signup">
+                        <p>Please fill in the below information</p>
+                        <label>Bank Name</label>
+                        <input id="bank_name" type="text" name="bank_name" placeholder="Bank Name" maxlength="30">
+                        <label>Bank Account No</label>
+                        <input id="bank_account" type="text" name="bank_account" placeholder="bank Account Number"
+                            maxlength="20">
+                        <textarea id="freelancer_intro" name="freelancer_intro"
+                            placeholder="Please introduce your self. (skills, experience, e.g.)"
+                            maxlength="1000"></textarea>
                     </div>
                 </div>
+
+                <div><input id="submit" class="signup-button" type='submit' value="Submit" /></div>
+            </form>
+            <div class="register">
+                Already have an account?
+                <a href="/login.html">Sign in</a>
             </div>
-    
-    
+        </div>
+    </div>
+
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
