@@ -10,6 +10,10 @@ body {
     margin-right: auto;
 }
 
+a {
+    color: #495057;
+}
+
 .logo {
     margin-left: 50px;
 }
