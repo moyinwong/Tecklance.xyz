@@ -41,7 +41,7 @@ taskRoutes.post(
   "/create-task/:userId",
   upload.single("image"),
   async (req, res) => {
-    let user_id = req.params.userId.toString();
+    let user_id = parseInt(req.params.userId);
     try {
       const { title, content, category, offered_amt, remain_amt } = req.body;
 
