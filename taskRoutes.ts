@@ -6,17 +6,6 @@ import { logger } from "./logger";
 
 export const taskRoutes = express.Router();
 
-taskRoutes.get("/create-task/:user", async (req, res) => {
-  let creator_id = req.params.user.toString();
-  let result = await client.query(
-    /*sql*/ `SELECT * FROM task where creator_id = $1`,
-    [creator_id]
-  );
-  let tasks: Task[] = result.rows;
-  res.json(tasks);
-  // console.log(tasks)
-});
-
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {
   const taskId = parseInt(req.params.taskId);
