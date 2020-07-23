@@ -291,6 +291,19 @@ async function checkLogin() {
       <div>${user.username}</div>
       <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
     }
+
+    //display message bubble
+    if (user && user.id) {
+      console.log(user);
+      const resMessages = await fetch("/getMessage");
+      const messages = await resMessages.json();
+      document.getElementById("message-number-bubble").innerHTML =
+        messages.length;
+      document.getElementById("message-bubble").style.display = "block";
+      document.getElementById("message-bubble").onclick = () => {
+        window.location = "admin/message.html";
+      };
+    }
   }
 }
 

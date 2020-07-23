@@ -18,7 +18,7 @@ messageRoutes.get("/getMessage", async (req, res) => {
 
     const messages: Message[] = (
       await client.query(
-        /*sql*/ `SELECT sender_id,content,username from messages LEFT JOIN users ON messages.sender_id=users.id WHERE recipient_id=$1`,
+        /*sql*/ `SELECT messages.id,sender_id,content,username from messages LEFT JOIN users ON messages.sender_id=users.id WHERE recipient_id=$1`,
         [userId]
       )
     ).rows;
