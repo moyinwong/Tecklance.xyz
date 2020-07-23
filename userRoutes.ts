@@ -103,7 +103,11 @@ userRoutes.get("/current-user", async function (req, res) {
 
       return res
         .status(200)
-        .json({ username: user.username, image_user: user.image_user });
+        .json({
+          id: user.id,
+          username: user.username,
+          image_user: user.image_user,
+        });
     } else {
       logger.info("not logged in");
       return res.status(401).json({ message: "Not logged in" });
