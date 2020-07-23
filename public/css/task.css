@@ -31,6 +31,10 @@ body > div {
   text-align: center;
 }
 
+.fixed-top {
+  z-index: 0;
+}
+
 #middle-container,
 #bottom-container {
   display: flex;

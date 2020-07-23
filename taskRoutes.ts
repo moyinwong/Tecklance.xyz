@@ -83,7 +83,7 @@ taskRoutes.post(
         );
     } catch (err) {
       logger.error(err.toString());
-      return res.status(401).json(err);
+      return res.status(401).json(err.toString());
     }
   }
 );
