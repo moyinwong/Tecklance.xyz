@@ -38,11 +38,17 @@ paymentRoutes.post("/charge", async (req, res) => {
 
     const userId = await getCurrentUserId(req);
 
-    logger.debug(userId);
+    const user = (
+      await client.query(/*sql*/ `SELECT * FROM users SET WHERE id = $1`, [
+        userId,
+      ])
+    ).rows[0];
+
+    const { remain_amt } = user;
 
     await client.query(
       /*sql*/ `UPDATE users SET remain_amt = $1 WHERE id = $2`,
-      [req.body.chargeAmount, userId]
+      [parseInt(req.body.chargeAmount) + parseInt(remain_amt), userId]
     );
   } catch (err) {
     console.log(err);
