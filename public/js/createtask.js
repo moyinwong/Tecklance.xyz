@@ -1,3 +1,7 @@
+import { checkLogin } from "./functions.mjs";
+
+checkLogin();
+
 //login button
 document.querySelector(".login-button").onclick = () => {
   location.href = "/login.html";
@@ -17,26 +21,9 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
-//check login function
-async function checkLogin() {
-  let res = await fetch("/current-user");
-  let user = await res.json();
-
-  if (res.status == 200 && user) {
-    if (user.image_user) {
-      document.querySelector(".login-button-container").innerHTML = `
-    <div><button onclick="openNav()" class="user-profile-button" type="button"><img class="img-fluid" src="/uploads/${user.image_user}"></button></div>
-    <div>${user.username}</div>
-    <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
-    } else {
-      document.querySelector(".login-button-container").innerHTML = `
-      <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
-      <div>${user.username}</div>
-      <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
-      document.querySelector("#remain_amt").innerHTML = user.remain_amt;
-    }
-  }
-}
+// document.querySelector(".user-profile-button").onclick = () => {
+//   document.getElementById("mySidenav").style.width = "250px";
+// };
 
 async function createTask(event) {
   try {

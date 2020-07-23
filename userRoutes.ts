@@ -372,6 +372,7 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
   req,
   res
 ) {
+  console.log(req.files);
   try {
     const {
       username,
@@ -432,6 +433,9 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
     } else {
       image = currentImage;
     }
+
+    //check image
+    logger.debug(req.file);
 
     //insert user into sql
     await client.query(
