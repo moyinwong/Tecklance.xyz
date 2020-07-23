@@ -100,28 +100,41 @@ async function checkLogin() {
         //get difference in day by dividing by (1000 * 60 * 60 *24)
         let differenceInDay = differenceInTime / (1000 * 3600 * 24);
         
+        
         if (differenceInDay < 1) {
           differenceInDay = 1;
           applicantList.innerHTML += `
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between applicant-detail">
-                <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
-                <small>Applied Today</small>
-              </div>
-              <p class="mb-1">${applicant.freelancer_intro}</p>
-              <small>${applicant.email}</small>
+            <a class="list-group-item list-group-item-action" data-toggle="collapse" 
+            href="#a${applicant.id}" aria-expanded="false" aria-controls="a${applicant.id}">
+                <div class="d-flex w-100 justify-content-between applicant-detail">
+                  <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
+                  <small>Applied Today</small>
+                </div>
+                <small>${applicant.email}</small>
             </a>
+            <div class="collapse" id="a${applicant.id}">
+              <div class="card card-body">
+                <p class="mb-1">${applicant.freelancer_intro}</p>
+                <button type="button" class="btn btn-success accept-button">CHOOSE THIS APPLICANT</button>
+              </div>       
+            </div>
           `
         } else {
           applicantList.innerHTML += `
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between applicant-detail">
-                <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
-                <small>Applied ${Math.round(differenceInDay)} ago</small>
-              </div>
-              <p class="mb-1">${applicant.freelancer_intro}</p>
-              <small>${applicant.email}</small>
+            <a class="list-group-item list-group-item-action" data-toggle="collapse" 
+            href="#a${applicant.id}" aria-expanded="false" aria-controls="a${applicant.id}">
+                <div class="d-flex w-100 justify-content-between applicant-detail">
+                  <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
+                  <small>Applied ${Math.round(differenceInDay)} ago</small>
+                </div>
+                <small>${applicant.email}</small>
             </a>
+            <div class="collapse" id="a${applicant.id}">
+              <div class="card card-body">
+                <p class="mb-1">${applicant.freelancer_intro}</p>
+                <button type="button" class="btn btn-success accept-button">CHOOSE THIS APPLICANT</button>
+              </div>       
+            </div>
           `
         }
         
