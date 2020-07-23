@@ -89,7 +89,7 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
   const applyUserId = req.body.applied_user_id;
 
   await client.query(
-    /*sql*/ `INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
+    /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
     [applyUserId, taskId]
   );
   res.status(200).json({ success: true });
