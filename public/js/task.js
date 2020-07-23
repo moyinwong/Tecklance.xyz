@@ -125,7 +125,7 @@ async function checkLogin() {
             href="#a${applicant.id}" aria-expanded="false" aria-controls="a${applicant.id}">
                 <div class="d-flex w-100 justify-content-between applicant-detail">
                   <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
-                  <small>Applied ${Math.round(differenceInDay)} ago</small>
+                  <small>Applied ${Math.round(differenceInDay)} days ago</small>
                 </div>
                 <small>${applicant.email}</small>
             </a>
