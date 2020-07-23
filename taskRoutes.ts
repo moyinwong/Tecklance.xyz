@@ -6,18 +6,6 @@ import { logger } from "./logger";
 
 export const taskRoutes = express.Router();
 
-//insert application data into database
-taskRoutes.put("/apply/:taskId", async function (req, res) {
-  const taskId = parseInt(req.params.taskId);
-  const applyUserId = req.body.applied_user_id;
-
-  await client.query(
-    /*sql*/ `INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
-    [applyUserId, taskId]
-  );
-  res.status(200).json({ success: true });
-});
-
 //getting all applied task of that particular user
 taskRoutes.get("/usertask/:userId", async function (req, res) {
   let userId = parseInt(req.params.userId);
@@ -46,6 +34,48 @@ taskRoutes.get("/create-task/:user", async (req, res) => {
   let tasks: Task[] = result.rows;
   res.json(tasks);
   // console.log(tasks)
+});
+
+//get method for displaying particular task page
+taskRoutes.get("/task/:id", async (req, res) => {
+  let id = parseInt(req.params.id);
+  let result = await client.query(`SELECT * FROM task WHERE id = $1`, [id]);
+  let task: Task[] = result.rows;
+  res.json(task[0]);
+  console.log(task[0]);
+});
+
+//get all applicants of a particular task
+taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
+  try {
+    let id = parseInt(req.params.taskId);
+
+    let result = await client.query(
+      `
+    SELECT * FROM applied_post
+      JOIN users on users.id = applied_post.user_id
+        WHERE task_id = $1`,
+      [id]
+    );
+    let applicants = result.rows;
+
+    return res.json(applicants);
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(401).json(err);
+  }
+});
+
+//insert application data into database
+taskRoutes.put("/apply/:taskId", async function (req, res) {
+  const taskId = parseInt(req.params.taskId);
+  const applyUserId = req.body.applied_user_id;
+
+  await client.query(
+    /*sql*/ `INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
+    [applyUserId, taskId]
+  );
+  res.status(200).json({ success: true });
 });
 
 //create task
@@ -87,36 +117,6 @@ taskRoutes.post(
     }
   }
 );
-
-//get method for displaying particular task page
-taskRoutes.get("/task/:id", async (req, res) => {
-  let id = parseInt(req.params.id);
-  let result = await client.query(`SELECT * FROM task WHERE id = $1`, [id]);
-  let task: Task[] = result.rows;
-  res.json(task[0]);
-  console.log(task[0]);
-});
-
-//get all applicants of a particular task
-taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
-  try {
-    let id = parseInt(req.params.taskId);
-
-    let result = await client.query(
-      `
-    SELECT * FROM applied_post
-      JOIN users on users.id = applied_post.user_id
-        WHERE task_id = $1`,
-      [id]
-    );
-    let applicants = result.rows;
-
-    return res.json(applicants);
-  } catch (err) {
-    logger.error(err.toString());
-    return res.status(401).json(err);
-  }
-});
 
 //task submission
 taskRoutes.post(
