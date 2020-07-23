@@ -148,3 +148,12 @@ taskRoutes.post(
     }
   }
 );
+
+//choose particular applicant for the task
+taskRoutes.put('/task/accept', async (req, res) => {
+  let userId = req.body.user_Id;
+  let taskId = req.body.task_Id;
+  await client.query(`UPDATE task SET accepted_user_id = $1, status = 'filled' 
+  WHERE id = $2;`, [userId, taskId])
+  res.status(200).json({success:true})
+})
