@@ -433,6 +433,9 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
       image = currentImage;
     }
 
+    //check image
+    logger.debug(req.file);
+
     //insert user into sql
     await client.query(
       /*sql*/ `UPDATE users SET username=$1,image_user=$2,first_name=$3,last_name=$4,bank_name=$5,bank_account=$6,freelancer_intro=$7,email=$8,updated_at=NOW() WHERE id=$9;`,

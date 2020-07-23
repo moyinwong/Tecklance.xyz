@@ -41,8 +41,7 @@ taskRoutes.delete("/task/:id", async (req, res) => {
   let id = parseInt(req.params.id);
   await client.query(`delete from applied_post where task_id = $1`, [id]);
   await client.query(`delete from task where id = $1`, [id]);
-  res.json({success:true});
-
+  res.json({ success: true });
 });
 
 //get method for displaying particular task page
@@ -137,14 +136,28 @@ taskRoutes.post(
 
 //task submission
 taskRoutes.post(
-  "/submit-completed-task",
+  "/submit-completed-task/:taskId",
   taskSubmission.array("uploaded_files", 10),
   async (req, res) => {
-    console.log("uploaded");
-    if (req.files) {
-      for (let i = 0; i < req.files.length; i++) {
-        console.log(req.files[i].filename);
+    try {
+      const taskId = parseInt(req.params.taskId);
+
+      console.log("uploaded");
+
+      //insert files to SQL
+      if (req.files) {
+        for (let i = 0; i < req.files.length; i++) {
+          const filename = req.files[i].filename;
+          await client.query(
+            /*sql*/ `INSERT INTO Task_submissions (task_id,filename) VALUES ($1,$2)`,
+            [taskId, filename]
+          );
+        }
       }
+      return res.status(201).json("Files are successfully uploaded");
+    } catch (err) {
+      logger.error(err.toString());
+      return res.status(401).json(err.toString());
     }
   }
 );

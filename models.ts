@@ -2,7 +2,7 @@ export interface User {
   id: number;
   username: string; //required
   password: string; //required
-  image_user: string;
+  image_user: string; //required
   email: string; //required
   remain_amt: number;
   google: string;
@@ -40,4 +40,10 @@ export interface Message {
   message_content: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface Task_submissions {
+  id: number;
+  task_id: number;
+  filename: string;
 }
