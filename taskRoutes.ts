@@ -162,11 +162,23 @@ taskRoutes.post(
   }
 );
 
-//choose particular applicant for the task
+//choose particular applicant for the task & send message
 taskRoutes.put('/task/accept', async (req, res) => {
   let userId = req.body.user_Id;
   let taskId = req.body.task_Id;
+  let taskTitleRes = await client.query(`SELECT title FROM task WHERE id = $1`, [taskId]);
+  let taskTitle = taskTitleRes.rows[0];
+  
   await client.query(`UPDATE task SET accepted_user_id = $1, status = 'filled' 
   WHERE id = $2;`, [userId, taskId])
+  
+  await client.query(
+    /* sql */ `INSERT INTO messages (recipient_id, content, created_at,updated_at) 
+    VALUES ($1, 'You are hired for task - ${taskTitle.title}.
+    Please contact task owner for more details',
+      NOW(),
+      NOW()
+  );`, [userId])
+
   res.status(200).json({success:true})
 })
