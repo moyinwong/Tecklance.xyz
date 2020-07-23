@@ -142,7 +142,7 @@ async function checkLogin() {
         }
       }
     }
-  } else {
+  } else if (taskRes.status == 200 && task && res.status == 200) {
     let applyButton = document.getElementById('apply-button');
     let bottomContainer = document.getElementById('bottom-middle');
     let applicantListContainer = document.getElementById('applicant-list-container');
