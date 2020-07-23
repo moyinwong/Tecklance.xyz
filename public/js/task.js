@@ -71,7 +71,7 @@ async function checkLogin() {
   });
   let task = await taskRes.json();
   
-  if (taskRes.status == 200 && task) {
+  if (taskRes.status == 200 && task && res.status == 200) {
     if (task.creator_id == user.id) {
       let applyButton = document.getElementById('apply-button');
       let bottomContainer = document.getElementById('bottom-middle');
