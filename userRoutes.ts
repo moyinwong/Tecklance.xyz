@@ -234,6 +234,9 @@ userRoutes.get("/logout", async function (req, res) {
       if (req.session.temp) {
         delete req.session.temp;
       }
+      if (req.session.grant) {
+        delete req.session.grant;
+      }
       delete req.session.userId;
     }
     logger.debug(req.session);
