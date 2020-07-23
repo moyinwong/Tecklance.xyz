@@ -36,6 +36,15 @@ taskRoutes.get("/create-task/:user", async (req, res) => {
   // console.log(tasks)
 });
 
+//delete method for task page
+taskRoutes.delete("/task/:id", async (req, res) => {
+  let id = parseInt(req.params.id);
+  await client.query(`delete from applied_post where task_id = $1`, [id]);
+  await client.query(`delete from task where id = $1`, [id]);
+  res.json({success:true});
+
+});
+
 //get method for displaying particular task page
 taskRoutes.get("/task/:id", async (req, res) => {
   let id = parseInt(req.params.id);

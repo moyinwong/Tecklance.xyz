@@ -274,3 +274,11 @@ body > div {
     width: 240px;
   }
 }
+
+.delete{
+  cursor: pointer;
+}
+
+.delete:hover{
+  color: aqua;
+}

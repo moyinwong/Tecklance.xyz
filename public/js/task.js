@@ -80,8 +80,8 @@ async function checkLogin() {
 
       applyButton.style.display = "none";
       bottomContainer.innerHTML = `
-        <a href="#">EDIT TASK</a>
-        <a href="#">DELETE TASK</a>
+        <div class="edit" data-id="${task.id}">EDIT TASK</div>
+        <div class="delete" data-id="${task.id}">DELETE TASK</div>
       `
 
       let applicantRes = await fetch(`/task/applicants/${taskId}`)
@@ -141,7 +141,29 @@ async function checkLogin() {
       }
     }
   }
+  setupTrashButtons();
 }
+
+function setupTrashButtons(){
+  const deleteButton = document.querySelector('.delete');
+  deleteButton.onclick = async function(){
+    const id = deleteButton.getAttribute('data-id');
+    const res = await fetch(`/task/${id}`,{
+        method:"DELETE"
+    });
+    const result = await res.json();
+    if (res.status == 200) {
+      alert('Successfully Deleted');
+      window.location = "/";
+    } else if (res.status == 400) {
+      alert(await res.json)
+    } else if(res.status === 401){
+      alert("Please login!")
+      window.location = "/login.html";
+      return;
+    }
+    }
+  };
 
 //user apply task
 document.querySelector("#apply-button").onclick = async () => {
@@ -153,7 +175,6 @@ document.querySelector("#apply-button").onclick = async () => {
   }
   const userId = await getUserRes.json();
 
-  console.log(userId);
 
   let urlParams = new URLSearchParams(window.location.search);
   let taskId = urlParams.get("id");
