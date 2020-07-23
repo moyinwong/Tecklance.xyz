@@ -372,7 +372,6 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
   req,
   res
 ) {
-  console.log(req.files);
   try {
     const {
       username,
