@@ -75,6 +75,14 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
   }
 });
 
+//get accepted freelancer
+taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
+  let acceptedUserId = parseInt(req.params.acceptedId);
+  let result = await client.query(`SELECT * FROM users WHERE id = $1`, [acceptedUserId]);
+  let acceptedUser = result.rows;
+  res.json(acceptedUser[0]);
+})
+
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {
   const taskId = parseInt(req.params.taskId);

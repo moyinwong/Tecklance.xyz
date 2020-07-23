@@ -71,79 +71,135 @@ async function checkLogin() {
   });
   let task = await taskRes.json();
   
-  if (taskRes.status == 200 && task && res.status == 200) {
-    if (task.creator_id == user.id) {
-      let applyButton = document.getElementById('apply-button');
-      let bottomContainer = document.getElementById('bottom-middle');
-      let applicantListContainer = document.getElementById('applicant-list-container');
-      let applicantList = document.getElementById("applicant-list")
+  if (task.accepted_user_id == null) {
+    if (taskRes.status == 200 && task && res.status == 200) {
+      if (task.creator_id == user.id) {
+        let applyButton = document.getElementById('apply-button');
+        let bottomContainer = document.getElementById('bottom-middle');
+        let applicantListContainer = document.getElementById('applicant-list-container');
+        let applicantList = document.getElementById("applicant-list")
 
-      applyButton.style.display = "none";
-      bottomContainer.innerHTML = `
-        <div class="edit" data-id="${task.id}">EDIT TASK</div>
-        <div class="delete" data-id="${task.id}">DELETE TASK</div>
-      `
+        applyButton.style.display = "none";
+        bottomContainer.innerHTML = `
+          <div class="edit" data-id="${task.id}">EDIT TASK</div>
+          <div class="delete" data-id="${task.id}">DELETE TASK</div>
+        `
 
-      let applicantRes = await fetch(`/task/applicants/${taskId}`)
-      let applicants = await applicantRes.json();
-      let today = new Date();
+        let applicantRes = await fetch(`/task/applicants/${taskId}`)
+        let applicants = await applicantRes.json();
+        let today = new Date();
 
-      applicantListContainer.style.display = "block";
-      applicantList.innerHTML = "";
-      for (let applicant of applicants) {
-        
-        //get the Millisecond of today date & applied date
-        let todayMillisecond = Date.parse(today);
-        let applyDayMillisecond = Date.parse(applicant.applied_date);
-        let differenceInTime = todayMillisecond - applyDayMillisecond;
+        applicantListContainer.style.display = "block";
+        applicantList.innerHTML = "";
+        for (let applicant of applicants) {
+          
+          //get the Millisecond of today date & applied date
+          let todayMillisecond = Date.parse(today);
+          let applyDayMillisecond = Date.parse(applicant.applied_date);
+          let differenceInTime = todayMillisecond - applyDayMillisecond;
 
-        //get difference in day by dividing by (1000 * 60 * 60 *24)
-        let differenceInDay = differenceInTime / (1000 * 3600 * 24);
-        
-        
-        if (differenceInDay < 1) {
-          differenceInDay = 1;
-          applicantList.innerHTML += `
-            <a class="list-group-item list-group-item-action" data-toggle="collapse" 
-            href="#a${applicant.id}" aria-expanded="false" aria-controls="a${applicant.id}">
-                <div class="d-flex w-100 justify-content-between applicant-detail">
-                  <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
-                  <small>Applied Today</small>
-                </div>
-                <small>${applicant.email}</small>
-            </a>
-            <div class="collapse" id="a${applicant.id}">
-              <div class="card card-body">
-                <p class="mb-1">${applicant.freelancer_intro}</p>
-                <button type="button" class="btn btn-success accept-button">CHOOSE THIS APPLICANT</button>
-              </div>       
-            </div>
-          `
-        } else {
-          applicantList.innerHTML += `
-            <a class="list-group-item list-group-item-action" data-toggle="collapse" 
-            href="#a${applicant.id}" aria-expanded="false" aria-controls="a${applicant.id}">
-                <div class="d-flex w-100 justify-content-between applicant-detail">
-                  <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
-                  <small>Applied ${Math.round(differenceInDay)} days ago</small>
-                </div>
-                <small>${applicant.email}</small>
-            </a>
-            <div class="collapse" id="a${applicant.id}">
-              <div class="card card-body">
-                <p class="mb-1">${applicant.freelancer_intro}</p>
-                <button type="button" class="btn btn-success accept-button">CHOOSE THIS APPLICANT</button>
-              </div>       
-            </div>
-          `
+          //get difference in day by dividing by (1000 * 60 * 60 *24)
+          let differenceInDay = differenceInTime / (1000 * 3600 * 24);
+          
+          
+          if (differenceInDay < 1) {
+            differenceInDay = 1;
+            applicantList.innerHTML += `
+              <a class="list-group-item list-group-item-action" data-toggle="collapse" 
+              href="#a${applicant.id}" aria-expanded="false" aria-controls="a${applicant.id}">
+                  <div class="d-flex w-100 justify-content-between applicant-detail">
+                    <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
+                    <small>Applied Today</small>
+                  </div>
+                  <small>${applicant.email}</small>
+              </a>
+              <div class="collapse" id="a${applicant.id}">
+                <div class="card card-body">
+                  <p class="mb-1">${applicant.freelancer_intro}</p>
+                  <button onclick="acceptApplicant(${applicant.id}, ${taskId})" type="button" class="btn btn-success accept-button">CHOOSE THIS APPLICANT</button>
+                </div>       
+              </div>
+            `
+          } else {
+            applicantList.innerHTML += `
+              <a class="list-group-item list-group-item-action" data-toggle="collapse" 
+              href="#a${applicant.id}" aria-expanded="false" aria-controls="a${applicant.id}">
+                  <div class="d-flex w-100 justify-content-between applicant-detail">
+                    <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
+                    <small>Applied ${Math.round(differenceInDay)} days ago</small>
+                  </div>
+                  <small>${applicant.email}</small>
+              </a>
+              <div class="collapse" id="a${applicant.id}">
+                <div class="card card-body">
+                  <p class="mb-1">${applicant.freelancer_intro}</p>
+                  <button onclick="acceptApplicant(${applicant.id}, ${taskId})" type="button" class="btn btn-success accept-button">CHOOSE THIS APPLICANT</button>
+                </div>       
+              </div>
+            `
+          }
+          
         }
-        
       }
     }
+  } else {
+    let applyButton = document.getElementById('apply-button');
+    let bottomContainer = document.getElementById('bottom-middle');
+    let applicantListContainer = document.getElementById('applicant-list-container');
+    let applicantList = document.getElementById("applicant-list");
+
+    applyButton.style.display = "none";
+    bottomContainer.innerHTML = `
+        <a href="#">EDIT TASK</a>
+        <a href="#">DELETE TASK</a>
+      `
+    
+    let acceptedRes = await fetch(`/task/accepted-applicant/${task.accepted_user_id}`)
+    let acceptedUser = await acceptedRes.json();
+    
+    applicantListContainer.style.display = "block";
+    applicantList.innerHTML = `
+    <a class="list-group-item list-group-item-action" data-toggle="collapse" 
+    href="#a${acceptedUser.id}" aria-expanded="false" aria-controls="a${acceptedUser.id}">
+        <div class="d-flex w-100 justify-content-between applicant-detail">
+          <h5 class="mb-1">${acceptedUser.first_name + " " + acceptedUser.last_name}</h5>
+          <small style="color: green;">CHOSEN APPLICANT</small>
+        </div>
+        <small>${acceptedUser.email}</small>
+    </a>
+    <div class="collapse show" id="a${acceptedUser.id}">
+      <div class="card card-body">
+        <p class="mb-1">${acceptedUser.freelancer_intro}</p>
+        <div class="alert alert-warning" role="alert">
+          You have chosen this applicant
+        </div>
+      </div>       
+    </div>
+    `
   }
+
+
   setupTrashButtons();
 }
 
+//set up accept applicant button function
+async function acceptApplicant(userId, taskId) {
+  let res = await fetch(`/task/accept`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({user_Id: userId,
+    task_Id: taskId})
+  });
+  
+  if (res.status == 200) {
+    alert('Applicant chosen!')
+    window.location.href = '/admin/cms.html'
+  }
+}
+
+//set up delete button
 function setupTrashButtons(){
   const deleteButton = document.querySelector('.delete');
   deleteButton.onclick = async function(){
@@ -162,8 +218,10 @@ function setupTrashButtons(){
       window.location = "/login.html";
       return;
     }
-    }
-  };
+  }
+};
+
+
 
 //user apply task
 document.querySelector("#apply-button").onclick = async () => {
