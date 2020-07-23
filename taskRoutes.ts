@@ -96,3 +96,22 @@ taskRoutes.get("/task/:id", async (req, res) => {
   res.json(task[0]);
   console.log(task[0]);
 });
+
+//get all applicants of a particular task
+taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
+  try {
+    let id = parseInt(req.params.taskId);
+
+    let result = await client.query(`
+    SELECT * FROM applied_post
+      JOIN users on users.id = applied_post.user_id
+        WHERE task_id = $1`, [id])
+    let applicants = result.rows;
+
+    return res.json(applicants);
+    
+  } catch(err) {
+    logger.error(err.toString());
+    return res.status(401).json(err);
+  }
+})

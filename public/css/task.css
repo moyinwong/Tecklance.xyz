@@ -133,6 +133,7 @@ body > div {
 
 #bottom-middle {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 200px;
@@ -154,6 +155,11 @@ body > div {
 
 #bottom-middle > input:hover {
   background-color: #6347ff;
+}
+
+/* hide applicant-list at default */
+#applicant-list-container {
+  display: none;
 }
 
 /* side navbar */
