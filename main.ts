@@ -37,6 +37,18 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage });
 
+//storage file
+const taskStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, `${__dirname}/task_submission`);
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${file.fieldname}-${Date.now()}.${file.mimetype.split("/")[1]}`);
+  },
+});
+
+export const taskSubmission = multer({ storage: taskStorage });
+
 //use session
 app.use(
   expressSession({

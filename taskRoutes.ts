@@ -1,6 +1,6 @@
 import express from "express";
 import { Task } from "./models";
-import { client, upload } from "./main";
+import { client, upload, taskSubmission } from "./main";
 import { Usertask } from "./models";
 import { logger } from "./logger";
 
@@ -15,7 +15,7 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
     /*sql*/ `INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
     [applyUserId, taskId]
   );
-  res.status(200).json({success:true});
+  res.status(200).json({ success: true });
 });
 
 //getting all applied task of that particular user
@@ -102,16 +102,27 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
   try {
     let id = parseInt(req.params.taskId);
 
-    let result = await client.query(`
+    let result = await client.query(
+      `
     SELECT * FROM applied_post
       JOIN users on users.id = applied_post.user_id
-        WHERE task_id = $1`, [id])
+        WHERE task_id = $1`,
+      [id]
+    );
     let applicants = result.rows;
 
     return res.json(applicants);
-    
-  } catch(err) {
+  } catch (err) {
     logger.error(err.toString());
     return res.status(401).json(err);
   }
-})
+});
+
+//task submission
+taskRoutes.post(
+  "/submit-completed-task",
+  taskSubmission.array("file"),
+  async (req, res) => {
+    console.log(req.body);
+  }
+);
