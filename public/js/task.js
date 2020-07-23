@@ -43,7 +43,6 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
-
 //check login function
 async function checkLogin() {
   let res = await fetch("/current-user");
@@ -72,7 +71,6 @@ async function checkLogin() {
   });
   let task = await taskRes.json();
   
-  //check if the user is the creator of the task
   if (taskRes.status == 200 && task) {
     if (task.creator_id == user.id) {
       let applyButton = document.getElementById('apply-button');
@@ -80,31 +78,55 @@ async function checkLogin() {
       let applicantListContainer = document.getElementById('applicant-list-container');
       let applicantList = document.getElementById("applicant-list")
 
-      //if so, hide apply button and display edit & delete options
       applyButton.style.display = "none";
       bottomContainer.innerHTML = `
         <a href="#">EDIT TASK</a>
         <a href="#">DELETE TASK</a>
       `
-      //display all applicants
+
       let applicantRes = await fetch(`/task/applicants/${taskId}`)
       let applicants = await applicantRes.json();
+      let today = new Date();
 
       applicantListContainer.style.display = "block";
       applicantList.innerHTML = "";
       for (let applicant of applicants) {
-        applicantList.innerHTML += `
-          <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
-              <small>3 days ago</small>
-            </div>
-            <p class="mb-1">${applicant.freelancer_intro}</p>
-            <small>${applicant.email}</small>
-          </a>
-        `
+        
+        //get the Millisecond of today date & applied date
+        let todayMillisecond = Date.parse(today);
+        let applyDayMillisecond = Date.parse(applicant.applied_date);
+        let differenceInTime = todayMillisecond - applyDayMillisecond;
+
+        //get difference in day by dividing by (1000 * 60 * 60 *24)
+        let differenceInDay = differenceInTime / (1000 * 3600 * 24);
+        
+        if (differenceInDay < 1) {
+          differenceInDay = 1;
+          applicantList.innerHTML += `
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between applicant-detail">
+                <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
+                <small>Applied Today</small>
+              </div>
+              <p class="mb-1">${applicant.freelancer_intro}</p>
+              <small>${applicant.email}</small>
+            </a>
+          `
+        } else {
+          applicantList.innerHTML += `
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between applicant-detail">
+                <h5 class="mb-1">${applicant.first_name + " " + applicant.last_name}</h5>
+                <small>Applied ${Math.round(differenceInDay)} ago</small>
+              </div>
+              <p class="mb-1">${applicant.freelancer_intro}</p>
+              <small>${applicant.email}</small>
+            </a>
+          `
+        }
+        
       }
-    } 
+    }
   }
 }
 
