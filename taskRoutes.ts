@@ -74,13 +74,21 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
   }
 });
 
+//get accepted freelancer
+taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
+  let acceptedUserId = parseInt(req.params.acceptedId);
+  let result = await client.query(`SELECT * FROM users WHERE id = $1`, [acceptedUserId]);
+  let acceptedUser = result.rows;
+  res.json(acceptedUser[0]);
+})
+
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {
   const taskId = parseInt(req.params.taskId);
   const applyUserId = req.body.applied_user_id;
 
   await client.query(
-    /*sql*/ `INSERT INTO applied_post (user_id, task_id) VALUES ($1, $2);`,
+    /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
     [applyUserId, taskId]
   );
   res.status(200).json({ success: true });
@@ -153,3 +161,12 @@ taskRoutes.post(
     }
   }
 );
+
+//choose particular applicant for the task
+taskRoutes.put('/task/accept', async (req, res) => {
+  let userId = req.body.user_Id;
+  let taskId = req.body.task_Id;
+  await client.query(`UPDATE task SET accepted_user_id = $1, status = 'filled' 
+  WHERE id = $2;`, [userId, taskId])
+  res.status(200).json({success:true})
+})
