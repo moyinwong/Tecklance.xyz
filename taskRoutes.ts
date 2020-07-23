@@ -121,8 +121,13 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
 //task submission
 taskRoutes.post(
   "/submit-completed-task",
-  taskSubmission.array("file"),
+  taskSubmission.array("uploaded_files", 10),
   async (req, res) => {
-    console.log(req.body);
+    console.log("uploaded");
+    if (req.files) {
+      for (let i = 0; i < req.files.length; i++) {
+        console.log(req.files[i].filename);
+      }
+    }
   }
 );

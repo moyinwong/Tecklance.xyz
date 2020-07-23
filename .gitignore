@@ -1,4 +1,4 @@
 node_modules
 .env
-test.sql
+project1.session.sql
 .vscode

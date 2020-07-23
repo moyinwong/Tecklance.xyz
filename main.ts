@@ -43,7 +43,13 @@ const taskStorage = multer.diskStorage({
     cb(null, `${__dirname}/task_submission`);
   },
   filename: function (req, file, cb) {
-    cb(null, `${file.fieldname}-${Date.now()}.${file.mimetype.split("/")[1]}`);
+    cb(
+      null,
+      `${file.originalname.substring(
+        0,
+        file.originalname.lastIndexOf(".")
+      )}-${Date.now()}.${file.mimetype.split("/")[1]}`
+    );
   },
 });
 
