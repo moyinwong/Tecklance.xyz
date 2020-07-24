@@ -53,8 +53,16 @@ function closeNav() {
 async function getMessage() {
   const res = await fetch("/getMessage");
   const messages = await res.json();
+
   for (let message of messages) {
+    //change color if read
+    const style =
+      message.status === "read" ? `style="background: #262666"` : "";
+
+    //display create date
+    const date = new Date(message.created_at).toISOString().slice(0, 10);
     if (message.sender_id == null) {
+      //send by Tecklance
       document.querySelector(".message-container").innerHTML += `
       <div class="message-body card bg-primary">
         <button data-message-id="${
@@ -64,7 +72,7 @@ async function getMessage() {
       }" 
         aria-expanded="false" aria-controls="a${
           message.id
-        }">From Tecklance</button>
+        }" ${style}><span>${date} </span>From Tecklance</button>
         <div class="collapse" id="a${message.id}">
           <div class="message-box card card-body">
             ${addaHrefTag(message.content)}
@@ -73,19 +81,17 @@ async function getMessage() {
       </div>
       `;
     } else {
-      //
-      //need to change?
-      //
+      //send by user
       document.querySelector(".message-container").innerHTML += `
         <div class="message-body card bg-primary">
           <button data-message-id="${
             message.id
           }" class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${
-            message.id
-          }" 
+        message.id
+      }" 
             aria-expanded="false" aria-controls="a${
               message.id
-            }">From ${message.username}</button>
+            }" ${style}><span>${date} </span>From ${message.username}</button>
             <div class="collapse" id="a${message.id}">
               <div class="message-box card card-body">
               ${addaHrefTag(message.content)}
