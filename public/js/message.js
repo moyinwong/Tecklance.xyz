@@ -40,22 +40,7 @@ async function getMessage() {
   const res = await fetch("/getMessage");
   const messages = await res.json();
   for (let message of messages) {
-    //restrict content displayed length
-    // let messageContent;
-    // if (messages[i].content.length > 40) {
-    //   messageContent = messages[i].content.substring(0, 40) + "...";
-    // } else {
-    //   messageContent = messages[i].content;
-    // }
 
-    //please continuous.......
-    // document.querySelector(".message-container").innerHTML += `
-    // <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-    //     <div class="card-header">${messages[i].username}</div>
-    //     <div class="card-body">
-    //         <p class="card-text">${messageContent}</p>
-    //     </div>
-    // </div>`;
     if (message.sender_id ==  null) {
       document.querySelector(".message-container").innerHTML += `
       <div class="message-body card bg-primary">

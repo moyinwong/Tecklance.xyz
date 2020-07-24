@@ -160,6 +160,25 @@ taskRoutes.post(
 
       const taskId: string = await getTaskId(req);
 
+      //get user id by req.session
+      const getCreatorId = async (taskId) => {
+        const creatorId = (
+          await client.query(
+            /*sql*/ `SELECT creator_id FROM task WHERE id = $1`,
+            [taskId]
+          )
+        ).rows[0].creator_id;
+        return creatorId;
+      };
+
+      const creatorId = await getCreatorId(taskId);
+
+      const getMessageToCreator = async (req) => {
+        return `There are new upload files for task, Please check the following link: *url*${req.headers.referer}`;
+      };
+
+      const content: string = await getMessageToCreator(req);
+
       //insert files to SQL
       if (req.files) {
         for (let i = 0; i < req.files.length; i++) {
@@ -169,6 +188,13 @@ taskRoutes.post(
             [taskId, filename]
           );
         }
+        await client.query(
+          /* sql */ `INSERT INTO messages (recipient_id, content, created_at)
+          VALUES ($1, $2,
+            NOW()
+        );`,
+          [creatorId, content]
+        );
       }
       return res.status(201).json("The files has been uploaded");
     } catch (err) {
@@ -220,13 +246,19 @@ taskRoutes.put("/task/accept", async (req, res) => {
     [userId, taskId]
   );
 
+  const getMessageToCreator = async (req) => {
+    return `You are hired for task - ${taskTitle.title}.
+    Please check the following link: *url*${req.headers.referer}`;
+  };
+
+  const content: string = await getMessageToCreator(req);
+
   await client.query(
     /* sql */ `INSERT INTO messages (recipient_id, content, created_at) 
-    VALUES ($1, 'You are hired for task - ${taskTitle.title}.
-    Please contact task owner for more details',
+    VALUES ($1, $2,
       NOW()
   );`,
-    [userId]
+    [userId, content]
   );
 
   res.status(200).json({ success: true });
