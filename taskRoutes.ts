@@ -1,5 +1,5 @@
 import express from "express";
-import { Task, Task_submissions } from "./models";
+import { Task, Task_submissions, User } from "./models";
 import { client, upload, taskSubmission } from "./main";
 import { Usertask } from "./models";
 import { logger } from "./logger";
@@ -58,7 +58,7 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
         WHERE task_id = $1`,
       [id]
     );
-    let applicants = result.rows;
+    let applicants: User[] = result.rows;
 
     return res.json(applicants);
   } catch (err) {
@@ -73,7 +73,7 @@ taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
   let result = await client.query(`SELECT * FROM users WHERE id = $1`, [
     acceptedUserId,
   ]);
-  let acceptedUser = result.rows;
+  let acceptedUser: User[] = result.rows;
   res.json(acceptedUser[0]);
 });
 
