@@ -79,11 +79,21 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
   const taskId = parseInt(req.params.taskId);
   const applyUserId = req.body.applied_user_id;
 
-  await client.query(
-    /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
-    [applyUserId, taskId]
-  );
-  res.status(200).json({ success: true });
+  //check if there is any duplicate application
+  let checkResult = await client.query(/*sql*/`SELECT * FROM applied_post 
+    WHERE user_id = $1 AND task_id = $2`, [applyUserId, taskId]);
+  
+  if (checkResult.rowCount === 0) {
+    await client.query(
+      /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
+      [applyUserId, taskId]
+    );
+    res.status(200).json({ success: true });
+  } else if (checkResult.rowCount === 1) {
+    res.status(201).json({message: "You have already applied this task"})
+  } else {
+    res.status(400).json({message: "error"})
+  }
 });
 
 //create task

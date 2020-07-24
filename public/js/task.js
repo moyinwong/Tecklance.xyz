@@ -223,6 +223,7 @@ function setupTrashButtons(){
 
 
 
+
 //user apply task
 document.querySelector("#apply-button").onclick = async () => {
   const getUserRes = await fetch("/getUserId");
@@ -233,6 +234,7 @@ document.querySelector("#apply-button").onclick = async () => {
   }
   const userId = await getUserRes.json();
 
+  console.log(userId);
 
   let urlParams = new URLSearchParams(window.location.search);
   let taskId = urlParams.get("id");
@@ -252,8 +254,11 @@ document.querySelector("#apply-button").onclick = async () => {
   if (res.status == 200) {
     alert('Successfully applied');
     window.location = "/";
-  } else if (res.status == 400) {
-    alert(await res.json)
+  } else if (res.status == 201) {
+    let resObj = await res.json()
+    alert(resObj.message);
+  } else {
+    alert(await res.json().message)
   }
 };
 
