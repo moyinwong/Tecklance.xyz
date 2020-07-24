@@ -202,10 +202,6 @@ async function checkLogin() {
       </div>
       `;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> eef467f2b62efefd7b8390816cc603f0249f352c
   }
 
   //fill in offered amt & status
