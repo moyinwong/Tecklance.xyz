@@ -6,6 +6,10 @@ body {
   margin-bottom: 50px;
 }
 
+.header-row {
+  margin-bottom: 0;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -93,6 +97,21 @@ body > div {
   color: white;
 }
 
+/* navbar css */
+.navbar {
+  background: linear-gradient(45deg, rgb(255, 0, 0), rgb(60, 0, 255)) !important;
+  
+}
+
+.navbar-light .navbar-nav .active>.nav-link {
+  color: white;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: white;
+}
+
+/* main part css*/
 .title-container,
 .content-container,
 .info-container {
@@ -107,6 +126,11 @@ body > div {
   justify-content: center;
   align-items: center;
   border: none;
+}
+
+#image {
+  display: flex;
+  justify-content: center;
 }
 
 #content {

@@ -36,14 +36,6 @@ taskRoutes.get("/create-task/:user", async (req, res) => {
   // console.log(tasks)
 });
 
-//delete method for task page
-taskRoutes.delete("/task/:id", async (req, res) => {
-  let id = parseInt(req.params.id);
-  await client.query(`delete from applied_post where task_id = $1`, [id]);
-  await client.query(`delete from task where id = $1`, [id]);
-  res.json({ success: true });
-});
-
 //get method for displaying particular task page
 taskRoutes.get("/task/:id", async (req, res) => {
   let id = parseInt(req.params.id);
@@ -87,11 +79,21 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
   const taskId = parseInt(req.params.taskId);
   const applyUserId = req.body.applied_user_id;
 
-  await client.query(
-    /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
-    [applyUserId, taskId]
-  );
-  res.status(200).json({ success: true });
+  //check if there is any duplicate application
+  let checkResult = await client.query(/*sql*/`SELECT * FROM applied_post 
+    WHERE user_id = $1 AND task_id = $2`, [applyUserId, taskId]);
+  
+  if (checkResult.rowCount === 0) {
+    await client.query(
+      /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
+      [applyUserId, taskId]
+    );
+    res.status(200).json({ success: true });
+  } else if (checkResult.rowCount === 1) {
+    res.status(201).json({message: "You have already applied this task"})
+  } else {
+    res.status(400).json({message: "error"})
+  }
 });
 
 //create task
@@ -171,7 +173,7 @@ taskRoutes.put('/task/accept', async (req, res) => {
   
   await client.query(`UPDATE task SET accepted_user_id = $1, status = 'filled' 
   WHERE id = $2;`, [userId, taskId])
-  
+
   await client.query(
     /* sql */ `INSERT INTO messages (recipient_id, content, created_at,updated_at) 
     VALUES ($1, 'You are hired for task - ${taskTitle.title}.
@@ -182,3 +184,11 @@ taskRoutes.put('/task/accept', async (req, res) => {
 
   res.status(200).json({success:true})
 })
+
+//delete method for task page
+taskRoutes.delete("/task/:id", async (req, res) => {
+  let id = parseInt(req.params.id);
+  await client.query(`delete from applied_post where task_id = $1`, [id]);
+  await client.query(`delete from task where id = $1`, [id]);
+  res.json({ success: true });
+});

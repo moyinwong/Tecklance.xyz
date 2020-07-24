@@ -160,6 +160,11 @@ app.get("/category", async (req, res) => {
   res.json(categoryResult);
 });
 
+app.get("/categories", async (req, res) => {
+  // let category = req.query.category;
+  res.sendFile(path.join(__dirname, `./public/category.html`))
+})
+
 //serve dashboard if user is logged in
 app.use("/admin", isLoggedIn, express.static("admin"));
 
