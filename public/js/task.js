@@ -150,8 +150,8 @@ async function checkLogin() {
 
     applyButton.style.display = "none";
     bottomContainer.innerHTML = `
-        <a href="#">EDIT TASK</a>
-        <a href="#">DELETE TASK</a>
+      <div class="edit" data-id="${task.id}">EDIT TASK</div>
+      <div class="delete" data-id="${task.id}">DELETE TASK</div>
       `
     
     let acceptedRes = await fetch(`/task/accepted-applicant/${task.accepted_user_id}`)
