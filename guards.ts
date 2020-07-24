@@ -26,9 +26,9 @@ export const isLoggedInAPI = (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  if (req.session && req.session.user) {
+  if (req.session && req.session.userId) {
     next();
   } else {
-    res.status(401).json({ success: false });
+    res.status(401).json("Please login.");
   }
 };

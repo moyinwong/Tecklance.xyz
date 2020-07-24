@@ -43,6 +43,23 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
+//display uploaded files
+async function getUploadFiles() {
+  const res = await fetch("/getUploadFiles");
+  if (res.status !== 200) {
+    return;
+  }
+
+  const uploadedFiles = await res.json();
+
+  for (let i = 0; i < uploadedFiles.length; i++) {
+    document.getElementById("uploaded_container").innerHTML += `
+  <a href="http://localhost:8080/admin/task_submission/${uploadedFiles[i].filename}"
+  download="${uploadedFiles[i].filename}">${uploadedFiles[i].filename}</a>
+  `;
+  }
+}
+
 //check login function
 async function checkLogin() {
   let res = await fetch("/current-user");
@@ -72,6 +89,7 @@ async function checkLogin() {
   if (task.accepted_user_id == null) {
     if (taskRes.status == 200 && task && res.status == 200) {
       if (task.creator_id == user.id) {
+        getUploadFiles();
         let applyButton = document.getElementById("apply-button");
         let bottomContainer = document.getElementById("bottom-middle");
         let applicantListContainer = document.getElementById(
@@ -158,6 +176,7 @@ async function checkLogin() {
       // accepted user display
       document.getElementById("bottom-container").style.display = "none";
       document.getElementById("submit-form").style.display = "block";
+      await getUploadFiles();
     } else if (task.creator_id == user.id) {
       //creator display
       let applyButton = document.getElementById("apply-button");
@@ -203,7 +222,6 @@ async function checkLogin() {
       `;
     }
   }
-
   //fill in offered amt & status
   document.querySelector("#offered_amt").innerHTML = task.offered_amt;
   document.querySelector("#status").innerHTML = task.status;
@@ -341,8 +359,3 @@ async function uploadTaskFiles(event) {
 document
   .querySelector("#submit-completed-task")
   .addEventListener("submit", uploadTaskFiles);
-
-async function getUploadFiles() {
-  const res = await fetch("getUploadFiles/:taskid");
-  const uploadedFileName = await res.json();
-}
