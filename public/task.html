@@ -14,7 +14,7 @@
 
 <body>
     <div>
-
+        <div class="alert alert-warning fixed-top fade" id="response" role="alert"></div>
         <div class="container-fluid">
             <div class="row header-row">
                 <div class="col header-col">
@@ -143,6 +143,57 @@
                     </form>
 
                 </div>
+                <div id="files-acceptance-button-container" style="display: none;">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#accept-file-modal"
+                        id="accept-modal-toggle-button">Accept Uploaded
+                        Files</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#reject-file-modal"
+                        id="reject-modal-toggle-button">Reject Uploaded Files</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="accept-file-modal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="acceptModalLabel">Please confirm:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    The files are fulfilled the requirement
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" id="accept-file-button"
+                                        data-dismiss="modal">Confirm</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="reject-file-modal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="rejectModalLabel">Please confirm:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    The files does not fulfilled the requirement
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" id="reject-file-button"
+                                        data-dismiss="modal">Confirm</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="uploaded_container" style="display: none;">
                     <p>Attachments: </p>
                 </div>

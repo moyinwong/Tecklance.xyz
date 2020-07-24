@@ -100,7 +100,8 @@ messageRoutes.post("/rejectFiles", isLoggedInAPI, async (req, res) => {
 
     const accepted_user_id: number = await getAcceptUserId(taskId);
 
-    const content = `The upload files do not meet the requirement. Please upload again after finished.`;
+    const content = `The upload files do not meet the requirement. Please upload again after finished.
+    Please check the following link: *url*${req.headers.referer}`;
 
     await client.query(
       /*sql*/ `INSERT INTO messages (recipient_id, content, created_at) VALUES ($1,$2,NOW())`,
@@ -108,6 +109,52 @@ messageRoutes.post("/rejectFiles", isLoggedInAPI, async (req, res) => {
     );
 
     return res.status(201).json("The reject message is sent to freelancer.");
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(401).json(err);
+  }
+});
+
+// accept
+messageRoutes.post("/acceptFiles", isLoggedInAPI, async (req, res) => {
+  try {
+    const getTaskId = async (req) => {
+      if (req.header && req.headers.referer) {
+        return req.headers.referer.replace(
+          "http://localhost:8080/task.html?id=",
+          ""
+        );
+      }
+    };
+    const taskId: string = await getTaskId(req);
+
+    //get accepted user id by req.session
+    const getAcceptUserId = async (taskId) => {
+      const accepted_user_id = (
+        await client.query(
+          /*sql*/ `SELECT accepted_user_id FROM task WHERE id = $1`,
+          [taskId]
+        )
+      ).rows[0].accepted_user_id;
+      return accepted_user_id;
+    };
+
+    const accepted_user_id: number = await getAcceptUserId(taskId);
+
+    const content = `The upload fulfilled the requirement! The task has been completed! You will receive the reward within few days
+    Please check the following link: *url*${req.headers.referer}`;
+
+    await client.query(
+      /*sql*/ `INSERT INTO messages (recipient_id, content, created_at) VALUES ($1,$2,NOW())`,
+      [accepted_user_id, content]
+    );
+
+    await client.query(
+      /*sql*/ `UPDATE task SET status = 'completed' WHERE id = $1`,
+      [taskId]
+    );
+
+    return res.status(201).json("The accept message is sent to freelancer.");
   } catch (err) {
     logger.error(err.toString());
     return res.status(401).json(err);

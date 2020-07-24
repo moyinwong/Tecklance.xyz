@@ -43,6 +43,44 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
+//accept files event
+async function acceptFiles() {
+  const res = await fetch("/acceptFiles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const resMessage = await res.json();
+  if (res.status === 201) {
+    //add class to show alert
+    document.querySelector("#response").innerHTML = resMessage;
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      document.querySelector("#response").classList.remove("show");
+    }, 3000);
+  }
+}
+
+//reject files event
+async function rejectFiles() {
+  const res = await fetch("/rejectFiles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const resMessage = await res.json();
+  if (res.status === 201) {
+    //add class to show alert
+    document.querySelector("#response").innerHTML = resMessage;
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      document.querySelector("#response").classList.remove("show");
+    }, 3000);
+  }
+}
+
 //display uploaded files
 async function getUploadFiles() {
   const res = await fetch("/getUploadFiles");
@@ -197,6 +235,9 @@ async function checkLogin() {
       let acceptedUser = await acceptedRes.json();
 
       await getUploadFiles();
+      document.getElementById(
+        "files-acceptance-button-container"
+      ).style.display = "block";
       applicantListContainer.style.display = "block";
       applicantList.innerHTML = `
       <a class="list-group-item list-group-item-action" data-toggle="collapse" 
@@ -341,8 +382,6 @@ async function uploadTaskFiles(event) {
     return;
   }
 
-  //console.log(formData);
-
   //send json to backend
   const res = await fetch("submit-completed-task", {
     method: "POST",
@@ -359,3 +398,13 @@ async function uploadTaskFiles(event) {
 document
   .querySelector("#submit-completed-task")
   .addEventListener("submit", uploadTaskFiles);
+
+//add onclick event to accept button
+document
+  .getElementById("accept-file-button")
+  .addEventListener("click", acceptFiles);
+
+//add onclick event to reject button
+document
+  .getElementById("reject-file-button")
+  .addEventListener("click", rejectFiles);
