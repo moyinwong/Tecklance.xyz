@@ -87,12 +87,3 @@ async function getMessage() {
 
 checkLogin();
 getMessage();
-
-function getMessageId(event) {
-  console.log(event.target.parent);
-}
-
-document
-  .querySelector(".message-container")
-  .addEventListener("click", getMessageId);
-
