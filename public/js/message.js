@@ -53,34 +53,53 @@ function closeNav() {
 async function getMessage() {
   const res = await fetch("/getMessage");
   const messages = await res.json();
-  for (let i = 0; i < messages.length; i++) {
+  for (let message of messages) {
     //restrict content displayed length
-    let messageContent;
-    if (messages[i].content.length > 40) {
-      messageContent = messages[i].content.substring(0, 40) + "...";
-    } else {
-      messageContent = messages[i].content;
-    }
+    // let messageContent;
+    // if (messages[i].content.length > 40) {
+    //   messageContent = messages[i].content.substring(0, 40) + "...";
+    // } else {
+    //   messageContent = messages[i].content;
+    // }
 
     //please continuous.......
 
-    if (messages[i].sender_id == null) {
-      document.querySelector(".message-container").innerHTML = `
-      <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-          <div class="card-header">From Tecklance</div>
-          <div class="card-body">
-              <p class="card-text">${addaHrefTag(messages[i].content)}</p>
+    if (message.sender_id == null) {
+      document.querySelector(".message-container").innerHTML += `
+      <div class="message-body card bg-primary">
+        <button class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${
+          message.id
+        }" 
+        aria-expanded="false" aria-controls="a${
+          message.id
+        }">From Tecklance</button>
+        <div class="collapse" id="a${message.id}">
+          <div class="message-box card card-body">
+            ${addaHrefTag(message.content)}
           </div>
-      </div>`;
+        </div>
+      </div>
+      `;
     } else {
       document.querySelector(".message-container").innerHTML += `
-      <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+      <div class="card bg-primary mb-3" style="max-width: 18rem;">
           <div class="card-header">${messages[i].username}</div>
           <div class="card-body">
-              <p class="card-text">${addaHrefTag(messages[i].content)}</p>
+              <p class="message-content card-text">${addaHrefTag(
+                messages[i].content
+              )} </p>
           </div>
       </div>`;
     }
+
+    let messageBoxes = Array.from(
+      document.querySelectorAll(".message-content")
+    );
+    messageBoxes.forEach((messageBox) => {
+      messageBox.onclick = () => {
+        messageBox.style.background = "#262666";
+      };
+    });
   }
 }
 

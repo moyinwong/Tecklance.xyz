@@ -343,3 +343,41 @@ h2 {
   align-items: center;
   font-size: 13px;
 }
+
+
+/* message page css */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.message-content {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgb(86, 86, 219);
+  border-color: transparent;
+  padding: 15px 20px;
+}
+
+.message-body {
+  color: black;
+  max-width: 600px;
+  width: 200px;
+  margin: 10px;
+}
+
+@media (min-width: 500px) {
+  .message-body {
+    width: 400px;
+  }
+}
+
+@media (min-width: 900px) {
+  .message-body {
+    width: 600px;
+  }
+}
