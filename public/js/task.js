@@ -53,6 +53,7 @@ async function getUploadFiles() {
   const uploadedFiles = await res.json();
 
   for (let i = 0; i < uploadedFiles.length; i++) {
+    document.getElementById("uploaded_container").style.display = "block";
     document.getElementById("uploaded_container").innerHTML += `
   <a href="http://localhost:8080/admin/task_submission/${uploadedFiles[i].filename}"
   download="${uploadedFiles[i].filename}">${uploadedFiles[i].filename}</a>
@@ -89,14 +90,12 @@ async function checkLogin() {
   if (task.accepted_user_id == null) {
     if (taskRes.status == 200 && task && res.status == 200) {
       if (task.creator_id == user.id) {
-        getUploadFiles();
         let applyButton = document.getElementById("apply-button");
         let bottomContainer = document.getElementById("bottom-middle");
         let applicantListContainer = document.getElementById(
           "applicant-list-container"
         );
         let applicantList = document.getElementById("applicant-list");
-
         applyButton.style.display = "none";
         bottomContainer.innerHTML = `
           <div class="edit" data-id="${task.id}">EDIT TASK</div>
@@ -176,7 +175,7 @@ async function checkLogin() {
       // accepted user display
       document.getElementById("bottom-container").style.display = "none";
       document.getElementById("submit-form").style.display = "block";
-      await getUploadFiles();
+      getUploadFiles();
     } else if (task.creator_id == user.id) {
       //creator display
       let applyButton = document.getElementById("apply-button");
@@ -197,6 +196,7 @@ async function checkLogin() {
       );
       let acceptedUser = await acceptedRes.json();
 
+      await getUploadFiles();
       applicantListContainer.style.display = "block";
       applicantList.innerHTML = `
       <a class="list-group-item list-group-item-action" data-toggle="collapse" 

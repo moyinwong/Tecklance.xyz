@@ -81,6 +81,9 @@ async function getMessage() {
       </div>
       `;
     } else {
+      //
+      //need to change?
+      //
       document.querySelector(".message-container").innerHTML += `
       <div class="card bg-primary mb-3" style="max-width: 18rem;">
           <div class="card-header">${messages[i].username}</div>
