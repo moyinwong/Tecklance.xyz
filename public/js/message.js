@@ -1,3 +1,17 @@
+//add a href tag for a message
+function addaHrefTag(str) {
+  const index = str.indexOf("*url*");
+  if (index === -1) {
+    return str;
+  }
+  const result = `${str.substring(0, index)}<a href="${str.substring(
+    index + 5,
+    str.length
+  )}">${str.substring(index + 5, str.length)}</a>`;
+
+  return result;
+}
+
 //login button
 document.querySelector(".login-button").onclick = () => {
   location.href = "/login.html";
@@ -40,19 +54,24 @@ async function getMessage() {
   const res = await fetch("/getMessage");
   const messages = await res.json();
   for (let message of messages) {
-
-    if (message.sender_id ==  null) {
+    if (message.sender_id == null) {
       document.querySelector(".message-container").innerHTML += `
       <div class="message-body card bg-primary">
-        <button data-message-id="${message.id}" class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${message.id}" 
-        aria-expanded="false" aria-controls="a${message.id}">From Tecklance</button>
+        <button data-message-id="${
+          message.id
+        }" class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${
+        message.id
+      }" 
+        aria-expanded="false" aria-controls="a${
+          message.id
+        }">From Tecklance</button>
         <div class="collapse" id="a${message.id}">
           <div class="message-box card card-body">
-            ${message.content}
+            ${addaHrefTag(message.content)}
           </div>
         </div>
       </div>
-      `
+      `;
     } else {
       //
       //need to change?
@@ -61,31 +80,33 @@ async function getMessage() {
       <div class="card bg-primary mb-3" style="max-width: 18rem;">
           <div class="card-header">${messages[i].username}</div>
           <div class="card-body">
-              <p class="message-content card-text">${messages[i].content}</p>
+              <p class="message-content card-text">${addaHrefTag(
+                messages[i].content
+              )}</p>
           </div>
-      </div>`
-    };
+      </div>`;
+    }
   }
 
-  let messageBoxes = Array.from(document.querySelectorAll('.message-content'));
-  
+  let messageBoxes = Array.from(document.querySelectorAll(".message-content"));
+
   messageBoxes.forEach((messageBox) => {
     messageBox.onclick = async () => {
       let messageId = messageBox.dataset.messageId;
-      
-      messageBox.style.background = '#262666';
 
-      await fetch('/message/read', {
+      messageBox.style.background = "#262666";
+
+      await fetch("/message/read", {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message_id: messageId
-        })
-      })
-    }
-  })
+          message_id: messageId,
+        }),
+      });
+    };
+  });
 }
 
 checkLogin();

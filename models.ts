@@ -38,7 +38,7 @@ export interface Message {
   sender_id: number;
   recipient_id: number;
   message_content: string;
-  message_status: string;
+  status: string;
   created_at: string;
 }
 
