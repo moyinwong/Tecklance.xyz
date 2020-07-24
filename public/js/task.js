@@ -154,47 +154,50 @@ async function checkLogin() {
       }
     }
   } else if (taskRes.status == 200 && task && res.status == 200) {
-    let applyButton = document.getElementById("apply-button");
-    let bottomContainer = document.getElementById("bottom-middle");
-    let applicantListContainer = document.getElementById(
-      "applicant-list-container"
-    );
-    let applicantList = document.getElementById("applicant-list");
+    if (task.creator_id == user.id) {
+      let applyButton = document.getElementById("apply-button");
+      let bottomContainer = document.getElementById("bottom-middle");
+      let applicantListContainer = document.getElementById(
+        "applicant-list-container"
+      );
+      let applicantList = document.getElementById("applicant-list");
 
-    applyButton.style.display = "none";
-    bottomContainer.innerHTML = `
-      <div class="edit" data-id="${task.id}">EDIT TASK</div>
-      <div class="delete" data-id="${task.id}">DELETE TASK</div>
+      applyButton.style.display = "none";
+      bottomContainer.innerHTML = `
+        <div class="edit" data-id="${task.id}">EDIT TASK</div>
+        <div class="delete" data-id="${task.id}">DELETE TASK</div>
+        `;
+
+      let acceptedRes = await fetch(
+        `/task/accepted-applicant/${task.accepted_user_id}`
+      );
+      let acceptedUser = await acceptedRes.json();
+
+      applicantListContainer.style.display = "block";
+      applicantList.innerHTML = `
+      <a class="list-group-item list-group-item-action" data-toggle="collapse" 
+      href="#a${acceptedUser.id}" aria-expanded="false" aria-controls="a${
+        acceptedUser.id
+      }">
+          <div class="d-flex w-100 justify-content-between applicant-detail">
+            <h5 class="mb-1">${
+              acceptedUser.first_name + " " + acceptedUser.last_name
+            }</h5>
+            <small style="color: green;">CHOSEN APPLICANT</small>
+          </div>
+          <small>${acceptedUser.email}</small>
+      </a>
+      <div class="collapse show" id="a${acceptedUser.id}">
+        <div class="card card-body">
+          <p class="mb-1">${acceptedUser.freelancer_intro}</p>
+          <div class="alert alert-warning" role="alert">
+            You have chosen this applicant
+          </div>
+        </div>       
+      </div>
       `;
-
-    let acceptedRes = await fetch(
-      `/task/accepted-applicant/${task.accepted_user_id}`
-    );
-    let acceptedUser = await acceptedRes.json();
-
-    applicantListContainer.style.display = "block";
-    applicantList.innerHTML = `
-    <a class="list-group-item list-group-item-action" data-toggle="collapse" 
-    href="#a${acceptedUser.id}" aria-expanded="false" aria-controls="a${
-      acceptedUser.id
-    }">
-        <div class="d-flex w-100 justify-content-between applicant-detail">
-          <h5 class="mb-1">${
-            acceptedUser.first_name + " " + acceptedUser.last_name
-          }</h5>
-          <small style="color: green;">CHOSEN APPLICANT</small>
-        </div>
-        <small>${acceptedUser.email}</small>
-    </a>
-    <div class="collapse show" id="a${acceptedUser.id}">
-      <div class="card card-body">
-        <p class="mb-1">${acceptedUser.freelancer_intro}</p>
-        <div class="alert alert-warning" role="alert">
-          You have chosen this applicant
-        </div>
-      </div>       
-    </div>
-    `;
+    }
+    
   }
 
   //fill in offered amt & status
