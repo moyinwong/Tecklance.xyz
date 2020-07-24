@@ -143,25 +143,33 @@ taskRoutes.post(
 
 //task submission
 taskRoutes.post(
-  "/submit-completed-task/:taskId",
+  "/submit-completed-task/",
   taskSubmission.array("uploaded_files", 10),
   async (req, res) => {
     try {
-      const taskId = parseInt(req.params.taskId);
+      //get task id by req.header
+      const getTaskId = async (req) => {
+        if (req.header && req.headers.referer) {
+          return req.headers.referer.replace(
+            "http://localhost:8080/task.html?id=",
+            ""
+          );
+        }
+      };
 
-      console.log("uploaded");
+      const taskId: string = await getTaskId(req);
 
       //insert files to SQL
       if (req.files) {
         for (let i = 0; i < req.files.length; i++) {
           const filename = req.files[i].filename;
           await client.query(
-            /*sql*/ `INSERT INTO Task_submissions (task_id,filename) VALUES ($1,$2)`,
+            /*sql*/ `INSERT INTO Task_submissions (task_id,filename,created_at) VALUES ($1,$2,NOW())`,
             [taskId, filename]
           );
         }
       }
-      return res.status(201).json("Files are successfully uploaded");
+      return res.status(201).json("The files has been uploaded");
     } catch (err) {
       logger.error(err.toString());
       return res.status(401).json(err.toString());

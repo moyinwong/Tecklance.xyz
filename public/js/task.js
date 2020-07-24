@@ -154,7 +154,12 @@ async function checkLogin() {
       }
     }
   } else if (taskRes.status == 200 && task && res.status == 200) {
-    if (task.creator_id == user.id) {
+    if (task.accepted_user_id === user.id) {
+      // accepted user display
+      document.getElementById("bottom-container").style.display = "none";
+      document.getElementById("submit-form").style.display = "block";
+    } else if (task.creator_id == user.id) {
+      //creator display
       let applyButton = document.getElementById("apply-button");
       let bottomContainer = document.getElementById("bottom-middle");
       let applicantListContainer = document.getElementById(
@@ -197,7 +202,6 @@ async function checkLogin() {
       </div>
       `;
     }
-    
   }
 
   //fill in offered amt & status
@@ -297,3 +301,48 @@ uploadField.onchange = function () {
     }
   }
 };
+
+//upload task files
+async function uploadTaskFiles(event) {
+  //stop signup action
+  event.preventDefault();
+
+  const form = event.target;
+
+  const formData = new FormData();
+
+  // console.log(form.uploaded_files.files);
+
+  if (form.uploaded_files.files.length) {
+    for (let i = 0; i < form.uploaded_files.files.length; i++) {
+      formData.append("uploaded_files", form.uploaded_files.files[i]);
+    }
+  } else {
+    // **need to adjust css
+    alert("no file is selected");
+    return;
+  }
+
+  //console.log(formData);
+
+  //send json to backend
+  const res = await fetch("submit-completed-task", {
+    method: "POST",
+    body: formData,
+  });
+
+  const message = await res.json();
+  alert(message);
+
+  //clear the file
+  document.getElementById("uploaded_files").value = "";
+}
+
+document
+  .querySelector("#submit-completed-task")
+  .addEventListener("submit", uploadTaskFiles);
+
+async function getUploadFiles() {
+  const res = await fetch("getUploadFiles/:taskid");
+  const uploadedFileName = await res.json();
+}
