@@ -1,8 +1,9 @@
 import express from "express";
-import { Task } from "./models";
+import { Task, Task_submissions } from "./models";
 import { client, upload, taskSubmission } from "./main";
 import { Usertask } from "./models";
 import { logger } from "./logger";
+import { isLoggedInAPI } from "./guards";
 
 export const taskRoutes = express.Router();
 
@@ -172,10 +173,36 @@ taskRoutes.post(
       return res.status(201).json("The files has been uploaded");
     } catch (err) {
       logger.error(err.toString());
-      return res.status(401).json(err.toString());
+      return res.status(500).json(err.toString());
     }
   }
 );
+
+//get uploaded file
+taskRoutes.get("/getUploadFiles", isLoggedInAPI, async (req, res) => {
+  //get task id by req.header
+  const getTaskId = async (req) => {
+    if (req.header && req.headers.referer) {
+      return req.headers.referer.replace(
+        "http://localhost:8080/task.html?id=",
+        ""
+      );
+    }
+  };
+  const taskId: string = await getTaskId(req);
+
+  const files: Task_submissions[] = await (
+    await client.query(
+      /*sql*/ `SELECT * FROM task_submissions WHERE task_id=$1`,
+      [taskId]
+    )
+  ).rows;
+  if (files) {
+    return res.status(200).json(files);
+  } else {
+    return res.status(400).json("no file");
+  }
+});
 
 //choose particular applicant for the task & send message
 taskRoutes.put("/task/accept", async (req, res) => {

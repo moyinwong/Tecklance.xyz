@@ -40,7 +40,7 @@ export const upload = multer({ storage });
 //storage file
 const taskStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, `${__dirname}/task_submission`);
+    cb(null, `${__dirname}/admin/task_submission`);
   },
   filename: function (req, file, cb) {
     cb(
@@ -162,8 +162,8 @@ app.get("/category", async (req, res) => {
 
 app.get("/categories", async (req, res) => {
   // let category = req.query.category;
-  res.sendFile(path.join(__dirname, `./public/category.html`))
-})
+  res.sendFile(path.join(__dirname, `./public/category.html`));
+});
 
 //serve dashboard if user is logged in
 app.use("/admin", isLoggedIn, express.static("admin"));
