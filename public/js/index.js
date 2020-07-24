@@ -295,14 +295,16 @@ async function checkLogin() {
     //display message bubble
     if (user && user.id) {
       console.log(user);
-      const resMessages = await fetch("/getMessage");
+      const resMessages = await fetch("/message/unread");
       const messages = await resMessages.json();
-      document.getElementById("message-number-bubble").innerHTML =
+      if (messages.length) {
+        document.getElementById("message-number-bubble").innerHTML =
         messages.length;
-      document.getElementById("message-bubble").style.display = "block";
-      document.getElementById("message-bubble").onclick = () => {
+        document.getElementById("message-bubble").style.display = "block";
+        document.getElementById("message-bubble").onclick = () => {
         window.location = "admin/message.html";
       };
+      }
     }
   }
 }
