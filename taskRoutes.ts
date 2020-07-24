@@ -69,10 +69,12 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
 //get accepted freelancer
 taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
   let acceptedUserId = parseInt(req.params.acceptedId);
-  let result = await client.query(`SELECT * FROM users WHERE id = $1`, [acceptedUserId]);
+  let result = await client.query(`SELECT * FROM users WHERE id = $1`, [
+    acceptedUserId,
+  ]);
   let acceptedUser = result.rows;
   res.json(acceptedUser[0]);
-})
+});
 
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {
@@ -80,9 +82,12 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
   const applyUserId = req.body.applied_user_id;
 
   //check if there is any duplicate application
-  let checkResult = await client.query(/*sql*/`SELECT * FROM applied_post 
-    WHERE user_id = $1 AND task_id = $2`, [applyUserId, taskId]);
-  
+  let checkResult = await client.query(
+    /*sql*/ `SELECT * FROM applied_post 
+    WHERE user_id = $1 AND task_id = $2`,
+    [applyUserId, taskId]
+  );
+
   if (checkResult.rowCount === 0) {
     await client.query(
       /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
@@ -90,9 +95,9 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
     );
     res.status(200).json({ success: true });
   } else if (checkResult.rowCount === 1) {
-    res.status(201).json({message: "You have already applied this task"})
+    res.status(201).json({ message: "You have already applied this task" });
   } else {
-    res.status(400).json({message: "error"})
+    res.status(400).json({ message: "error" });
   }
 });
 
@@ -138,25 +143,33 @@ taskRoutes.post(
 
 //task submission
 taskRoutes.post(
-  "/submit-completed-task/:taskId",
+  "/submit-completed-task/",
   taskSubmission.array("uploaded_files", 10),
   async (req, res) => {
     try {
-      const taskId = parseInt(req.params.taskId);
+      //get task id by req.header
+      const getTaskId = async (req) => {
+        if (req.header && req.headers.referer) {
+          return req.headers.referer.replace(
+            "http://localhost:8080/task.html?id=",
+            ""
+          );
+        }
+      };
 
-      console.log("uploaded");
+      const taskId: string = await getTaskId(req);
 
       //insert files to SQL
       if (req.files) {
         for (let i = 0; i < req.files.length; i++) {
           const filename = req.files[i].filename;
           await client.query(
-            /*sql*/ `INSERT INTO Task_submissions (task_id,filename) VALUES ($1,$2)`,
+            /*sql*/ `INSERT INTO Task_submissions (task_id,filename,created_at) VALUES ($1,$2,NOW())`,
             [taskId, filename]
           );
         }
       }
-      return res.status(201).json("Files are successfully uploaded");
+      return res.status(201).json("The files has been uploaded");
     } catch (err) {
       logger.error(err.toString());
       return res.status(401).json(err.toString());
@@ -165,25 +178,32 @@ taskRoutes.post(
 );
 
 //choose particular applicant for the task & send message
-taskRoutes.put('/task/accept', async (req, res) => {
+taskRoutes.put("/task/accept", async (req, res) => {
   let userId = req.body.user_Id;
   let taskId = req.body.task_Id;
-  let taskTitleRes = await client.query(`SELECT title FROM task WHERE id = $1`, [taskId]);
+  let taskTitleRes = await client.query(
+    `SELECT title FROM task WHERE id = $1`,
+    [taskId]
+  );
   let taskTitle = taskTitleRes.rows[0];
-  
-  await client.query(`UPDATE task SET accepted_user_id = $1, status = 'filled' 
-  WHERE id = $2;`, [userId, taskId])
 
   await client.query(
-    /* sql */ `INSERT INTO messages (recipient_id, content, created_at,updated_at) 
+    `UPDATE task SET accepted_user_id = $1, status = 'filled' 
+  WHERE id = $2;`,
+    [userId, taskId]
+  );
+
+  await client.query(
+    /* sql */ `INSERT INTO messages (recipient_id, content, created_at) 
     VALUES ($1, 'You are hired for task - ${taskTitle.title}.
     Please contact task owner for more details',
-      NOW(),
       NOW()
-  );`, [userId])
+  );`,
+    [userId]
+  );
 
-  res.status(200).json({success:true})
-})
+  res.status(200).json({ success: true });
+});
 
 //delete method for task page
 taskRoutes.delete("/task/:id", async (req, res) => {
