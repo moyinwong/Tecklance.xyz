@@ -1,3 +1,17 @@
+//add a href tag for a message
+function addaHrefTag(str) {
+  const index = str.indexOf("*url*");
+  if (index === -1) {
+    return str;
+  }
+  const result = `${str.substring(0, index)}<a href="${str.substring(
+    index + 5,
+    str.length
+  )}">${str.substring(index + 5, str.length)}</a>`;
+
+  return result;
+}
+
 //login button
 document.querySelector(".login-button").onclick = () => {
   location.href = "/login.html";
@@ -55,7 +69,7 @@ async function getMessage() {
       <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
           <div class="card-header">From Tecklance</div>
           <div class="card-body">
-              <p class="card-text">${messages[i].content}</p>
+              <p class="card-text">${addaHrefTag(messages[i].content)}</p>
           </div>
       </div>`;
     } else {
@@ -63,7 +77,7 @@ async function getMessage() {
       <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
           <div class="card-header">${messages[i].username}</div>
           <div class="card-body">
-              <p class="card-text">${messages[i].content}</p>
+              <p class="card-text">${addaHrefTag(messages[i].content)}</p>
           </div>
       </div>`;
     }
@@ -73,10 +87,10 @@ async function getMessage() {
 checkLogin();
 getMessage();
 
-function getMessageId(event) {
-  console.log(event.target.parent);
-}
+// function getMessageId(event) {
+//   console.log(event.target.parent);
+// }
 
-document
-  .querySelector(".message-container")
-  .addEventListener("click", getMessageId);
+// document
+//   .querySelector(".message-container")
+//   .addEventListener("click", getMessageId);

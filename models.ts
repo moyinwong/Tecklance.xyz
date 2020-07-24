@@ -8,8 +8,8 @@ export interface User {
   google: string;
   github: string;
   gitlab: string;
-  first_name: string;
-  last_name: string;
+  first_name: string; //required
+  last_name: string; //required
   bank_name: string;
   bank_account: string;
   freelancer_intro: string;

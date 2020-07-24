@@ -174,7 +174,7 @@ taskRoutes.post(
       const creatorId = await getCreatorId(taskId);
 
       const getMessageToCreator = async (req) => {
-        return `There are new upload files for task, Please check the following link: ${req.headers.referer}`;
+        return `There are new upload files for task, Please check the following link: *url*${req.headers.referer}`;
       };
 
       const content: string = await getMessageToCreator(req);
@@ -246,13 +246,19 @@ taskRoutes.put("/task/accept", async (req, res) => {
     [userId, taskId]
   );
 
+  const getMessageToCreator = async (req) => {
+    return `You are hired for task - ${taskTitle.title}.
+    Please check the following link: *url*${req.headers.referer}`;
+  };
+
+  const content: string = await getMessageToCreator(req);
+
   await client.query(
     /* sql */ `INSERT INTO messages (recipient_id, content, created_at) 
-    VALUES ($1, 'You are hired for task - ${taskTitle.title}.
-    Please contact task owner for more details',
+    VALUES ($1, $2,
       NOW()
   );`,
-    [userId]
+    [userId, content]
   );
 
   res.status(200).json({ success: true });
