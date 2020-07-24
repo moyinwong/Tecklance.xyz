@@ -38,8 +38,8 @@ export interface Message {
   sender_id: number;
   recipient_id: number;
   message_content: string;
+  message_status: string;
   created_at: string;
-  updated_at: string;
 }
 
 export interface Task_submissions {

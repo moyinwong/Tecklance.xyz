@@ -49,30 +49,24 @@ async function getMessage() {
     }
 
     //please continuous.......
-    document.querySelector(".message-container").innerHTML += `
-    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-        <div class="card-header">${messages[i].username}</div>
-        <div class="card-body">
-            <p class="card-text">${messageContent}</p>
-        </div>
-    </div>`;
-    // if (messages[i].sender_id ==  null) {
-    //   document.querySelector(".message-container").innerHTML += `
-    //   <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-    //       <div class="card-header">From Tecklance</div>
-    //       <div class="card-body">
-    //           <p class="card-text">${messages[i].content}</p>
-    //       </div>
-    //   </div>`
-    // } else {
-    //   document.querySelector(".message-container").innerHTML += `
-    //   <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-    //       <div class="card-header">${messages[i].username}</div>
-    //       <div class="card-body">
-    //           <p class="card-text">${messages[i].content}</p>
-    //       </div>
-    //   </div>`
-    // };
+
+    if (messages[i].sender_id == null) {
+      document.querySelector(".message-container").innerHTML = `
+      <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+          <div class="card-header">From Tecklance</div>
+          <div class="card-body">
+              <p class="card-text">${messages[i].content}</p>
+          </div>
+      </div>`;
+    } else {
+      document.querySelector(".message-container").innerHTML += `
+      <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+          <div class="card-header">${messages[i].username}</div>
+          <div class="card-body">
+              <p class="card-text">${messages[i].content}</p>
+          </div>
+      </div>`;
+    }
   }
 }
 
