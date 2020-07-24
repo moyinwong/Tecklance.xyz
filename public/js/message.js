@@ -77,14 +77,21 @@ async function getMessage() {
       //need to change?
       //
       document.querySelector(".message-container").innerHTML += `
-      <div class="card bg-primary mb-3" style="max-width: 18rem;">
-          <div class="card-header">${messages[i].username}</div>
-          <div class="card-body">
-              <p class="message-content card-text">${addaHrefTag(
-                messages[i].content
-              )}</p>
-          </div>
-      </div>`;
+        <div class="message-body card bg-primary">
+          <button data-message-id="${
+            message.id
+          }" class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${
+            message.id
+          }" 
+            aria-expanded="false" aria-controls="a${
+              message.id
+            }">From ${message.username}</button>
+            <div class="collapse" id="a${message.id}">
+              <div class="message-box card card-body">
+              ${addaHrefTag(message.content)}
+              </div>
+            </div>
+        </div>`;
     }
   }
 

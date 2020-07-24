@@ -35,7 +35,7 @@ messageRoutes.put("/message/read", async (req, res) => {
   try {
     let messageId = req.body.message_id;
     await client.query(/*sql*/`UPDATE messages SET status = 'read' WHERE id = $1`, [messageId]);
-    console.log(messageId)
+
     res.status(200).json({success:true})
   } catch(err) {
     console.log(err);
