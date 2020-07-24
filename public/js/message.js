@@ -49,11 +49,17 @@ async function getMessage() {
     // }
 
     //please continuous.......
-
+    // document.querySelector(".message-container").innerHTML += `
+    // <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+    //     <div class="card-header">${messages[i].username}</div>
+    //     <div class="card-body">
+    //         <p class="card-text">${messageContent}</p>
+    //     </div>
+    // </div>`;
     if (message.sender_id ==  null) {
       document.querySelector(".message-container").innerHTML += `
       <div class="message-body card bg-primary">
-        <button class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${message.id}" 
+        <button data-message-id="${message.id}" class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${message.id}" 
         aria-expanded="false" aria-controls="a${message.id}">From Tecklance</button>
         <div class="collapse" id="a${message.id}">
           <div class="message-box card card-body">
@@ -71,15 +77,27 @@ async function getMessage() {
           </div>
       </div>`
     };
-
-    let messageBoxes = Array.from(document.querySelectorAll('.message-content'));
-    messageBoxes.forEach((messageBox) => {
-      messageBox.onclick = () => {
-        messageBox.style.background = '#262666';
-      }
-    })
-    
   }
+
+  let messageBoxes = Array.from(document.querySelectorAll('.message-content'));
+  
+  messageBoxes.forEach((messageBox) => {
+    messageBox.onclick = async () => {
+      let messageId = messageBox.dataset.messageId;
+      
+      messageBox.style.background = '#262666';
+
+      await fetch('/message/read', {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message_id: messageId
+        })
+      })
+    }
+  })
 }
 
 checkLogin();
@@ -92,3 +110,4 @@ function getMessageId(event) {
 document
   .querySelector(".message-container")
   .addEventListener("click", getMessageId);
+
