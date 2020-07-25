@@ -19,7 +19,7 @@
             <form id="user-form" action="/signup" method="POST" enctype="multipart/form-data">
                 <label>
                     <div>User Profile Image</div>
-                    <input type='file' name="image" />
+                    <input type='file' name="image" required />
                 </label>
                 <label>
                     <div>Username</div><input type="" name="username" placeholder="Username" maxlength="15" required>
@@ -43,11 +43,11 @@
                 </label>
                 <label>
                     <div>First Name</div><input id="first_name" type="" name="first_name" placeholder="First name"
-                        maxlength="20">
+                        maxlength="20" required>
                 </label>
                 <label>
                     <div>Last Name</div><input id="last_name" type="" name="last_name" placeholder="Last name"
-                        maxlength="20">
+                        maxlength="20" required>
                 </label>
 
                 <p>

@@ -1,8 +1,9 @@
 import express from "express";
-import { Task } from "./models";
+import { Task, Task_submissions, User } from "./models";
 import { client, upload, taskSubmission } from "./main";
 import { Usertask } from "./models";
 import { logger } from "./logger";
+import { isLoggedInAPI } from "./guards";
 
 export const taskRoutes = express.Router();
 
@@ -57,7 +58,7 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
         WHERE task_id = $1`,
       [id]
     );
-    let applicants = result.rows;
+    let applicants: User[] = result.rows;
 
     return res.json(applicants);
   } catch (err) {
@@ -69,9 +70,41 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
 //get accepted freelancer
 taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
   let acceptedUserId = parseInt(req.params.acceptedId);
+<<<<<<< HEAD
   let result = await client.query(/* sql */`SELECT * FROM users WHERE id = $1`, [acceptedUserId]);
   let acceptedUser = result.rows;
+=======
+  let result = await client.query(`SELECT * FROM users WHERE id = $1`, [
+    acceptedUserId,
+  ]);
+  let acceptedUser: User[] = result.rows;
+>>>>>>> 5667333a0702796808d7a162ca262ec238cce962
   res.json(acceptedUser[0]);
+});
+
+//check status of task
+taskRoutes.get("/taskstatus", async (req, res) => {
+  try {
+      //get task id by req.header
+    const getTaskId = async (req) => {
+      if (req.header && req.headers.referer) {
+        return req.headers.referer.replace(
+          "http://localhost:8080/task.html?id=",
+          ""
+        );
+      }
+    };
+    const taskId: string = await getTaskId(req);
+    
+    let result = await client.query(/*sql*/`SELECT status FROM task WHERE id = $1`,
+      [taskId])
+    let status = result.rows[0];
+
+    return res.status(200).json(status);
+  } catch(err) {
+    logger.error(err.toString());
+    return res.status(500).json(err.toString());
+  }
 })
 
 //insert application data into database
@@ -80,9 +113,12 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
   const applyUserId = req.body.applied_user_id;
 
   //check if there is any duplicate application
-  let checkResult = await client.query(/*sql*/`SELECT * FROM applied_post 
-    WHERE user_id = $1 AND task_id = $2`, [applyUserId, taskId]);
-  
+  let checkResult = await client.query(
+    /*sql*/ `SELECT * FROM applied_post 
+    WHERE user_id = $1 AND task_id = $2`,
+    [applyUserId, taskId]
+  );
+
   if (checkResult.rowCount === 0) {
     await client.query(
       /*sql*/ `INSERT INTO applied_post (user_id, task_id, applied_date) VALUES ($1, $2, NOW());`,
@@ -90,9 +126,9 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
     );
     res.status(200).json({ success: true });
   } else if (checkResult.rowCount === 1) {
-    res.status(201).json({message: "You have already applied this task"})
+    res.status(201).json({ message: "You have already applied this task" });
   } else {
-    res.status(400).json({message: "error"})
+    res.status(400).json({ message: "error" });
   }
 });
 
@@ -138,52 +174,133 @@ taskRoutes.post(
 
 //task submission
 taskRoutes.post(
-  "/submit-completed-task/:taskId",
+  "/submit-completed-task/",
   taskSubmission.array("uploaded_files", 10),
   async (req, res) => {
     try {
-      const taskId = parseInt(req.params.taskId);
+      //get task id by req.header
+      const getTaskId = async (req) => {
+        if (req.header && req.headers.referer) {
+          return req.headers.referer.replace(
+            "http://localhost:8080/task.html?id=",
+            ""
+          );
+        }
+      };
 
-      console.log("uploaded");
+      const taskId: string = await getTaskId(req);
+
+      //get user id by req.session
+      const getCreatorId = async (taskId) => {
+        const creatorId = (
+          await client.query(
+            /*sql*/ `SELECT creator_id FROM task WHERE id = $1`,
+            [taskId]
+          )
+        ).rows[0].creator_id;
+        return creatorId;
+      };
+
+      const creatorId = await getCreatorId(taskId);
+
+      const getMessageToCreator = async (req) => {
+        return `There are new upload files for task, Please check the following link: *url*${req.headers.referer}`;
+      };
+
+      const content: string = await getMessageToCreator(req);
 
       //insert files to SQL
       if (req.files) {
         for (let i = 0; i < req.files.length; i++) {
           const filename = req.files[i].filename;
           await client.query(
-            /*sql*/ `INSERT INTO Task_submissions (task_id,filename) VALUES ($1,$2)`,
+            /*sql*/ `INSERT INTO task_submissions (task_id,filename,created_at) VALUES ($1,$2,NOW())`,
             [taskId, filename]
           );
         }
+        await client.query(
+          /* sql */ `INSERT INTO messages (recipient_id, content, created_at)
+          VALUES ($1, $2,
+            NOW()
+        );`,
+          [creatorId, content]
+        );
       }
-      return res.status(201).json("Files are successfully uploaded");
+      return res.status(201).json("The files has been uploaded");
     } catch (err) {
       logger.error(err.toString());
-      return res.status(401).json(err.toString());
+      return res.status(500).json(err.toString());
     }
   }
 );
 
+//get uploaded file
+taskRoutes.get("/getUploadFiles", isLoggedInAPI, async (req, res) => {
+  //get task id by req.header
+  const getTaskId = async (req) => {
+    if (req.header && req.headers.referer) {
+      return req.headers.referer.replace(
+        "http://localhost:8080/task.html?id=",
+        ""
+      );
+    }
+  };
+  const taskId: string = await getTaskId(req);
+
+  const files: Task_submissions[] = await (
+    await client.query(
+      /*sql*/ `SELECT * FROM task_submissions WHERE task_id=$1`,
+      [taskId]
+    )
+  ).rows;
+  if (files) {
+    return res.status(200).json(files);
+  } else {
+    return res.status(400).json("no file");
+  }
+});
+
 //choose particular applicant for the task & send message
-taskRoutes.put('/task/accept', async (req, res) => {
+taskRoutes.put("/task/accept", async (req, res) => {
   let userId = req.body.user_Id;
   let taskId = req.body.task_Id;
+<<<<<<< HEAD
   let taskTitleRes = await client.query(/* sql */`SELECT title FROM task WHERE id = $1`, [taskId]);
   let taskTitle = taskTitleRes.rows[0];
   
   await client.query(/* sql */`UPDATE task SET accepted_user_id = $1, status = 'filled' 
   WHERE id = $2;`, [userId, taskId])
+=======
+  let taskTitleRes = await client.query(
+    `SELECT title FROM task WHERE id = $1`,
+    [taskId]
+  );
+  let taskTitle = taskTitleRes.rows[0];
+>>>>>>> 5667333a0702796808d7a162ca262ec238cce962
 
   await client.query(
-    /* sql */ `INSERT INTO messages (recipient_id, content, created_at,updated_at) 
-    VALUES ($1, 'You are hired for task - ${taskTitle.title}.
-    Please contact task owner for more details',
-      NOW(),
-      NOW()
-  );`, [userId])
+    `UPDATE task SET accepted_user_id = $1, status = 'filled' 
+  WHERE id = $2;`,
+    [userId, taskId]
+  );
 
-  res.status(200).json({success:true})
-})
+  const getMessageToCreator = async (req) => {
+    return `You are hired for task - ${taskTitle.title}.
+    Please check the following link: *url*${req.headers.referer}`;
+  };
+
+  const content: string = await getMessageToCreator(req);
+
+  await client.query(
+    /* sql */ `INSERT INTO messages (recipient_id, content, created_at) 
+    VALUES ($1, $2,
+      NOW()
+  );`,
+    [userId, content]
+  );
+
+  res.status(200).json({ success: true });
+});
 
 //delete method for task page
 taskRoutes.delete("/task/:id", async (req, res) => {
@@ -196,6 +313,7 @@ taskRoutes.delete("/task/:id", async (req, res) => {
   await client.query(/* sql */`DELETE FROM task WHERE id = $1`, [id]);
   res.json({ success: true });
 });
+<<<<<<< HEAD
 
 // update method for task page
 taskRoutes.put('/task/:id', async (req,res)=>{
@@ -209,3 +327,5 @@ taskRoutes.put('/task/:id', async (req,res)=>{
 
   res.json({success:true});
 })
+=======
+>>>>>>> 5667333a0702796808d7a162ca262ec238cce962

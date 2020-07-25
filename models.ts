@@ -8,8 +8,8 @@ export interface User {
   google: string;
   github: string;
   gitlab: string;
-  first_name: string;
-  last_name: string;
+  first_name: string; //required
+  last_name: string; //required
   bank_name: string;
   bank_account: string;
   freelancer_intro: string;
@@ -38,12 +38,13 @@ export interface Message {
   sender_id: number;
   recipient_id: number;
   message_content: string;
+  status: string;
   created_at: string;
-  updated_at: string;
 }
 
 export interface Task_submissions {
   id: number;
   task_id: number;
   filename: string;
+  created_at: string;
 }

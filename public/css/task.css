@@ -19,6 +19,7 @@ body {
 }
 
 .main-body {
+  margin-top: 10px;
   padding: 30px;
   max-width: 1440px;
 }
@@ -36,7 +37,7 @@ body > div {
 }
 
 .fixed-top {
-  z-index: 0;
+  z-index: 1;
 }
 
 #middle-container,
@@ -154,6 +155,14 @@ body > div {
   }
 }
 
+/* bottom row css*/
+.bottom-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 #bottom-container {
   justify-content: center;
   border: none;
@@ -164,11 +173,11 @@ body > div {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
   height: 100px;
   margin-left: 0px;
   justify-self: center;
   align-self: center;
+
 }
 
 #bottom-middle > input {
@@ -188,6 +197,17 @@ body > div {
 /* hide applicant-list at default */
 #applicant-list-container {
   display: none;
+}
+
+/* fulfill message if creator accepted result*/
+#fulfilled-message {
+  background-color: #28a745;
+  border-radius: 4px;
+  padding: 15px;
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 /* side navbar */
@@ -304,6 +324,7 @@ body > div {
 }
 
 .delete:hover{
+<<<<<<< HEAD
   color: lightgray;
 }
 
@@ -314,3 +335,8 @@ body > div {
 .edit:hover{
   color: lightgray;
 }
+=======
+  color: aqua;
+}
+
+>>>>>>> 5667333a0702796808d7a162ca262ec238cce962

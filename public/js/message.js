@@ -1,3 +1,17 @@
+//add a href tag for a message
+function addaHrefTag(str) {
+  const index = str.indexOf("*url*");
+  if (index === -1) {
+    return str;
+  }
+  const result = `${str.substring(0, index)}<a href="${str.substring(
+    index + 5,
+    str.length
+  )}">${str.substring(index + 5, str.length)}</a>`;
+
+  return result;
+}
+
 //login button
 document.querySelector(".login-button").onclick = () => {
   location.href = "/login.html";
@@ -39,50 +53,74 @@ function closeNav() {
 async function getMessage() {
   const res = await fetch("/getMessage");
   const messages = await res.json();
-  for (let i = 0; i < messages.length; i++) {
-    //restrict content displayed length
-    let messageContent;
-    if (messages[i].content.length > 40) {
-      messageContent = messages[i].content.substring(0, 40) + "...";
-    } else {
-      messageContent = messages[i].content;
-    }
 
-    //please continuous.......
-    document.querySelector(".message-container").innerHTML += `
-    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-        <div class="card-header">${messages[i].username}</div>
-        <div class="card-body">
-            <p class="card-text">${messageContent}</p>
+  for (let message of messages) {
+    //change color if read
+    const style =
+      message.status === "read" ? `style="background: #262666"` : "";
+
+    //display create date
+    const date = new Date(message.created_at).toISOString().slice(0, 10);
+    if (message.sender_id == null) {
+      //send by Tecklance
+      document.querySelector(".message-container").innerHTML += `
+      <div class="message-body card bg-primary">
+        <button data-message-id="${
+          message.id
+        }" class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${
+        message.id
+      }" 
+        aria-expanded="false" aria-controls="a${
+          message.id
+        }" ${style}><span>${date} </span>From Tecklance</button>
+        <div class="collapse" id="a${message.id}">
+          <div class="message-box card card-body">
+            ${addaHrefTag(message.content)}
+          </div>
         </div>
-    </div>`;
-    // if (messages[i].sender_id ==  null) {
-    //   document.querySelector(".message-container").innerHTML += `
-    //   <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-    //       <div class="card-header">From Tecklance</div>
-    //       <div class="card-body">
-    //           <p class="card-text">${messages[i].content}</p>
-    //       </div>
-    //   </div>`
-    // } else {
-    //   document.querySelector(".message-container").innerHTML += `
-    //   <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-    //       <div class="card-header">${messages[i].username}</div>
-    //       <div class="card-body">
-    //           <p class="card-text">${messages[i].content}</p>
-    //       </div>
-    //   </div>`
-    // };
+      </div>
+      `;
+    } else {
+      //send by user
+      document.querySelector(".message-container").innerHTML += `
+        <div class="message-body card bg-primary">
+          <button data-message-id="${
+            message.id
+          }" class="btn btn-primary message-content" type="button" data-toggle="collapse" data-target="#a${
+        message.id
+      }" 
+            aria-expanded="false" aria-controls="a${
+              message.id
+            }" ${style}><span>${date} </span>From ${message.username}</button>
+            <div class="collapse" id="a${message.id}">
+              <div class="message-box card card-body">
+              ${addaHrefTag(message.content)}
+              </div>
+            </div>
+        </div>`;
+    }
   }
+
+  let messageBoxes = Array.from(document.querySelectorAll(".message-content"));
+
+  messageBoxes.forEach((messageBox) => {
+    messageBox.onclick = async () => {
+      let messageId = messageBox.dataset.messageId;
+
+      messageBox.style.background = "#262666";
+
+      await fetch("/message/read", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message_id: messageId,
+        }),
+      });
+    };
+  });
 }
 
 checkLogin();
 getMessage();
-
-function getMessageId(event) {
-  console.log(event.target.parent);
-}
-
-document
-  .querySelector(".message-container")
-  .addEventListener("click", getMessageId);

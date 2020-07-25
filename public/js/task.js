@@ -43,6 +43,76 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
+//accept files event
+async function acceptFiles() {
+  const res = await fetch("/acceptFiles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const resMessage = await res.json();
+  if (res.status === 201) {
+    //add class to show alert
+    document.querySelector("#response").innerHTML = resMessage;
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      document.querySelector("#response").classList.remove("show");
+    }, 3000);
+    setTimeout(() => {
+      location.reload()
+    }, 3000);
+  }
+}
+
+//reject files event
+async function rejectFiles() {
+  const res = await fetch("/rejectFiles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const resMessage = await res.json();
+  if (res.status === 201) {
+    //add class to show alert
+    document.querySelector("#response").innerHTML = resMessage;
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      document.querySelector("#response").classList.remove("show");
+    }, 3000);
+  }
+}
+
+//display uploaded files
+async function getUploadFiles() {
+  const res = await fetch("/getUploadFiles");
+  if (res.status !== 200) {
+    return;
+  }
+
+  const uploadedFiles = await res.json();
+
+  for (let i = 0; i < uploadedFiles.length; i++) {
+    document.getElementById("uploaded_container").style.display = "block";
+    document.getElementById("uploaded_container").innerHTML += `
+  <a href="http://localhost:8080/admin/task_submission/${uploadedFiles[i].filename}"
+  download="${uploadedFiles[i].filename}">${uploadedFiles[i].filename}</a>
+  `;
+  }
+}
+
+//check task status
+async function checkTaskStatus() {
+  let res = await fetch("/taskstatus");
+  if (res.status !== 200) {
+    return;
+  }
+  
+  let taskStatus = await res.json();
+  return taskStatus;
+}
+
 //check login function
 async function checkLogin() {
   let res = await fetch("/current-user");
@@ -78,7 +148,6 @@ async function checkLogin() {
           "applicant-list-container"
         );
         let applicantList = document.getElementById("applicant-list");
-
         applyButton.style.display = "none";
         bottomContainer.innerHTML = `
           <div class="edit" data-id="${task.id}">EDIT TASK</div>
@@ -156,49 +225,69 @@ async function checkLogin() {
       }
     }
   } else if (taskRes.status == 200 && task && res.status == 200) {
-    let applyButton = document.getElementById("apply-button");
-    let bottomContainer = document.getElementById("bottom-middle");
-    let applicantListContainer = document.getElementById(
-      "applicant-list-container"
-    );
-    const applicantList = document.getElementById("applicant-list");
+    if (task.accepted_user_id === user.id) {
+      // accepted user display
+      document.getElementById("bottom-container").style.display = "none";
+      document.getElementById("submit-form").style.display = "block";
+      getUploadFiles();
+    } else if (task.creator_id == user.id) {
+      //creator display
+      let applyButton = document.getElementById("apply-button");
+      let bottomContainer = document.getElementById("bottom-middle");
+      let applicantListContainer = document.getElementById(
+        "applicant-list-container"
+      );
+      let applicantList = document.getElementById("applicant-list");
 
-    applyButton.style.display = "none";
-    bottomContainer.innerHTML = `
-      <div class="edit" data-id="${task.id}">EDIT TASK</div>
-      <div class="delete" data-id="${task.id}">DELETE TASK</div>
+      applyButton.style.display = "none";
+      bottomContainer.innerHTML = `
+        <div class="edit" data-id="${task.id}">EDIT TASK</div>
+        <div class="delete" data-id="${task.id}">DELETE TASK</div>
+        `;
+
+      let acceptedRes = await fetch(
+        `/task/accepted-applicant/${task.accepted_user_id}`
+      );
+      let acceptedUser = await acceptedRes.json();
+
+      await getUploadFiles();
+      let taskStatus = await checkTaskStatus();
+      if (taskStatus.status === 'completed') {
+        let acceptanceButton = document.getElementById('files-acceptance-button-container');
+        acceptanceButton.style.display = "block";
+        acceptanceButton.innerHTML = `
+        <div id="fulfilled-message">TASK FULFILLED</div>`
+      } else {
+        document.getElementById(
+        "files-acceptance-button-container"
+        ).style.display = "block";
+      }
+
+      applicantListContainer.style.display = "block";
+      applicantList.innerHTML = `
+      <a class="list-group-item list-group-item-action" data-toggle="collapse" 
+      href="#a${acceptedUser.id}" aria-expanded="false" aria-controls="a${
+        acceptedUser.id
+      }">
+          <div class="d-flex w-100 justify-content-between applicant-detail">
+            <h5 class="mb-1">${
+              acceptedUser.first_name + " " + acceptedUser.last_name
+            }</h5>
+            <small style="color: green;">CHOSEN APPLICANT</small>
+          </div>
+          <small>${acceptedUser.email}</small>
+      </a>
+      <div class="collapse show" id="a${acceptedUser.id}">
+        <div class="card card-body">
+          <p class="mb-1">${acceptedUser.freelancer_intro}</p>
+          <div class="alert alert-warning" role="alert">
+            You have chosen this applicant
+          </div>
+        </div>       
+      </div>
       `;
-
-    let acceptedRes = await fetch(
-      `/task/accepted-applicant/${task.accepted_user_id}`
-    );
-    let acceptedUser = await acceptedRes.json();
-
-    applicantListContainer.style.display = "block";
-    applicantList.innerHTML = `
-    <a class="list-group-item list-group-item-action" data-toggle="collapse" 
-    href="#a${acceptedUser.id}" aria-expanded="false" aria-controls="a${
-      acceptedUser.id
-    }">
-        <div class="d-flex w-100 justify-content-between applicant-detail">
-          <h5 class="mb-1">${
-            acceptedUser.first_name + " " + acceptedUser.last_name
-          }</h5>
-          <small style="color: green;">CHOSEN APPLICANT</small>
-        </div>
-        <small>${acceptedUser.email}</small>
-    </a>
-    <div class="collapse show" id="a${acceptedUser.id}">
-      <div class="card card-body">
-        <p class="mb-1">${acceptedUser.freelancer_intro}</p>
-        <div class="alert alert-warning" role="alert">
-          You have chosen this applicant
-        </div>
-      </div>       
-    </div>
-    `;
+    }
   }
-
   //fill in offered amt & status
   document.querySelector("#offered_amt").innerHTML = task.offered_amt;
   document.querySelector("#status").innerHTML = task.status;
@@ -307,3 +396,64 @@ document.querySelector("#apply-button").onclick = async () => {
 
 main();
 checkLogin();
+
+//for submit completed task
+//restrict the upload file size
+const uploadField = document.getElementById("uploaded_files");
+
+uploadField.onchange = function () {
+  for (let i = 0; i < this.files.length; i++) {
+    if (this.files[i].size > 2097152) {
+      alert("Over 2MB size is not allowed");
+      this.value = "";
+    }
+  }
+};
+
+//upload task files
+async function uploadTaskFiles(event) {
+  //stop signup action
+  event.preventDefault();
+
+  const form = event.target;
+
+  const formData = new FormData();
+
+  // console.log(form.uploaded_files.files);
+
+  if (form.uploaded_files.files.length) {
+    for (let i = 0; i < form.uploaded_files.files.length; i++) {
+      formData.append("uploaded_files", form.uploaded_files.files[i]);
+    }
+  } else {
+    // **need to adjust css
+    alert("no file is selected");
+    return;
+  }
+
+  //send json to backend
+  const res = await fetch("submit-completed-task", {
+    method: "POST",
+    body: formData,
+  });
+
+  const message = await res.json();
+  alert(message);
+
+  //clear the file
+  document.getElementById("uploaded_files").value = "";
+}
+
+document
+  .querySelector("#submit-completed-task")
+  .addEventListener("submit", uploadTaskFiles);
+
+//add onclick event to accept button
+document
+  .getElementById("accept-file-button")
+  .addEventListener("click", acceptFiles);
+
+//add onclick event to reject button
+document
+  .getElementById("reject-file-button")
+  .addEventListener("click", rejectFiles);
