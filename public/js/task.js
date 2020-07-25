@@ -99,6 +99,17 @@ async function getUploadFiles() {
   }
 }
 
+//check task status
+async function checkTaskStatus() {
+  let res = await fetch("/taskstatus");
+  if (res.status !== 200) {
+    return;
+  }
+  
+  let taskStatus = await res.json();
+  return taskStatus;
+}
+
 //check login function
 async function checkLogin() {
   let res = await fetch("/current-user");
@@ -235,9 +246,18 @@ async function checkLogin() {
       let acceptedUser = await acceptedRes.json();
 
       await getUploadFiles();
-      document.getElementById(
+      let taskStatus = await checkTaskStatus();
+      if (taskStatus.status === 'completed') {
+        let acceptanceButton = document.getElementById('files-acceptance-button-container');
+        acceptanceButton.style.display = "block";
+        acceptanceButton.innerHTML = `
+        <div id="fulfilled-message">TASK FULFILLED</div>`
+      } else {
+        document.getElementById(
         "files-acceptance-button-container"
-      ).style.display = "block";
+        ).style.display = "block";
+      }
+      
       applicantListContainer.style.display = "block";
       applicantList.innerHTML = `
       <a class="list-group-item list-group-item-action" data-toggle="collapse" 

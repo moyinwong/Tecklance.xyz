@@ -77,6 +77,31 @@ taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
   res.json(acceptedUser[0]);
 });
 
+//check status of task
+taskRoutes.get("/taskstatus", async (req, res) => {
+  try {
+      //get task id by req.header
+    const getTaskId = async (req) => {
+      if (req.header && req.headers.referer) {
+        return req.headers.referer.replace(
+          "http://localhost:8080/task.html?id=",
+          ""
+        );
+      }
+    };
+    const taskId: string = await getTaskId(req);
+    
+    let result = await client.query(/*sql*/`SELECT status FROM task WHERE id = $1`,
+      [taskId])
+    let status = result.rows[0];
+
+    return res.status(200).json(status);
+  } catch(err) {
+    logger.error(err.toString());
+    return res.status(500).json(err.toString());
+  }
+})
+
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {
   const taskId = parseInt(req.params.taskId);
@@ -184,7 +209,7 @@ taskRoutes.post(
         for (let i = 0; i < req.files.length; i++) {
           const filename = req.files[i].filename;
           await client.query(
-            /*sql*/ `INSERT INTO Task_submissions (task_id,filename,created_at) VALUES ($1,$2,NOW())`,
+            /*sql*/ `INSERT INTO task_submissions (task_id,filename,created_at) VALUES ($1,$2,NOW())`,
             [taskId, filename]
           );
         }
