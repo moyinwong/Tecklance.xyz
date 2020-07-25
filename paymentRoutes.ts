@@ -1,6 +1,7 @@
 import express from "express";
 import { logger } from "./logger";
 import { client } from "./main";
+import { isLoggedInAPI } from "./guards";
 
 export const paymentRoutes = express.Router();
 
@@ -27,7 +28,7 @@ export const charge = (token: string, amount: number) => {
   );
 };
 
-paymentRoutes.post("/charge", async (req, res) => {
+paymentRoutes.post("/charge", isLoggedInAPI, async (req, res) => {
   try {
     const data: any = await stripe.charges.create({
       source: req.body.stripeToken,
@@ -35,6 +36,10 @@ paymentRoutes.post("/charge", async (req, res) => {
       currency: "hkd",
     });
     logger.debug(data);
+
+    if (data.message === "Amount must be at least $4.00 hkd") {
+      return res.status(400).json("The amount must be large HK$ 4.00");
+    }
 
     const userId = await getCurrentUserId(req);
 
@@ -52,10 +57,10 @@ paymentRoutes.post("/charge", async (req, res) => {
     );
   } catch (err) {
     console.log(err);
-    return res.status(err.statusCode).send(err.decline_code);
+    return res.status(err.statusCode).json(err.decline_code);
   }
 
-  return res.send("Payment was successful");
+  return res.json("Payment was successful, will be redirect to homepage");
 });
 
 paymentRoutes.get("/getRemainAmt", async (req, res) => {
