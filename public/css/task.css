@@ -19,6 +19,7 @@ body {
 }
 
 .main-body {
+  margin-top: 10px;
   padding: 30px;
   max-width: 1440px;
 }

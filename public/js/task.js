@@ -59,6 +59,9 @@ async function acceptFiles() {
     setTimeout(() => {
       document.querySelector("#response").classList.remove("show");
     }, 3000);
+    setTimeout(() => {
+      location.reload()
+    }, 3000);
   }
 }
 
@@ -257,7 +260,7 @@ async function checkLogin() {
         "files-acceptance-button-container"
         ).style.display = "block";
       }
-      
+
       applicantListContainer.style.display = "block";
       applicantList.innerHTML = `
       <a class="list-group-item list-group-item-action" data-toggle="collapse" 
