@@ -70,15 +70,8 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
 //get accepted freelancer
 taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
   let acceptedUserId = parseInt(req.params.acceptedId);
-<<<<<<< HEAD
   let result = await client.query(/* sql */`SELECT * FROM users WHERE id = $1`, [acceptedUserId]);
   let acceptedUser = result.rows;
-=======
-  let result = await client.query(`SELECT * FROM users WHERE id = $1`, [
-    acceptedUserId,
-  ]);
-  let acceptedUser: User[] = result.rows;
->>>>>>> 5667333a0702796808d7a162ca262ec238cce962
   res.json(acceptedUser[0]);
 });
 
@@ -264,19 +257,11 @@ taskRoutes.get("/getUploadFiles", isLoggedInAPI, async (req, res) => {
 taskRoutes.put("/task/accept", async (req, res) => {
   let userId = req.body.user_Id;
   let taskId = req.body.task_Id;
-<<<<<<< HEAD
   let taskTitleRes = await client.query(/* sql */`SELECT title FROM task WHERE id = $1`, [taskId]);
   let taskTitle = taskTitleRes.rows[0];
   
   await client.query(/* sql */`UPDATE task SET accepted_user_id = $1, status = 'filled' 
   WHERE id = $2;`, [userId, taskId])
-=======
-  let taskTitleRes = await client.query(
-    `SELECT title FROM task WHERE id = $1`,
-    [taskId]
-  );
-  let taskTitle = taskTitleRes.rows[0];
->>>>>>> 5667333a0702796808d7a162ca262ec238cce962
 
   await client.query(
     `UPDATE task SET accepted_user_id = $1, status = 'filled' 
@@ -313,7 +298,6 @@ taskRoutes.delete("/task/:id", async (req, res) => {
   await client.query(/* sql */`DELETE FROM task WHERE id = $1`, [id]);
   res.json({ success: true });
 });
-<<<<<<< HEAD
 
 // update method for task page
 taskRoutes.put('/task/:id', async (req,res)=>{
@@ -327,5 +311,3 @@ taskRoutes.put('/task/:id', async (req,res)=>{
 
   res.json({success:true});
 })
-=======
->>>>>>> 5667333a0702796808d7a162ca262ec238cce962
