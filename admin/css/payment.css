@@ -1,3 +1,7 @@
+body {
+  min-width: 375px;
+}
+
 body > div {
   background-color: rgb(241, 241, 213);
   border-radius: 40px;
@@ -21,4 +25,8 @@ i.fa-money-check-alt {
   color: gold;
   font-size: 120px;
   margin-top: 50px;
+}
+
+p {
+  text-align: center;
 }
