@@ -304,5 +304,13 @@ body > div {
 }
 
 .delete:hover{
-  color: aqua;
+  color: lightgray;
+}
+
+.edit{
+  cursor: pointer;
+}
+
+.edit:hover{
+  color: lightgray;
 }

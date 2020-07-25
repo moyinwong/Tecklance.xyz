@@ -84,7 +84,9 @@ async function checkLogin() {
           <div class="edit" data-id="${task.id}">EDIT TASK</div>
           <div class="delete" data-id="${task.id}">DELETE TASK</div>
         `;
-
+        const content = document.getElementById("content");
+        content.setAttribute("contenteditable", "true")
+        console.log("set")
         let applicantRes = await fetch(`/task/applicants/${taskId}`);
         let applicants = await applicantRes.json();
         let today = new Date();
@@ -159,7 +161,7 @@ async function checkLogin() {
     let applicantListContainer = document.getElementById(
       "applicant-list-container"
     );
-    let applicantList = document.getElementById("applicant-list");
+    const applicantList = document.getElementById("applicant-list");
 
     applyButton.style.display = "none";
     bottomContainer.innerHTML = `
@@ -239,6 +241,30 @@ function setupTrashButtons() {
       return;
     }
   };
+}
+
+function setupEditButtons(){
+  const editButton = document.querySelector(".edit");
+  editButton.onclick = async function (){
+    const id = editButton.getAttribute("data-id");
+    const res = await fetch(`/task/${id}`, {
+      method: "PUT",
+      headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify({editContent:editContent})
+    });
+    if (res.status == 200) {
+      alert("Successfully Deleted");
+      window.location = `/task/${id}`;
+    }
+    if(res.status === 401){
+      alert("Please login\!");
+      window.location = "/login.html";
+      return;
+  }
+  const result = await res.json();
+  }
 }
 
 //user apply task
