@@ -60,6 +60,10 @@ a {
 }
 
 /* user logo for side navbar */
+.user-profile-img {
+  width: auto;
+}
+
 .user-profile-button {
   background-color: rgb(231, 230, 230);
   border: none;
@@ -70,6 +74,7 @@ a {
   width: 45px;
   border-radius: 22px;
   margin-bottom: 5px;
+  overflow: hidden;
 }
 
 .user-profile-button:hover {
