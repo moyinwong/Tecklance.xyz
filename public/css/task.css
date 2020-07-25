@@ -89,11 +89,6 @@ html, body {
     margin-right: 0px;
   }
 
-  .logo > img {
-    height: 150px;
-    width: 150px;
-  }
-
   .login-button-container div:nth-child(2) {
     font-size: 12px;
   }
