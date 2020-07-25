@@ -7,58 +7,141 @@
     <title>User Setting</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
-    <div>
-        <form id="user-form" action="/edit-profile" method="PUT" enctype="multipart/form-data">
-            <label>
-                <img id="user_image" src="" alt="">
-                image:
-                <input type='file' name="image" />
-            </label>
-            <div><label>Username</label><input type="" name="username" id="username" placeholder="Username"
-                    maxlength="15" required>
-            </div>
-
-            <div><label>Password</label><a class="btn btn-danger" href="./change-password.html" role="button">Change
-                    Password</a></div>
-            <div><label>Email</label><input id="email" type="email" name="email" placeholder="Email" maxlength="25"
-                    required>
-            </div>
-            <div><label>First Name</label><input id="first_name" type="" name="first_name" placeholder="First name"
-                    maxlength="20" required>
-            </div>
-            <div><label>Last Name</label><input id="last_name" type="" name="last_name" placeholder="Last name"
-                    maxlength="20" required></div>
-
-            <p>
-                <!-- <a class="btn btn-primary" data-toggle="collapse" href="#" role="button" aria-expanded="false"
-                    aria-controls="collapseExample">
-                    Link with href
-                </a> -->
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
-                    aria-expanded="false" aria-controls="collapseExample">
-                    For Freelancer Only
-                </button>
-            </p>
-            <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                    <p>Please fill in the below information</p>
-                    <label>Bank Name</label>
-                    <input id="bank_name" type="text" name="bank_name" placeholder="Bank Name" maxlength="30">
-                    <label>Bank Account No</label>
-                    <input id="bank_account" type="text" name="bank_account" placeholder="bank Account Number"
-                        maxlength="20">
-                    <textarea id="freelancer_intro" name="freelancer_intro"
-                        placeholder="Please introduce your self. (skills, experience, e.g.)"
-                        maxlength="1000"></textarea>
+    <div class="container-fluid">
+        <div class="row header-row">
+            <div class="col header-col">
+                <div class="header">
+                    <button class="logo logo-button"><img src='/asset/logo.png'></button>
+                    <div class="login-button-container">
+                        <button class="login-button" type="button">LOG IN</button>
+                    </div>
                 </div>
             </div>
-
-            <div><input id="submit" type='submit' value="Save" /></div>
-        </form>
+        </div>
     </div>
+
+    <div class="category-navbar">
+        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+            <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample11"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse text-center" id="navbarsExample11">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link category-all" href="/categories?category=all">All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link category-programming category-link"
+                                href="/categories?category=programming">Programming</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link category-link"
+                                href="/categories?category=writing/translation">Writing/Translation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link category-link" href="/categories?category=animal+caring">Animal
+                                Caring</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link category-link"
+                                href="/categories?category=video/animation">Video/Animation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link category-link" href="/categories?category=physical+work">Physical
+                                Work</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="setting-body-container container-fluid"> 
+        <div class="row setting-row">
+            <div class="col-4">
+                <img id="user_image" class="img-fluid" src="" alt="">
+            </div>
+            <div class="setting-form-container">
+                <form id="user-form" action="/edit-profile" method="PUT" enctype="multipart/form-data">
+                    <label>
+                        <div>image:</div>
+                        <input type='file' name="image" />
+                    </label>
+                    <label>
+                        <div>Username</div>
+                        <input type="" name="username" id="username" placeholder="Username"
+                            maxlength="15" required>
+                    </label>
+    
+                    <label>
+                        <div>Password</div>
+                        <a class="btn btn-danger" href="./change-password.html" role="button">Change
+                            Password</a>
+                    </label>
+    
+                    <label>
+                        <div>Email</div>
+                        <input id="email" type="email" name="email" placeholder="Email" maxlength="25"
+                            required>
+                    </label>
+    
+                    <label>
+                        <div>First Name</div>
+                        <input id="first_name" type="" name="first_name" placeholder="First name"
+                            maxlength="20" required>
+                    </label>
+                    <label>
+                        <div>Last Name</div>
+                        <input id="last_name" type="" name="last_name" placeholder="Last name"
+                            maxlength="20" required>
+                    </label>
+    
+                    <p>
+                        <!-- <a class="btn btn-primary" data-toggle="collapse" href="#" role="button" aria-expanded="false"
+                            aria-controls="collapseExample">
+                            Link with href
+                        </a> -->
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                            aria-expanded="false" aria-controls="collapseExample">
+                            For Freelancer Only
+                        </button>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <p>Please fill in the below information</p>
+                            <label>Bank Name</label>
+                            <input id="bank_name" type="text" name="bank_name" placeholder="Bank Name" maxlength="30">
+                            <label>Bank Account No</label>
+                            <input id="bank_account" type="text" name="bank_account" placeholder="bank Account Number"
+                                maxlength="20">
+                            <textarea id="freelancer_intro" name="freelancer_intro"
+                                placeholder="Please introduce your self. (skills, experience, e.g.)"
+                                maxlength="1000"></textarea>
+                        </div>
+                    </div>
+    
+                    <div id="setting-submit-button"><input class="setting-submit" id="submit" type='submit' value="Save" /></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">About</a>
+        <a href="/admin/cms.html">Dashboard</a>
+        <a href="/admin/create-task.html">Create Task</a>
+        <a href="#">Payment</a>
+        <a href="/admin/message.html">Message</a>
+        <a href="/admin/setting.html">Setting</a>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

@@ -128,6 +128,7 @@ h2 {
   height: 200px;
   background-color: #f5f5f5b6;
 }
+
 /* carousel */
 @media (max-width: 768px) {
   .carousel-inner .carousel-item > div {
@@ -144,7 +145,6 @@ h2 {
   display: flex;
 }
 
-/* display 3 */
 @media (min-width: 768px) {
   .carousel-inner .carousel-item-right.active,
   .carousel-inner .carousel-item-next {
@@ -395,3 +395,70 @@ h2 {
     width: 600px;
   }
 }
+
+/* setting page css */
+.setting-row {
+  display: flex;
+  justify-content: center;
+}
+
+.setting-body-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#user_image {
+  margin-top: 50px;
+}
+
+.setting-form-container {
+  padding: 48px 48px 32px 48px;
+  border-radius: 4px;
+  color: #ffffff;
+  width: 60%;
+  min-width: 300px;
+  /* background: rgba(61, 90, 128, 0.8); */
+  background: rgb(70, 70, 211, 0.9);
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.setting-form-container #user-form > label {
+  color: white;
+}
+
+.setting-form-container .card-body {
+  color: rgb(37, 37, 37);;
+}
+
+#setting-submit-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.setting-submit {
+  background: tomato;
+  width: 50%;
+  height: 50%;
+  margin-top: 10px;
+  border-color: transparent;
+  border-radius: 4px;
+  color: #ffffff;
+  transition: 0.3s;
+  align-self: center;
+  justify-self: center;
+}
+
+.setting-submit:hover {
+  background: #00FFD9;
+  color: #494949;
+}
+
+@media (max-width: 425px) {
+  .setting-form-container {
+    margin-left: 0;
+  }
+}
+
