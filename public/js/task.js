@@ -260,7 +260,7 @@ async function checkLogin() {
       } else {
         document.getElementById(
         "files-acceptance-button-container"
-        ).style.display = "block";
+        ).style.display = "flex";
       }
 
       applicantListContainer.style.display = "block";

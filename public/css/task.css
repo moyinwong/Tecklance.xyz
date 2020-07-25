@@ -225,7 +225,7 @@ html, body {
 
 /* accept and reject button for task creator */
 #files-acceptance-button-container {
-  display: flex !important;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
