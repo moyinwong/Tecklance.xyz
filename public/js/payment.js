@@ -5,3 +5,13 @@ async function getRemainAmt() {
 }
 
 getRemainAmt();
+
+//document.getElementById("stripe-button-div").classList.add("show");
+
+function checkAmount() {
+  if (document.getElementById("chargeAmount").value < 4) {
+    document.getElementById("stripe-button-div").classList.remove("show");
+  } else {
+    document.getElementById("stripe-button-div").classList.add("show");
+  }
+}
