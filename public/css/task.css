@@ -228,6 +228,30 @@ html, body {
   margin-bottom: 20px;
 }
 
+/* accept and reject button for task creator */
+#files-acceptance-button-container {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+#files-acceptance-button-container > button {
+  margin: 10px;
+}
+
+.edit, .delete {
+  background: tomato;
+  width: 150px;
+  text-align: center;
+  color: white;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.edit:hover, .delete:hover {
+  background-color: #E92300;
+}
+
 /* side navbar */
 .sidenav {
   height: 100%;
@@ -341,11 +365,4 @@ html, body {
   }
 }
 
-.delete{
-  cursor: pointer;
-}
-
-.delete:hover{
-  color: aqua;
-}
 
