@@ -14,7 +14,7 @@ export async function checkLogin() {
         <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
         <div>${user.username}</div>
         <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
-      document.querySelector("#remain_amt").innerHTML = user.remain_amt;
     }
+    document.querySelector("#remain_amt").innerHTML = user.remain_amt;
   }
 }
