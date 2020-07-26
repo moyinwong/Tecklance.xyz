@@ -46,7 +46,10 @@ async function load() {
 
       //check if there is enough money
 
-      if (parseInt(form.offered_amt.value) > parseInt(user.remain_amt)) {
+      if (
+        parseInt(form.offered_amt.value) > parseInt(user.remain_amt) ||
+        !form.remain_amt
+      ) {
         //add class to show alert
         document.querySelector("#offered_amt_alert").classList.add("show");
         setTimeout(() => {

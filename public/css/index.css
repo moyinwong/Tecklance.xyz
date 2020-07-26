@@ -453,7 +453,7 @@ h2 {
 }
 
 .setting-form-container .card-body {
-  color: rgb(37, 37, 37);;
+  color: rgb(37, 37, 37);
 }
 
 #setting-submit-button {
@@ -463,7 +463,7 @@ h2 {
 }
 
 .setting-submit {
-  background: #00FFD9;
+  background: #00ffd9;
   width: 50%;
   height: 50%;
   margin-top: 10px;
@@ -486,3 +486,6 @@ h2 {
   }
 }
 
+.alert {
+  text-align: center;
+}

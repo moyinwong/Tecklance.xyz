@@ -71,10 +71,17 @@ async function signup(event) {
   });
 
   if (res.status === 201) {
-    alert(await res.json());
-    window.location = "/index.html";
+    document.querySelector("#response").innerHTML = await res.json();
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      window.location = "/";
+    }, 3000);
   } else if (res.status === 400) {
-    alert(await res.json());
+    document.querySelector("#response").innerHTML = await res.json();
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      document.querySelector("#response").classList.remove("show");
+    }, 3000);
   }
 }
 
