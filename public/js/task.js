@@ -345,6 +345,7 @@ async function checkLoginAndFillIn() {
   document.querySelector("#offered_amt").innerHTML = task.offered_amt;
   document.querySelector("#status").innerHTML = task.status;
   setupTrashButtons();
+  setupEditButtons()
 }
 
 //set up accept applicant button function
@@ -389,16 +390,18 @@ function setupEditButtons() {
   const editButton = document.querySelector(".edit");
   editButton.onclick = async function () {
     const id = editButton.getAttribute("data-id");
+    const editContent = document.querySelector('#content').innerHTML.trim();
     const res = await fetch(`/task/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ editContent: editContent }),
+      body: JSON.stringify({editContent}),
     });
+
     if (res.status == 200) {
-      alert("Successfully Deleted");
-      window.location = `/task/${id}`;
+      alert("Successfully Updated");
+      window.location = `/task.html?id=${id}`;
     }
     if (res.status === 401) {
       alert("Please login!");
