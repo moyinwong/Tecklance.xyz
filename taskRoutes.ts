@@ -318,12 +318,14 @@ taskRoutes.delete("/task/:id", async (req, res) => {
 // update method for task page
 taskRoutes.put("/task/:id", async (req, res) => {
   const id = parseInt(req.params.id);
+  let editContent = req.body.editContent;
+
   if (isNaN(id)) {
     res.status(400).json({ message: "id not a number!!!" });
     return;
   }
   await client.query(/* sql */ `UPDATE task set content = $1 WHERE id = $2`, [
-    req.body.editContent,
+    editContent,
     id,
   ]);
 
