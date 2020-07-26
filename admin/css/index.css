@@ -134,7 +134,7 @@ h2 {
 
 /* card css */
 .card {
-  margin: 15px;
+  margin-bottom: 15px;
   min-width: 150px;
 }
 .card-img-top {
