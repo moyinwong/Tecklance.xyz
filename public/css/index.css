@@ -46,6 +46,11 @@ a {
 }
 
 @media (max-width: 425px) {
+  .logo > img {
+    width: 150px;
+    height: 150px;
+  }
+  
   .logo {
     margin-left: 0px;
   }
@@ -62,6 +67,7 @@ a {
 /* user logo for side navbar */
 .user-profile-img {
   width: auto;
+  height: 100%;
 }
 
 .user-profile-button {

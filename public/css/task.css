@@ -81,6 +81,11 @@ html, body {
 }
 
 @media (max-width: 425px) {
+  .logo > img {
+    width: 150px;
+    height: 150px;
+  }
+  
   .logo {
     margin-left: 0px;
   }
@@ -95,6 +100,11 @@ html, body {
 }
 
 /* user logo for side navbar */
+.user-profile-img {
+  width: auto;
+  height: 100%;
+}
+
 .user-profile-button {
   background-color: rgb(231, 230, 230);
   border: none;
@@ -105,6 +115,7 @@ html, body {
   width: 45px;
   border-radius: 22px;
   margin-bottom: 5px;
+  overflow: hidden;
 }
 
 .user-profile-button:hover {

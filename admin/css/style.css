@@ -39,6 +39,31 @@
     color: white;
 }
 
+@media (max-width: 425px) {
+    .logo > img {
+        width: 150px;
+        height: 150px;
+      }
+      
+    .logo {
+      margin-left: 0px;
+    }
+  
+    .login-button-container {
+      margin-right: 0px;
+    }
+  
+    .login-button-container div:nth-child(2) {
+      font-size: 12px;
+    }
+  }
+
+/* user logo for side navbar */
+.user-profile-img {
+    width: auto;
+    height: 100%;
+  }
+
 .user-profile-button {
     background-color: rgb(231, 230, 230);
     border: none;
@@ -49,6 +74,7 @@
     width: 45px;
     border-radius: 22px;
     margin-bottom: 5px;
+    overflow: hidden;
 }
 
 .user-profile-button:hover {
