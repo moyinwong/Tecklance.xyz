@@ -444,20 +444,20 @@ h2 {
 }
 
 .setting-submit {
-  background: tomato;
+  background: #00FFD9;
   width: 50%;
   height: 50%;
   margin-top: 10px;
   border-color: transparent;
   border-radius: 4px;
-  color: #ffffff;
+  color: #929292;
   transition: 0.3s;
   align-self: center;
   justify-self: center;
 }
 
 .setting-submit:hover {
-  background: #00FFD9;
+  background: #04f574;
   color: #494949;
 }
 
