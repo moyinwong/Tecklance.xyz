@@ -5,6 +5,7 @@ import { checkPassword, hashPassword } from "./hash";
 import fetch from "node-fetch";
 import { logger } from "./logger";
 import fs from "fs";
+import { isAdminAPI } from "./guards";
 
 export const userRoutes = express.Router();
 
@@ -503,6 +504,45 @@ userRoutes.put("/change-password", async (req, res) => {
     );
 
     return res.status(200).json("Password was successful changed");
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json({ message: "internal Server Error" });
+  }
+});
+
+userRoutes.get("/getUnpaidTasks", isAdminAPI, async (req, res) => {
+  try {
+    const unpaidTasks = (
+      await client.query(
+        /*sql*/ `SELECT task.id,task.status, task.offered_amt,username,first_name,last_name,bank_name,bank_account FROM task LEFT JOIN users ON accepted_user_id = users.id WHERE task.status = 'completed';`
+      )
+    ).rows;
+    if (unpaidTasks.length) {
+      return res.status(200).json(unpaidTasks);
+    } else {
+      return res.status(200).json("");
+    }
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json({ message: "internal Server Error" });
+  }
+});
+
+userRoutes.get("/checkAdmin", async (req, res) => {
+  try {
+    if (req.session && req.session.userId) {
+      const adminIds = (
+        await client.query(
+          /*sql*/ `SELECT * FROM users WHERE isadmin=TRUE AND id=$1`,
+          [req.session.userId]
+        )
+      ).rows;
+      const adminId = adminIds[0];
+      if (adminId) {
+        return res.status(200).json({ message: "success" });
+      }
+    }
+    return res.status(400).json({ message: "fail" });
   } catch (err) {
     logger.error(err.toString());
     return res.status(500).json({ message: "internal Server Error" });

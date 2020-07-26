@@ -15,25 +15,27 @@
 </head>
 
 <body>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Task id</th>
-                <th scope="col">Task Status</th>
-                <th scope="col">Offered Amount</th>
-                <th scope="col">Payee Username</th>
-                <th scope="col">Payee First Name</th>
-                <th scope="col">Payee Last Name</th>
-                <th scope="col">Payee Bank Name</th>
-                <th scope="col">Payee Bank Account</th>
-                <th scope="col">Paid</th>
-            </tr>
-        </thead>
-        <tbody>
+    <form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Task id</th>
+                    <th scope="col">Task Status</th>
+                    <th scope="col">Offered Amount</th>
+                    <th scope="col">Payee Username</th>
+                    <th scope="col">Payee First Name</th>
+                    <th scope="col">Payee Last Name</th>
+                    <th scope="col">Payee Bank Name</th>
+                    <th scope="col">Payee Bank Account</th>
+                    <th scope="col">Paid</th>
+                </tr>
+            </thead>
+            <tbody id="task-table">
 
-        </tbody>
-    </table>
-    <button type="button" class="btn btn-success">Success</button>
+            </tbody>
+        </table>
+    </form>
+    <button type="button" class="btn btn-success" id="back">Back to Homepage</button>
     <script src="../js/admin.js"></script>
 </body>
 

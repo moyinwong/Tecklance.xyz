@@ -276,6 +276,15 @@ function loadFreelancerSlider() {
 }
 
 async function checkLogin() {
+  async function checkAdmin() {
+    let res = await fetch("/checkAdmin");
+    if (res.status === 200) {
+      document.querySelector("#admin-link").style.display = "block";
+    }
+  }
+
+  await checkAdmin();
+
   let res = await fetch("/current-user");
   let user = await res.json();
 

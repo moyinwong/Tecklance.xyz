@@ -1,5 +1,6 @@
 import express from "express";
 import { logger } from "./logger";
+import { client } from "./main";
 
 //if logged in, can access protected folder
 export const isLoggedIn = (
@@ -28,6 +29,30 @@ export const isLoggedInAPI = (
 ) => {
   if (req.session && req.session.userId) {
     next();
+  } else {
+    res.status(401).json("Please login.");
+  }
+};
+
+//make a guard to restrict del and put
+export const isAdminAPI = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  if (req.session && req.session.userId) {
+    const adminIds = (
+      await client.query(
+        /*sql*/ `SELECT * FROM users WHERE isadmin=TRUE AND id=$1`,
+        [req.session.userId]
+      )
+    ).rows;
+    const adminId = adminIds[0];
+    if (adminId) {
+      next();
+    } else {
+      res.status(401).json("You are not an Admin.");
+    }
   } else {
     res.status(401).json("Please login.");
   }

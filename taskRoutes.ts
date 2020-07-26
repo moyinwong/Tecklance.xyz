@@ -3,7 +3,7 @@ import { Task, Task_submissions, User } from "./models";
 import { client, upload, taskSubmission } from "./main";
 import { Usertask } from "./models";
 import { logger } from "./logger";
-import { isLoggedInAPI } from "./guards";
+import { isLoggedInAPI, isAdminAPI } from "./guards";
 
 export const taskRoutes = express.Router();
 
@@ -12,7 +12,7 @@ taskRoutes.get("/usertask/:userId", async function (req, res) {
   let userId = parseInt(req.params.userId);
 
   let result = await client.query(
-    /* sql */`SELECT *
+    /* sql */ `SELECT *
   FROM applied_post
       JOIN task on task.id = applied_post.task_id
       JOIN users on users.id = applied_post.user_id
@@ -40,7 +40,10 @@ taskRoutes.get("/create-task/:user", async (req, res) => {
 //get method for displaying particular task page
 taskRoutes.get("/task/:id", async (req, res) => {
   let id = parseInt(req.params.id);
-  let result = await client.query(/* sql */`SELECT * FROM task WHERE id = $1`, [id]);
+  let result = await client.query(
+    /* sql */ `SELECT * FROM task WHERE id = $1`,
+    [id]
+  );
   let task: Task[] = result.rows;
   res.json(task[0]);
   console.log(task[0]);
@@ -70,7 +73,10 @@ taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
 //get accepted freelancer
 taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
   let acceptedUserId = parseInt(req.params.acceptedId);
-  let result = await client.query(/* sql */`SELECT * FROM users WHERE id = $1`, [acceptedUserId]);
+  let result = await client.query(
+    /* sql */ `SELECT * FROM users WHERE id = $1`,
+    [acceptedUserId]
+  );
   let acceptedUser = result.rows;
   res.json(acceptedUser[0]);
 });
@@ -78,7 +84,7 @@ taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
 //check status of task
 taskRoutes.get("/taskstatus", async (req, res) => {
   try {
-      //get task id by req.header
+    //get task id by req.header
     const getTaskId = async (req) => {
       if (req.header && req.headers.referer) {
         return req.headers.referer.replace(
@@ -88,17 +94,19 @@ taskRoutes.get("/taskstatus", async (req, res) => {
       }
     };
     const taskId: string = await getTaskId(req);
-    
-    let result = await client.query(/*sql*/`SELECT status FROM task WHERE id = $1`,
-      [taskId])
+
+    let result = await client.query(
+      /*sql*/ `SELECT status FROM task WHERE id = $1`,
+      [taskId]
+    );
     let status = result.rows[0];
 
     return res.status(200).json(status);
-  } catch(err) {
+  } catch (err) {
     logger.error(err.toString());
     return res.status(500).json(err.toString());
   }
-})
+});
 
 //insert application data into database
 taskRoutes.put("/apply/:taskId", async function (req, res) {
@@ -257,11 +265,17 @@ taskRoutes.get("/getUploadFiles", isLoggedInAPI, async (req, res) => {
 taskRoutes.put("/task/accept", async (req, res) => {
   let userId = req.body.user_Id;
   let taskId = req.body.task_Id;
-  let taskTitleRes = await client.query(/* sql */`SELECT title FROM task WHERE id = $1`, [taskId]);
+  let taskTitleRes = await client.query(
+    /* sql */ `SELECT title FROM task WHERE id = $1`,
+    [taskId]
+  );
   let taskTitle = taskTitleRes.rows[0];
-  
-  await client.query(/* sql */`UPDATE task SET accepted_user_id = $1, status = 'filled' 
-  WHERE id = $2;`, [userId, taskId])
+
+  await client.query(
+    /* sql */ `UPDATE task SET accepted_user_id = $1, status = 'filled' 
+  WHERE id = $2;`,
+    [userId, taskId]
+  );
 
   await client.query(
     `UPDATE task SET accepted_user_id = $1, status = 'filled' 
@@ -290,24 +304,42 @@ taskRoutes.put("/task/accept", async (req, res) => {
 //delete method for task page
 taskRoutes.delete("/task/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  if(isNaN(id)){
-    res.status(400).json({"message":"id not a number!!!"});
+  if (isNaN(id)) {
+    res.status(400).json({ message: "id not a number!!!" });
     return;
   }
-  await client.query(/* sql */`DELETE FROM applied_post WHERE task_id = $1`, [id]);
-  await client.query(/* sql */`DELETE FROM task WHERE id = $1`, [id]);
+  await client.query(/* sql */ `DELETE FROM applied_post WHERE task_id = $1`, [
+    id,
+  ]);
+  await client.query(/* sql */ `DELETE FROM task WHERE id = $1`, [id]);
   res.json({ success: true });
 });
 
 // update method for task page
-taskRoutes.put('/task/:id', async (req,res)=>{
+taskRoutes.put("/task/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  if(isNaN(id)){
-      res.status(400).json({"message":"id not a number!!!"});
-      return;
+  if (isNaN(id)) {
+    res.status(400).json({ message: "id not a number!!!" });
+    return;
   }
-  await client.query(/* sql */`UPDATE task set content = $1 WHERE id = $2`,
-          [req.body.editContent,id]);
+  await client.query(/* sql */ `UPDATE task set content = $1 WHERE id = $2`, [
+    req.body.editContent,
+    id,
+  ]);
 
-  res.json({success:true});
-})
+  res.json({ success: true });
+});
+
+//admin pay the task fee
+taskRoutes.put("/payTask", isAdminAPI, async (req, res) => {
+  try {
+    const { taskId } = req.body;
+    await client.query(/*sql*/ `UPDATE task SET status='paid' WHERE id = $1`, [
+      taskId,
+    ]);
+    return res.status(200).json("Successfully Updated");
+  } catch (err) {
+    logger.error(err.toString());
+    return res.status(500).json(err.toString());
+  }
+});
