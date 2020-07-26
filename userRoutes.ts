@@ -272,7 +272,15 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
       image = "";
     }
 
-    await checkDuplicate(username, email, res);
+    //checking Duplicate Email & Username
+    const checkResult = await checkDuplicate(username, email, res);
+
+    //if duplicate, return it
+    if (checkResult) {
+      return checkResult;
+    }
+
+    console.log("hahahahaaha");
 
     //insert user into sql
     await client.query(
