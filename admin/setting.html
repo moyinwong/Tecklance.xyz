@@ -19,8 +19,15 @@
             <div class="col header-col">
                 <div class="header">
                     <button class="logo logo-button"><img src='/asset/logo.png'></button>
-                    <div class="login-button-container">
-                        <button class="login-button" type="button">LOG IN</button>
+                    <div id="message-login-container">
+                        <div id="message-bubble-container">
+                            <button id="message-bubble" type="button" style="display: none;"><i class="fas fa-bell"></i>
+                                <div id="message-number-bubble"></div>
+                            </button>
+                        </div>
+                        <div class="login-button-container">
+                            <button class="login-button" type="button">LOG IN</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,7 +72,7 @@
         </nav>
     </div>
 
-    <div class="setting-body-container container-fluid"> 
+    <div class="setting-body-container container-fluid">
         <div class="row setting-row">
             <div class="col-4">
                 <img id="user_image" class="img-fluid" src="" alt="">
@@ -78,41 +85,38 @@
                     </label>
                     <label>
                         <div>Username</div>
-                        <input type="" name="username" id="username" placeholder="Username"
-                            maxlength="15" required>
+                        <input type="" name="username" id="username" placeholder="Username" maxlength="15" required>
                     </label>
-    
+
                     <label>
                         <div>Password</div>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#change-password">
                             Change Password
                         </button>
                     </label>
-    
+
                     <label>
                         <div>Email</div>
-                        <input id="email" type="email" name="email" placeholder="Email" maxlength="25"
-                            required>
+                        <input id="email" type="email" name="email" placeholder="Email" maxlength="25" required>
                     </label>
-    
+
                     <label>
                         <div>First Name</div>
-                        <input id="first_name" type="" name="first_name" placeholder="First name"
-                            maxlength="20" required>
+                        <input id="first_name" type="" name="first_name" placeholder="First name" maxlength="20"
+                            required>
                     </label>
                     <label>
                         <div>Last Name</div>
-                        <input id="last_name" type="" name="last_name" placeholder="Last name"
-                            maxlength="20" required>
+                        <input id="last_name" type="" name="last_name" placeholder="Last name" maxlength="20" required>
                     </label>
-    
+
                     <p>
                         <!-- <a class="btn btn-primary" data-toggle="collapse" href="#" role="button" aria-expanded="false"
                             aria-controls="collapseExample">
                             Link with href
                         </a> -->
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
-                            aria-expanded="false" aria-controls="collapseExample">
+                        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                            data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                             For Freelancer Only
                         </button>
                     </p>
@@ -129,51 +133,53 @@
                                 maxlength="1000"></textarea>
                         </div>
                     </div>
-    
-                    <div id="setting-submit-button"><input class="setting-submit" id="submit" type='submit' value="SAVE" /></div>
+
+                    <div id="setting-submit-button"><input class="setting-submit" id="submit" type='submit'
+                            value="SAVE" /></div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="change-password" tabindex="-1" role="dialog" aria-labelledby="change-password" aria-hidden="true">
+    <div class="modal fade" id="change-password" tabindex="-1" role="dialog" aria-labelledby="change-password"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalCenterTitle">Change Your Password</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form id="change-password-form" action="/change-password" method="PUT" enctype="multipart/form-data">
-                <div class="modal-body">
-
-
-                    <div>
-                        <label>Current Password</label>
-                        <input id="current_password" type="password" name="current_password"
-                            placeholder="Current password" required>
-                    </div>
-                    <div>
-                        <label>New Password</label>
-                        <input id="password" type="password" name="password"
-                            placeholder="New password" onkeyup='checkPassword()' required>
-                    </div>
-                    <div>
-                        <label>Re-enter New Password</label>
-                        <input id="confirm_password" type="password" name="confirm_password" placeholder="Confirm new password"
-                            onkeyup='checkPassword()' required>
-                        <span id='message'></span>
-                    </div>
-                    
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Change Your Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input id="submit" class="btn btn-primary" type='submit' value="Save change"/>
+                <form id="change-password-form" action="/change-password" method="PUT" enctype="multipart/form-data">
+                    <div class="modal-body">
+
+
+                        <div>
+                            <label>Current Password</label>
+                            <input id="current_password" type="password" name="current_password"
+                                placeholder="Current password" required>
+                        </div>
+                        <div>
+                            <label>New Password</label>
+                            <input id="password" type="password" name="password" placeholder="New password"
+                                onkeyup='checkPassword()' required>
+                        </div>
+                        <div>
+                            <label>Re-enter New Password</label>
+                            <input id="confirm_password" type="password" name="confirm_password"
+                                placeholder="Confirm new password" onkeyup='checkPassword()' required>
+                            <span id='message'></span>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input id="submit" class="btn btn-primary" type='submit' value="Save change" />
+                    </div>
+                </form>
+
             </div>
-            </form>
-            
-          </div>
         </div>
     </div>
 

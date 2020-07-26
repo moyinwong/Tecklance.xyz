@@ -1,3 +1,5 @@
+//import { checkLogin } from "./functions.mjs";
+
 //home logo button
 document.querySelector(".logo-button").onclick = () => {
   location.href = "/";
@@ -5,6 +7,11 @@ document.querySelector(".logo-button").onclick = () => {
 
 //check login
 async function checkLogin() {
+  //home logo button
+  document.querySelector(".logo-button").onclick = () => {
+    location.href = "/";
+  };
+
   let res = await fetch("/current-user");
   let user = await res.json();
 
@@ -19,6 +26,25 @@ async function checkLogin() {
         <div><button onclick="openNav()" class="user-profile-button" type="button"><i class="far fa-user"></i></button></div>
         <div>${user.username}</div>
         <button class="login-button" type="button" onclick="location.href='/logout'">LOG OUT</button>`;
+    }
+    if (document.querySelector("#remain_amt")) {
+      document.querySelector("#remain_amt").innerHTML = user.remain_amt;
+    }
+  }
+  //display message bubble
+  if (document.getElementById("message-number-bubble")) {
+    if (user && user.id) {
+      //console.log(user);
+      const resMessages = await fetch("/message/unread");
+      const messages = await resMessages.json();
+      if (messages.length) {
+        document.getElementById("message-number-bubble").innerHTML =
+          messages.length;
+        document.getElementById("message-bubble").style.display = "block";
+        document.getElementById("message-bubble").onclick = () => {
+          window.location = "/messages";
+        };
+      }
     }
   }
 }

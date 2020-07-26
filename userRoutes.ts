@@ -358,6 +358,7 @@ userRoutes.get("/getUserId", function (req, res) {
 
 //get full info
 userRoutes.get("/getFullInfo", async function (req, res) {
+  console.log("haha");
   try {
     if (req.session && req.session.userId) {
       const user = (
