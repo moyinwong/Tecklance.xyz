@@ -185,6 +185,11 @@ async function checkLoginAndFillIn() {
   });
   let task = await taskRes.json();
 
+  //disable apply button if not open
+  if (task.status !== "open") {
+    document.getElementById("apply-button").style.display = "none";
+  }
+
   if (task.accepted_user_id == null) {
     if (taskRes.status == 200 && task && res.status == 200) {
       if (task.creator_id == user.id) {
@@ -303,7 +308,7 @@ async function checkLoginAndFillIn() {
 
       await getUploadFiles();
       let taskStatus = await checkTaskStatus();
-      if (taskStatus.status === "completed") {
+      if (taskStatus.status === "completed" || taskStatus.status === "paid") {
         let acceptanceButton = document.getElementById(
           "files-acceptance-button-container"
         );
@@ -345,7 +350,7 @@ async function checkLoginAndFillIn() {
   document.querySelector("#offered_amt").innerHTML = task.offered_amt;
   document.querySelector("#status").innerHTML = task.status;
   setupTrashButtons();
-  setupEditButtons()
+  setupEditButtons();
 }
 
 //set up accept applicant button function
@@ -390,13 +395,13 @@ function setupEditButtons() {
   const editButton = document.querySelector(".edit");
   editButton.onclick = async function () {
     const id = editButton.getAttribute("data-id");
-    const editContent = document.querySelector('#content').innerHTML.trim();
+    const editContent = document.querySelector("#content").innerHTML.trim();
     const res = await fetch(`/task/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({editContent}),
+      body: JSON.stringify({ editContent }),
     });
 
     if (res.status == 200) {
