@@ -358,7 +358,6 @@ userRoutes.get("/getUserId", function (req, res) {
 
 //get full info
 userRoutes.get("/getFullInfo", async function (req, res) {
-  console.log("haha");
   try {
     if (req.session && req.session.userId) {
       const user = (
@@ -430,7 +429,7 @@ userRoutes.put("/editUserInfo", upload.single("image"), async function (
     ).rows[0];
 
     //after checking user name, del image if new image is uploaded
-    const currentImage: string = currentUser.image;
+    const currentImage: string = currentUser.image_user;
 
     let image: string | "";
     if (req.file) {
