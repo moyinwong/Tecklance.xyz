@@ -8,7 +8,8 @@ html, body {
   width:100%;
   height:100%;
   overflow: auto;
-  }
+  font-family: 'Roboto', sans-serif;
+}
 
 .header-row {
   margin-bottom: 0;
@@ -208,7 +209,7 @@ html, body {
 
 #bottom-middle > input {
   background-color: tomato;
-  width: 50%;
+  width: 80%;
   height: 100%;
   border-color: transparent;
   border-radius: 10px;
