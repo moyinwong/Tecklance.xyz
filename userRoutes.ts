@@ -68,7 +68,7 @@ userRoutes.post("/login", async (req, res, next) => {
     const user: User = users[0];
     if (!user) {
       logger.error("user does not exist");
-      return res.status(401).json("user is not exist");
+      return res.status(401).json("user does not exist");
     }
 
     //use hash check password
