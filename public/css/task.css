@@ -249,6 +249,22 @@ html, body {
   background: #DF1F01
 }
 
+/* submit file button for accepted applicant */
+#submit-completed-task {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 4px;
+}
+
+#submit-completed-task > * {
+  margin: 10px;
+}
+
+
+
 /* side navbar */
 .sidenav {
   height: 100%;

@@ -100,7 +100,7 @@ app.use(bodyParser.json());
 
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
-  let result = await client.query("SELECT * FROM task");
+  let result = await client.query("SELECT * FROM task WHERE status != 'completed'");
   let tasks: Task[] = result.rows;
   res.json(tasks);
   // console.log(tasks)
@@ -132,15 +132,6 @@ app.use("/", paymentRoutes);
 app.use("/", taskRoutes);
 app.use("/", messageRoutes);
 
-//get method for loading all tasks from database
-app.get("/createtask", async (req, res) => {
-  try {
-    res.sendFile(path.join(__dirname, "./public/create_task.html"));
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 //redirect to login page
 app.get("/loginpage", async (req, res) => {
   try {
@@ -153,7 +144,7 @@ app.get("/loginpage", async (req, res) => {
 //getting tasks of particular category
 app.get("/category", async (req, res) => {
   let category = req.query.category;
-  let result = await client.query(`SELECT * FROM task WHERE category = $1`, [
+  let result = await client.query(`SELECT * FROM task WHERE category = $1 AND status != 'completed'`, [
     category,
   ]);
   let categoryResult = result.rows;

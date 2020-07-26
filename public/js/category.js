@@ -49,7 +49,7 @@ document.querySelector(".category-all").onclick = async () => {
 async function loadTask() {
     let urlParams = new URLSearchParams(window.location.search);
     let category = urlParams.get("category");
-    
+
     if (category === 'all') {
         let res = await fetch("/tasks");
         let tasks = await res.json();
