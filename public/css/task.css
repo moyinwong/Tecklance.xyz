@@ -459,3 +459,15 @@ body {
     margin-top: 16px;
   }
 }
+
+.main-content > * {
+  text-align: center;
+}
+
+.main-content {
+  margin-top: 50px;
+}
+
+h3 {
+  margin: 50px 0px;
+}

@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import grant from "grant-express";
 import { Task } from "./models";
-import { isLoggedIn, isLoggedInAPI } from "./guards";
+import { isLoggedIn } from "./guards";
 import { logger } from "./logger";
 dotenv.config();
 
@@ -155,23 +155,21 @@ app.get("/category", async (req, res) => {
 });
 
 app.get("/categories", async (req, res) => {
-  // let category = req.query.category;
   res.sendFile(path.join(__dirname, `./public/category.html`));
 });
 
+app.get('/about', async (req, res) => {
+  res.sendFile(path.join(__dirname, './public/about.html'));
+})
+
 //serve dashboard if user is logged in
 app.use("/admin", isLoggedIn, express.static("admin"));
-
-//redirect to 404 page
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "./public/404.html"));
-});
 
 app.listen(8080, () => {
   logger.info(`Listening at http://localhost:8080/`);
 });
 
-//redirect to message page
-messageRoutes.get("/messages", isLoggedInAPI, async (req, res) => {
-  res.sendFile(path.join(__dirname, `./admin/message.html`));
+//redirect to 404 page
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "./public/404.html"));
 });

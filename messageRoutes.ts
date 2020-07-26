@@ -3,8 +3,14 @@ import { client } from "./main";
 import { Message } from "./models";
 import { logger } from "./logger";
 import { isLoggedInAPI } from "./guards";
+import path from "path";
 
 export const messageRoutes = express.Router();
+
+//redirect to message page
+messageRoutes.get("/messages", isLoggedInAPI, async (req, res) => {
+  res.sendFile(path.join(__dirname, `./admin/message.html`));
+});
 
 //getting all message from active user
 messageRoutes.get("/getMessage", async (req, res) => {
