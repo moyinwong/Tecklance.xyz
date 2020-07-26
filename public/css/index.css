@@ -148,7 +148,7 @@ h2 {
   background-color: #f5f5f5b6;
 }
 
-.card-body > p {
+.task-container .card-body > p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
