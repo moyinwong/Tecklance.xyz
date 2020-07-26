@@ -167,6 +167,7 @@ html, body {
   border: none;
   justify-content: center;
   align-items: center;
+  word-break: break-word;
 }
 
 #middle-container > div {
