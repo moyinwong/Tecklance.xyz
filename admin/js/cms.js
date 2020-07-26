@@ -74,7 +74,7 @@ for (let i = 1; i < tasks.length; i++) {
   <div class="col-md-4">
   <div class="card">
   <div class="image">
-    <a href="../task.html?id=${tasks.task_id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
+    <a href="../task.html?id=${task.task_id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
     <div class="card-body">
       <h5 class="card-title">${task.title}</h5>
       <p class="card-text">${task.content}</p>
