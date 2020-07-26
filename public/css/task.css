@@ -259,10 +259,30 @@ html, body {
   border-radius: 4px;
 }
 
+#submit-completed-task > label > input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 #submit-completed-task > * {
   margin: 10px;
 }
 
+#submit-completed-task > div > #submit {
+  width: 200px;
+  height: 50px;
+  background-color: tomato;
+  border-color: transparent;
+  border-radius: 4px;
+  color: white;
+  transition: 0.3s;
+}
+
+#submit-completed-task > div > #submit:hover {
+  background-color: #6347ff;
+}
 
 
 /* side navbar */
