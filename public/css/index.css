@@ -147,6 +147,12 @@ h2 {
   background-color: #f5f5f5b6;
 }
 
+.card-body > p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* carousel */
 @media (max-width: 768px) {
   .carousel-inner .carousel-item > div {
