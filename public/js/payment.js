@@ -78,8 +78,6 @@ async function payment(event, token) {
   formObj.chargeAmount = form.chargeAmount.value;
   formObj.stripeToken = token;
 
-  console.log(formObj);
-
   const res = await fetch("/charge", {
     method: "POST",
     headers: {
