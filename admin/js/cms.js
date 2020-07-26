@@ -68,7 +68,6 @@ for (let i = 1; i < tasks.length; i++) {
   let task = tasks[i];
   
     taskContainer.innerHTML += `
-<<<<<<< HEAD
       <div class="carousel-item">
         <div class="col-md-4">
           <div class="card">
@@ -85,26 +84,6 @@ for (let i = 1; i < tasks.length; i++) {
           </div>
         </div>
       </div>`
-=======
-  <div class="carousel-item">
-  <div class="col-md-4">
-  <div class="card">
-  <div class="image">
-    <a href="../task.html?id=${task.task_id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
-    <div class="card-body">
-      <h5 class="card-title">${task.title}</h5>
-      <p class="card-text">${task.content}</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">${task.category}</li>
-    </ul>
-    <div class="card-body">
-      <a href="/task.html?id=${task.task_id}" class="card-link task-link">VIEW TASK</a>
-    </div>
-  </div>
-</div>
-</div>`
->>>>>>> 1ad257b777af610d0b513bcd66767b371f2665b2
   
 }
 loadTaskSlider();
