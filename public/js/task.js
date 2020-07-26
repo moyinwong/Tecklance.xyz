@@ -1,3 +1,5 @@
+import { checkLogin } from "./functions.mjs";
+
 //login button
 document.querySelector(".login-button").onclick = () => {
   location.href = "/login.html";
@@ -116,7 +118,7 @@ async function checkTaskStatus() {
 }
 
 //check login function
-async function checkLogin() {
+async function checkLoginAndFillIn() {
   let res = await fetch("/current-user");
   let user = await res.json();
 
@@ -368,9 +370,17 @@ function setupEditButtons() {
 //user apply task
 document.querySelector("#apply-button").onclick = async () => {
   const getUserRes = await fetch("/getUserId");
+
+  //if user is not logged in
   if (getUserRes.status === 401) {
     const resObj = await getUserRes.json();
-    alert(resObj.message);
+
+    document.querySelector("#response").innerHTML = resObj.message;
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      document.querySelector("#response").classList.remove("show");
+    }, 3000);
+
     return;
   }
   const userId = await getUserRes.json();
@@ -405,6 +415,7 @@ document.querySelector("#apply-button").onclick = async () => {
 
 main();
 checkLogin();
+checkLoginAndFillIn();
 
 //for submit completed task
 //restrict the upload file size

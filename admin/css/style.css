@@ -4,276 +4,311 @@
 
 /* cms page */
 body {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .logo {
-    margin-left: 50px;
+  margin-left: 50px;
 }
 
 .logo-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .login-button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-right: 50px;
-    max-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 50px;
+  max-width: 150px;
 }
 
 .login-button {
-    height: 50px;
-    width: 100px;
-    border-color: transparent;
+  height: 50px;
+  width: 100px;
+  border-color: transparent;
 }
 
 .login-button:hover {
-    background-color: #6347FF;
-    color: white;
+  background-color: #6347ff;
+  color: white;
 }
 
 @media (max-width: 425px) {
-    .logo > img {
-        width: 150px;
-        height: 150px;
-      }
-      
-    .logo {
-      margin-left: 0px;
-    }
-  
-    .login-button-container {
-      margin-right: 0px;
-    }
-  
-    .login-button-container div:nth-child(2) {
-      font-size: 12px;
-    }
+  .logo > img {
+    width: 150px;
+    height: 150px;
   }
+
+  .logo {
+    margin-left: 0px;
+  }
+
+  .login-button-container {
+    margin-right: 0px;
+  }
+
+  .login-button-container div:nth-child(2) {
+    font-size: 12px;
+  }
+}
 
 /* user logo for side navbar */
 .user-profile-img {
-    width: auto;
-    height: 100%;
-  }
+  width: auto;
+  height: 100%;
+}
 
 .user-profile-button {
-    background-color: rgb(231, 230, 230);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-size: 20px;
-    height: 45px;
-    width: 45px;
-    border-radius: 22px;
-    margin-bottom: 5px;
-    overflow: hidden;
+  background-color: rgb(231, 230, 230);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  height: 45px;
+  width: 45px;
+  border-radius: 22px;
+  margin-bottom: 5px;
+  overflow: hidden;
 }
 
 .user-profile-button:hover {
-    background-color: rgb(182, 180, 180);
-    color: white;
+  background-color: rgb(182, 180, 180);
+  color: white;
 }
 
-.banner{
-	text-align: center;
-	height: 50px;
-	margin-bottom: 30px;
-    line-height: 40px;
-    font-size: 40px;
+.banner {
+  text-align: center;
+  height: 50px;
+  margin-bottom: 30px;
+  line-height: 40px;
+  font-size: 40px;
 }
 
-.tasks{
-	display: flex;
-	margin-bottom: 50px;
-	border: none;
+.tasks {
+  display: flex;
+  margin-bottom: 50px;
+  border: none;
 }
 
-.task{
-	width: 140px;
-	height: 150px;
-	line-height: 150px;
-	text-align: center;
-	margin-right: 130px;
+.task {
+  width: 140px;
+  height: 150px;
+  line-height: 150px;
+  text-align: center;
+  margin-right: 130px;
 }
 
-footer .top{
-	height: 25px;
-	line-height: 25px;
-	text-align: center;
+footer .top {
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
 }
 
-footer .bottom{
-	height: 100px;
-	line-height: 100px;
-	text-align: center;
+footer .bottom {
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
 }
 
 /* carousel */
 @media (max-width: 768px) {
-    .carousel-inner .carousel-item > div {
-        display: none;
-    }
-    .carousel-inner .carousel-item > div:first-child {
-        display: block;
-    }
+  .carousel-inner .carousel-item > div {
+    display: none;
+  }
+  .carousel-inner .carousel-item > div:first-child {
+    display: block;
+  }
 }
 
 .carousel-inner .carousel-item.active,
 .carousel-inner .carousel-item-next,
 .carousel-inner .carousel-item-prev {
-    display: flex;
+  display: flex;
 }
 
 .card {
-    margin: 15px;
-    min-width: 150px;
+  margin: 15px;
+  min-width: 150px;
 }
-.card-img-top{
-    max-height: 200px;
+.card-img-top {
+  max-height: 200px;
 }
 
 .card-body > p {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.image{
-    display:flex;
-    align-items:center;
-    height: 200px;
-    background-color: #f5f5f5b6;
+.image {
+  display: flex;
+  align-items: center;
+  height: 200px;
+  background-color: #f5f5f5b6;
 }
 /* display 3 */
 @media (min-width: 768px) {
-    
-    .carousel-inner .carousel-item-right.active,
-    .carousel-inner .carousel-item-next {
-      transform: translateX(33.333%);
-    }
-    
-    .carousel-inner .carousel-item-left.active, 
-    .carousel-inner .carousel-item-prev {
-      transform: translateX(-33.333%);
-    }
+  .carousel-inner .carousel-item-right.active,
+  .carousel-inner .carousel-item-next {
+    transform: translateX(33.333%);
+  }
+
+  .carousel-inner .carousel-item-left.active,
+  .carousel-inner .carousel-item-prev {
+    transform: translateX(-33.333%);
+  }
 }
 
 .carousel-inner .carousel-item-right,
-.carousel-inner .carousel-item-left{ 
+.carousel-inner .carousel-item-left {
   transform: translateX(0);
 }
 
 /* side navbar */
 .sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 60px;
-    transition: 0.5s;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
 }
 
 /* side navbar */
 .sidenav a {
-    padding: 8x 32x 8x 8px;
-    margin-left: 30px;
-    text-decoration: none;
-    font-size: 30px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-    margin-bottom: 20px;
+  padding: 8x 32x 8x 8px;
+  margin-left: 30px;
+  text-decoration: none;
+  font-size: 30px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  margin-bottom: 20px;
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+  color: #f1f1f1;
 }
 
 .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    left: 25px;
-    font-size: 36px;
-    margin-right: 50px;
-    margin-left: 0;
+  position: absolute;
+  top: 0;
+  left: 25px;
+  font-size: 36px;
+  margin-right: 50px;
+  margin-left: 0;
 }
-
-
 
 /*7*/
 
-.container{
-	border:none;
-	margin-bottom: 50px;
+.container {
+  border: none;
+  margin-bottom: 50px;
 }
 
-.two-divs{
-	width: 100%;
-	display: inline-flex;
-	border: none;
+.two-divs {
+  width: 100%;
+  display: inline-flex;
+  border: none;
 }
 
-.two-divs .first-div{
-	width: 220px;
-	height: 50px;
-	line-height: 50px;
-	text-align: center;
+.two-divs .first-div {
+  width: 220px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
 }
 
-.two-divs .second-div{
-	width: 100%;
-	line-height: 50px;
-	text-align: center;
+.two-divs .second-div {
+  width: 100%;
+  line-height: 50px;
+  text-align: center;
 }
 
-.two-divs .content, .right-divs .content{
-	height: 500px;
-	line-height: 300px;
-	width: 100%;
-	text-align: center;
+.two-divs .content,
+.right-divs .content {
+  height: 500px;
+  line-height: 300px;
+  width: 100%;
+  text-align: center;
 }
 
 /*8*/
 
-.container.inbox{
-	display: flex;
+.container.inbox {
+  display: flex;
 }
 
-.left-divs, .right-divs{
-	border: none;
+.left-divs,
+.right-divs {
+  border: none;
 }
 
 .left-div {
-	width: 200px;
-	height: 50px;
-	text-align: center;
-	line-height: 50px;
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
 }
 
-.right-divs{
-	width: 100%;
+.right-divs {
+  width: 100%;
 }
 
-.right-div{
-	height: 50px;
-	text-align: center;
-	line-height: 50px;
+.right-div {
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
 }
 
+/* message bubble */
+#message-login-container {
+  display: flex;
+}
+#message-bubble-container {
+  margin-right: 0px;
+}
 
+#message-bubble {
+  position: relative;
+  margin-top: 37px;
+  width: 45px;
+  height: 45px;
+  border-radius: 23px;
+  border: none;
+}
+
+#message-number-bubble {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  position: absolute;
+  border-radius: 10px;
+  bottom: -3px;
+  right: -3px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+}
+
+@media (max-width: 425px) {
+  #message-bubble {
+    margin-top: 16px;
+  }
+}

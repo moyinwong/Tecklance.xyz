@@ -420,3 +420,41 @@ body {
 #uploaded_container > p {
   text-align: center;
 }
+
+/* message bubble */
+#message-login-container {
+  display: flex;
+}
+#message-bubble-container {
+  margin-right: 0px;
+}
+
+#message-bubble {
+  position: relative;
+  margin-top: 37px;
+  width: 45px;
+  height: 45px;
+  border-radius: 23px;
+  border: none;
+}
+
+#message-number-bubble {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  position: absolute;
+  border-radius: 10px;
+  bottom: -3px;
+  right: -3px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+}
+
+@media (max-width: 425px) {
+  #message-bubble {
+    margin-top: 16px;
+  }
+}

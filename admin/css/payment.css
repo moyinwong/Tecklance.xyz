@@ -2,7 +2,7 @@ body {
   min-width: 375px;
 }
 
-body > div {
+#main-container {
   position: relative;
   background-color: rgb(241, 241, 213);
   border-radius: 40px;
@@ -28,7 +28,7 @@ p {
   text-align: center;
 }
 
-button {
+#main-container button {
   margin-top: 40px;
 }
 

@@ -1,10 +1,5 @@
 //check login function
 export async function checkLogin() {
-  //home logo button
-  document.querySelector(".logo-button").onclick = () => {
-    location.href = "/";
-  };
-
   let res = await fetch("/current-user");
   let user = await res.json();
 

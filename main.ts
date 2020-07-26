@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import grant from "grant-express";
 import { Task } from "./models";
-import { isLoggedIn } from "./guards";
+import { isLoggedIn, isLoggedInAPI } from "./guards";
 import { logger } from "./logger";
 dotenv.config();
 
@@ -100,7 +100,9 @@ app.use(bodyParser.json());
 
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
-  let result = await client.query("SELECT * FROM task WHERE status != 'completed'");
+  let result = await client.query(
+    "SELECT * FROM task WHERE status != 'completed'"
+  );
   let tasks: Task[] = result.rows;
   res.json(tasks);
   // console.log(tasks)
@@ -144,9 +146,10 @@ app.get("/loginpage", async (req, res) => {
 //getting tasks of particular category
 app.get("/category", async (req, res) => {
   let category = req.query.category;
-  let result = await client.query(`SELECT * FROM task WHERE category = $1 AND status != 'completed'`, [
-    category,
-  ]);
+  let result = await client.query(
+    `SELECT * FROM task WHERE category = $1 AND status != 'completed'`,
+    [category]
+  );
   let categoryResult = result.rows;
   res.json(categoryResult);
 });
@@ -166,4 +169,9 @@ app.use((req, res) => {
 
 app.listen(8080, () => {
   logger.info(`Listening at http://localhost:8080/`);
+});
+
+//redirect to message page
+messageRoutes.get("/messages", isLoggedInAPI, async (req, res) => {
+  res.sendFile(path.join(__dirname, `./admin/message.html`));
 });

@@ -10,11 +10,31 @@
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css"
         integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/payment.css">
 </head>
 
 <body>
-    <div>
+    <div class="container-fluid">
+        <div class="row header-row">
+            <div class="col header-col">
+                <div class="header">
+                    <button class="logo logo-button"><img src='/asset/logo.png'></button>
+                    <div id="message-login-container">
+                        <div id="message-bubble-container">
+                            <button id="message-bubble" type="button" style="display: none;"><i class="fas fa-bell"></i>
+                                <div id="message-number-bubble"></div>
+                            </button>
+                        </div>
+                        <div class="login-button-container">
+                            <button class="login-button" type="button">LOG IN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="main-container">
         <div class="alert alert-warning fixed-top fade" id="response" role="alert"></div>
         <div class="d-flex justify-content-center"><i class="fas fa-money-check-alt"></i></div></i>
         <div class="d-flex justify-content-center">
@@ -76,7 +96,7 @@
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="../js/payment.js"></script>
+    <script src="../js/payment.js" type="module"></script>
 </body>
 
 </html>
