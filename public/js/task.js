@@ -60,7 +60,7 @@ async function acceptFiles() {
       document.querySelector("#response").classList.remove("show");
     }, 3000);
     setTimeout(() => {
-      location.reload()
+      location.reload();
     }, 3000);
   }
 }
@@ -95,9 +95,11 @@ async function getUploadFiles() {
 
   for (let i = 0; i < uploadedFiles.length; i++) {
     document.getElementById("uploaded_container").style.display = "block";
-    document.getElementById("uploaded_container").innerHTML += `
-  <a href="http://localhost:8080/admin/task_submission/${uploadedFiles[i].filename}"
-  download="${uploadedFiles[i].filename}">${uploadedFiles[i].filename}</a>
+    document.getElementById("uploaded_table").innerHTML += `
+    <li class="list-group-item">
+      <a href="http://localhost:8080/admin/task_submission/${uploadedFiles[i].filename}"
+      download="${uploadedFiles[i].filename}">${uploadedFiles[i].filename}</a>
+    </li>
   `;
   }
 }
@@ -108,7 +110,7 @@ async function checkTaskStatus() {
   if (res.status !== 200) {
     return;
   }
-  
+
   let taskStatus = await res.json();
   return taskStatus;
 }
@@ -154,8 +156,8 @@ async function checkLogin() {
           <div class="delete" data-id="${task.id}">DELETE TASK</div>
         `;
         const content = document.getElementById("content");
-        content.setAttribute("contenteditable", "true")
-        console.log("set")
+        content.setAttribute("contenteditable", "true");
+        // console.log("set");
         let applicantRes = await fetch(`/task/applicants/${taskId}`);
         let applicants = await applicantRes.json();
         let today = new Date();
@@ -252,14 +254,16 @@ async function checkLogin() {
 
       await getUploadFiles();
       let taskStatus = await checkTaskStatus();
-      if (taskStatus.status === 'completed') {
-        let acceptanceButton = document.getElementById('files-acceptance-button-container');
+      if (taskStatus.status === "completed") {
+        let acceptanceButton = document.getElementById(
+          "files-acceptance-button-container"
+        );
         acceptanceButton.style.display = "block";
         acceptanceButton.innerHTML = `
-        <div id="fulfilled-message">TASK FULFILLED</div>`
+        <div id="fulfilled-message">TASK FULFILLED</div>`;
       } else {
         document.getElementById(
-        "files-acceptance-button-container"
+          "files-acceptance-button-container"
         ).style.display = "flex";
       }
 
@@ -332,28 +336,28 @@ function setupTrashButtons() {
   };
 }
 
-function setupEditButtons(){
+function setupEditButtons() {
   const editButton = document.querySelector(".edit");
-  editButton.onclick = async function (){
+  editButton.onclick = async function () {
     const id = editButton.getAttribute("data-id");
     const res = await fetch(`/task/${id}`, {
       method: "PUT",
-      headers:{
-        "Content-Type":"application/json"
-    },
-    body:JSON.stringify({editContent:editContent})
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ editContent: editContent }),
     });
     if (res.status == 200) {
       alert("Successfully Deleted");
       window.location = `/task/${id}`;
     }
-    if(res.status === 401){
-      alert("Please login\!");
+    if (res.status === 401) {
+      alert("Please login!");
       window.location = "/login.html";
       return;
-  }
-  const result = await res.json();
-  }
+    }
+    const result = await res.json();
+  };
 }
 
 //user apply task
@@ -366,12 +370,12 @@ document.querySelector("#apply-button").onclick = async () => {
   }
   const userId = await getUserRes.json();
 
-  console.log(userId);
+  //console.log(userId);
 
   let urlParams = new URLSearchParams(window.location.search);
   let taskId = urlParams.get("id");
 
-  console.log(taskId);
+  //console.log(taskId);
 
   const res = await fetch(`/apply/${taskId}`, {
     method: "PUT",

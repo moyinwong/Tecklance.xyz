@@ -47,20 +47,22 @@ document.querySelector(".category-all").onclick = async () => {
 
 //load tasks from database and show on homepage
 async function loadTask() {
-    let urlParams = new URLSearchParams(window.location.search);
-    let category = urlParams.get("category");
+  let urlParams = new URLSearchParams(window.location.search);
+  let category = urlParams.get("category");
 
-    if (category === 'all') {
-        let res = await fetch("/tasks");
-        let tasks = await res.json();
+  if (category === "all") {
+    let res = await fetch("/tasks");
+    let tasks = await res.json();
 
-        let taskContainer = document.querySelector(".task-container .container .row");
-        let freelanceContainer = document.querySelector(".freelancer-container");
-        taskContainer.innerHTML = "";
-        freelanceContainer.innerHTML = "";
+    let taskContainer = document.querySelector(
+      ".task-container .container .row"
+    );
+    let freelanceContainer = document.querySelector(".freelancer-container");
+    taskContainer.innerHTML = "";
+    freelanceContainer.innerHTML = "";
 
-        for (task of tasks) {
-            taskContainer.innerHTML += `
+    for (task of tasks) {
+      taskContainer.innerHTML += `
             <div class="col-md-3">
             <div class="card">
             <div class="image">
@@ -73,14 +75,14 @@ async function loadTask() {
             <li class="list-group-item">${task.category}</li>
             </ul>
         </div>`;
-        }
-    } else {
-        let res = await fetch(`/category?category=${category}`);
-        let tasks = await res.json();
+    }
+  } else {
+    let res = await fetch(`/category?category=${category}`);
+    let tasks = await res.json();
 
-        let taskContainer = document.querySelector(".carousel-inner");
-        taskContainer.innerHTML = "";
-        taskContainer.innerHTML += `
+    let taskContainer = document.querySelector(".carousel-inner");
+    taskContainer.innerHTML = "";
+    taskContainer.innerHTML += `
         <div class="carousel-item active">
             <div class="col-md-4">
             <div class="card">
@@ -98,10 +100,10 @@ async function loadTask() {
             </div>
         </div>`;
 
-        for (let i = 1; i < tasks.length; i++) {
-            let task = tasks[i];
+    for (let i = 1; i < tasks.length; i++) {
+      let task = tasks[i];
 
-            taskContainer.innerHTML += `
+      taskContainer.innerHTML += `
             <div class="carousel-item">
             <div class="col-md-4">
                 <div class="card">
@@ -118,9 +120,9 @@ async function loadTask() {
                 </div>
             </div>
             </div>`;
-        }
-        loadTaskSlider();
     }
+    loadTaskSlider();
+  }
 }
 
 async function loadFreelancer() {

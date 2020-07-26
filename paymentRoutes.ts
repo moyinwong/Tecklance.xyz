@@ -14,18 +14,11 @@ export const getCurrentUserId = async (req) => {
 };
 
 export const charge = (token: string, amount: number) => {
-  return stripe.charges.create(
-    {
-      amount: amount,
-      currency: "hkd",
-      source: token,
-    },
-    function (err: any, charge: any) {
-      if (err && err.type === "StripeCardError") {
-        console.log("card is declined");
-      }
-    }
-  );
+  return stripe.charges.create({
+    amount: amount,
+    currency: "hkd",
+    source: token,
+  });
 };
 
 paymentRoutes.post("/charge", isLoggedInAPI, async (req, res) => {
@@ -56,8 +49,8 @@ paymentRoutes.post("/charge", isLoggedInAPI, async (req, res) => {
       [parseInt(req.body.chargeAmount) + parseInt(remain_amt), userId]
     );
   } catch (err) {
-    console.log(err);
-    return res.status(err.statusCode).json(err.decline_code);
+    logger.error(err);
+    return res.status(err.statusCode).json(err.message);
   }
 
   return res.json("Payment was successful, will be redirect to homepage");
@@ -75,7 +68,7 @@ paymentRoutes.get("/getRemainAmt", async (req, res) => {
 
     return res.status(200).json(remainAmt);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.status(err.statusCode).send(err.decline_code);
   }
 });

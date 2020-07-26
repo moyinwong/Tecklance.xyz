@@ -72,13 +72,11 @@ form.addEventListener("submit", function (event) {
 async function payment(event, token) {
   //stop signup action
   event.preventDefault();
-  console.log("onclick");
+  document.getElementById("loader-div").style.display = "block";
   const form = event.target;
   const formObj = {};
   formObj.chargeAmount = form.chargeAmount.value;
   formObj.stripeToken = token;
-
-  console.log(formObj);
 
   const res = await fetch("/charge", {
     method: "POST",
@@ -89,7 +87,7 @@ async function payment(event, token) {
   });
 
   const resMessage = await res.json();
-
+  document.getElementById("loader-div").style.display = "none";
   if (res.status === 200) {
     //add class to show alert
     document.querySelector("#response").innerHTML = resMessage;
@@ -99,5 +97,9 @@ async function payment(event, token) {
     }, 3000);
   } else {
     document.querySelector("#response").innerHTML = resMessage;
+    document.querySelector("#response").classList.add("show");
+    setTimeout(() => {
+      document.querySelector("#response").classList.remove("show");
+    }, 3000);
   }
 }
