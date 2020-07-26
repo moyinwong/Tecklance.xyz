@@ -144,6 +144,12 @@ footer .bottom{
     max-height: 200px;
 }
 
+.card-body > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .image{
     display:flex;
     align-items:center;

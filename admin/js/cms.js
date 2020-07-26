@@ -46,48 +46,44 @@ let res = await fetch(`/usertask/${user.id}`);
 let tasks = await res.json();
 let taskContainer = document.getElementById("applied");
 taskContainer.innerHTML = "";
-taskContainer.innerHTML += `<div class="carousel-item active">
-<div class="col-md-4">
-<div class="card">
-<div class="image">
-<a href="../task.html?id=${tasks[0].task_id}"><img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></a></div>
-<div class="card-body">
-  <h5 class="card-title">${tasks[0].title}</h5>
-  <p class="card-text">${tasks[0].content}</p>
-</div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">${tasks[0].category}</li>
-</ul>
-<div class="card-body">
-  <a href="/task.html?id=${tasks[0].task_id}" class="card-link task-link">VIEW TASK</a>
-</div>
-</div>
-</div>
-</div>
-</div>`;
+taskContainer.innerHTML += `
+  <div class="carousel-item active">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="image">
+          <a href="../task.html?id=${tasks[0].task_id}"><img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></a>
+        </div>
+          <div class="card-body">
+            <h5 class="card-title">${tasks[0].title}</h5>
+            <p class="card-text">${tasks[0].content}</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">${tasks[0].category}</li>
+          </ul>
+      </div>
+    </div>
+  </div>`;
 
 for (let i = 1; i < tasks.length; i++) {
   let task = tasks[i];
   
     taskContainer.innerHTML += `
-  <div class="carousel-item">
-  <div class="col-md-4">
-  <div class="card">
-  <div class="image">
-    <a href="../task.html?id=${tasks.task_id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
-    <div class="card-body">
-      <h5 class="card-title">${task.title}</h5>
-      <p class="card-text">${task.content}</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">${task.category}</li>
-    </ul>
-    <div class="card-body">
-      <a href="/task.html?id=${task.task_id}" class="card-link task-link">VIEW TASK</a>
-    </div>
-  </div>
-</div>
-</div>`
+      <div class="carousel-item">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="image">
+              <a href="../task.html?id=${task.task_id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">${task.title}</h5>
+              <p class="card-text">${task.content}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">${task.category}</li>
+            </ul>
+          </div>
+        </div>
+      </div>`
   
 }
 loadTaskSlider();
@@ -100,48 +96,44 @@ let res = await fetch(`/create-task/${user.id}`);
 let tasks = await res.json();
 let taskContainer = document.getElementById("posted");
 taskContainer.innerHTML = "";
-taskContainer.innerHTML += `<div class="carousel-item active">
-<div class="col-md-4">
-<div class="card">
-<div class="image">
-<a href="../task.html?id=${tasks[0].id}"><img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></a></div>
-<div class="card-body">
-  <h5 class="card-title">${tasks[0].title}</h5>
-  <p class="card-text">${tasks[0].content}</p>
-</div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">${tasks[0].category}</li>
-</ul>
-<div class="card-body">
-  <a href="/task.html?id=${tasks[0].id}" class="card-link task-link">VIEW TASK</a>
-</div>
-</div>
-</div>
-</div>
-</div>`;
+taskContainer.innerHTML += `
+  <div class="carousel-item active">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="image">
+          <a href="../task.html?id=${tasks[0].id}"><img src="/uploads/${tasks[0].image_task}" class="card-img-top" alt="..."></a>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">${tasks[0].title}</h5>
+          <p class="card-text">${tasks[0].content}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">${tasks[0].category}</li>
+        </ul>
+      </div>
+    </div>
+  </div>`;
 
 for (let i = 1; i < tasks.length; i++) {
   let task = tasks[i];
   console.log(task.id)
     taskContainer.innerHTML += `
-  <div class="carousel-item">
-  <div class="col-md-4">
-  <div class="card">
-  <div class="image">
-  <a href="../task.html?id=${task.id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a></div>
-    <div class="card-body">
-      <h5 class="card-title">${task.title}</h5>
-      <p class="card-text">${task.content}</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">${task.category}</li>
-    </ul>
-    <div class="card-body">
-      <a href="/task.html?id=${task.id}" class="card-link task-link">VIEW TASK</a>
-    </div>
-  </div>
-</div>
-</div>`
+      <div class="carousel-item">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="image">
+              <a href="../task.html?id=${task.id}"><img src="/uploads/${task.image_task}" class="card-img-top" alt="..."></a>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">${task.title}</h5>
+              <p class="card-text">${task.content}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">${task.category}</li>
+            </ul>
+          </div>
+        </div>
+      </div>`
   
 }
 loadTaskSlider();
