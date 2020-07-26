@@ -134,11 +134,15 @@ h2 {
 
 /* card css */
 .card {
-  margin: 15px;
+  margin-bottom: 15px;
   min-width: 150px;
 }
 .card-img-top {
   max-height: 200px;
+}
+
+h5.card-title {
+  word-break: break-word;
 }
 
 .image {

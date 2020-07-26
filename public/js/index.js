@@ -200,7 +200,7 @@ async function loadFreelancer() {
 
   for (let i = 1; i < freelancers.length; i++) {
     let freelancer = freelancers[i];
-
+    
     freelancerContainer.innerHTML += `
       <div class="carousel-item">
       <div class="col-md-4">
