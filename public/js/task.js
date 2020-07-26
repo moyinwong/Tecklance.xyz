@@ -242,10 +242,15 @@ async function checkLogin() {
       let applicantList = document.getElementById("applicant-list");
 
       applyButton.style.display = "none";
-      bottomContainer.innerHTML = `
+
+      const aa = task;
+      console.log(aa);
+      if (task.status === "open") {
+        bottomContainer.innerHTML = `
         <div class="edit" data-id="${task.id}">EDIT TASK</div>
         <div class="delete" data-id="${task.id}">DELETE TASK</div>
         `;
+      }
 
       let acceptedRes = await fetch(
         `/task/accepted-applicant/${task.accepted_user_id}`

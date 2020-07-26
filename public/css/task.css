@@ -2,13 +2,14 @@
   margin-bottom: 50px;
 }
 
-html, body { 
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
   overflow: auto;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .header-row {
@@ -126,11 +127,14 @@ html, body {
 
 /* navbar css */
 .navbar {
-  background: linear-gradient(45deg, rgb(255, 0, 0), rgb(60, 0, 255)) !important;
-  
+  background: linear-gradient(
+    45deg,
+    rgb(255, 0, 0),
+    rgb(60, 0, 255)
+  ) !important;
 }
 
-.navbar-light .navbar-nav .active>.nav-link {
+.navbar-light .navbar-nav .active > .nav-link {
   color: white;
 }
 
@@ -247,18 +251,20 @@ html, body {
   margin: 10px;
 }
 
-.edit, .delete {
-  background: #FE3D20;
+.edit,
+.delete {
+  background: #fe3d20;
   width: 150px;
   text-align: center;
-  color:  white;
+  color: white;
   margin-bottom: 5px;
   cursor: pointer;
   border-radius: 3px;
 }
 
-.edit:hover, .delete:hover {
-  background: #DF1F01
+.edit:hover,
+.delete:hover {
+  background: #df1f01;
 }
 
 /* submit file button for accepted applicant */
@@ -267,7 +273,7 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid rgba(0,0,0,.125);
+  border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 4px;
 }
 
@@ -295,7 +301,6 @@ html, body {
 #submit-completed-task > div > #submit:hover {
   background-color: #6347ff;
 }
-
 
 /* side navbar */
 .sidenav {
@@ -409,4 +414,8 @@ html, body {
   #task-form {
     width: 200px;
   }
+}
+
+#uploaded_container > p {
+  text-align: center;
 }
