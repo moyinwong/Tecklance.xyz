@@ -1,5 +1,12 @@
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
 body {
   position: relative;
+  height: 100%;
+  overflow: auto;
 }
 
 .header {
@@ -50,7 +57,7 @@ a {
     width: 150px;
     height: 150px;
   }
-  
+
   .logo {
     margin-left: 0px;
   }
