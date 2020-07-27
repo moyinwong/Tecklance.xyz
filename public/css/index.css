@@ -158,6 +158,11 @@ h5.card-title {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.task-container .card-body > h5 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* carousel */
 @media (max-width: 768px) {
