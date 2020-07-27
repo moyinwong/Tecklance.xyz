@@ -5,6 +5,7 @@ async function main() {
   //get all unpaid task fee
   async function fillInTable() {
     let tableElement = document.getElementById("task-table");
+    tableElement.innerHTML = "";
     let str = "";
     for (let i = 0; i < resObjs.length; i++) {
       str += `<tr>`;
@@ -36,7 +37,7 @@ async function main() {
     });
     if (res.status == 200) {
       alert("Successfully Updated");
-      location.reload();
+      fillInTable();
     }
   }
 
