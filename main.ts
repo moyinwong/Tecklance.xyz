@@ -145,7 +145,7 @@ app.get("/loginpage", async (req, res) => {
 app.get("/category", async (req, res) => {
   let category = req.query.category;
   let result = await client.query(
-    `SELECT * FROM task WHERE category = $1 AND status != 'completed'`,
+    `SELECT * FROM task WHERE category = $1 AND status = 'open'`,
     [category]
   );
   let categoryResult = result.rows;
