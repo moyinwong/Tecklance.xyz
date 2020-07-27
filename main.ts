@@ -100,9 +100,7 @@ app.use(bodyParser.json());
 
 //get method for loading all tasks from database
 app.get("/tasks", async (req, res) => {
-  let result = await client.query(
-    "SELECT * FROM task WHERE status != 'completed'"
-  );
+  let result = await client.query("SELECT * FROM task WHERE status = 'open'");
   let tasks: Task[] = result.rows;
   res.json(tasks);
   // console.log(tasks)
@@ -158,9 +156,9 @@ app.get("/categories", async (req, res) => {
   res.sendFile(path.join(__dirname, `./public/category.html`));
 });
 
-app.get('/about', async (req, res) => {
-  res.sendFile(path.join(__dirname, './public/about.html'));
-})
+app.get("/about", async (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/about.html"));
+});
 
 //serve dashboard if user is logged in
 app.use("/admin", isLoggedIn, express.static("admin"));
