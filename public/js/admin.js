@@ -26,7 +26,6 @@ async function main() {
   //update data base
   async function switchStatus(event) {
     const button = event.target;
-    console.log(button.dataset.id);
 
     const res = await fetch("/payTask", {
       method: "PUT",
@@ -37,7 +36,7 @@ async function main() {
     });
     if (res.status == 200) {
       alert("Successfully Updated");
-      fillInTable();
+      location.reload();
     }
   }
 
