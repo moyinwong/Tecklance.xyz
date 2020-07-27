@@ -144,7 +144,7 @@ footer .bottom {
   max-height: 200px;
 }
 
-.card-body > p {
+.card-body > a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -213,67 +213,10 @@ footer .bottom {
   margin-left: 0;
 }
 
-/*7*/
-
-.container {
-  border: none;
-  margin-bottom: 50px;
+a {
+  color: #495057;
 }
 
-.two-divs {
-  width: 100%;
-  display: inline-flex;
-  border: none;
-}
-
-.two-divs .first-div {
-  width: 220px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-}
-
-.two-divs .second-div {
-  width: 100%;
-  line-height: 50px;
-  text-align: center;
-}
-
-.two-divs .content,
-.right-divs .content {
-  height: 500px;
-  line-height: 300px;
-  width: 100%;
-  text-align: center;
-}
-
-/*8*/
-
-.container.inbox {
-  display: flex;
-}
-
-.left-divs,
-.right-divs {
-  border: none;
-}
-
-.left-div {
-  width: 200px;
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
-}
-
-.right-divs {
-  width: 100%;
-}
-
-.right-div {
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
-}
 
 /* message bubble */
 #message-login-container {
@@ -311,4 +254,10 @@ footer .bottom {
   #message-bubble {
     margin-top: 16px;
   }
+}
+
+.card-body > p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
