@@ -360,6 +360,7 @@ userRoutes.get("/getFullInfo", async function (req, res) {
   try {
     if (req.session && req.session.userId) {
       const user = (
+        // SELECT only the necessary fields 
         await client.query(/*sql*/ `SELECT * FROM users WHERE id=$1`, [
           req.session.userId,
         ])

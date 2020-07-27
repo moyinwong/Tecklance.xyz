@@ -34,6 +34,7 @@ paymentRoutes.post("/charge", isLoggedInAPI, async (req, res) => {
       return res.status(400).json("The amount must be large HK$ 4.00");
     }
 
+    // no need for function
     const userId = await getCurrentUserId(req);
 
     const user = (
@@ -48,12 +49,12 @@ paymentRoutes.post("/charge", isLoggedInAPI, async (req, res) => {
       /*sql*/ `UPDATE users SET remain_amt = $1 WHERE id = $2`,
       [parseInt(req.body.chargeAmount) + parseInt(remain_amt), userId]
     );
+    return res.json({msg:"Payment was successful, will be redirect to homepage"});
   } catch (err) {
     logger.error(err);
     return res.status(err.statusCode).json(err.message);
   }
 
-  return res.json("Payment was successful, will be redirect to homepage");
 });
 
 paymentRoutes.get("/getRemainAmt", async (req, res) => {

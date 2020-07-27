@@ -51,9 +51,9 @@ export const isAdminAPI = async (
     if (adminId) {
       next();
     } else {
-      res.status(401).json("You are not an Admin.");
+      res.status(401).json({msg:"You are not an Admin."});
     }
   } else {
-    res.status(401).json("Please login.");
+    res.status(401).json({msg:"Please login."});
   }
 };

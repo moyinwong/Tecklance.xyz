@@ -115,6 +115,7 @@ async function main() {
     });
   });
 
+  // Can move to external function
   async function payment(event, token) {
     //stop signup action
     event.preventDefault();

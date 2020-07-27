@@ -133,6 +133,7 @@ app.use("/", taskRoutes);
 app.use("/", messageRoutes);
 
 //redirect to login page
+// no use
 app.get("/loginpage", async (req, res) => {
   try {
     res.sendFile(path.join(__dirname, "./public/login.html"));
@@ -142,6 +143,8 @@ app.get("/loginpage", async (req, res) => {
 });
 
 //getting tasks of particular category
+// search task by category
+// can be merged with /tasks
 app.get("/category", async (req, res) => {
   let category = req.query.category;
   let result = await client.query(
@@ -152,10 +155,11 @@ app.get("/category", async (req, res) => {
   res.json(categoryResult);
 });
 
-app.get("/categories", async (req, res) => {
-  res.sendFile(path.join(__dirname, `./public/category.html`));
-});
+// app.get("/categories", async (req, res) => {
+//   res.sendFile(path.join(__dirname, `./public/category.html`));
+// });
 
+// same as /categpries
 app.get("/about", async (req, res) => {
   res.sendFile(path.join(__dirname, "./public/about.html"));
 });

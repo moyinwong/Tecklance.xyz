@@ -13,7 +13,7 @@ taskRoutes.get("/usertask/:userId", async function (req, res) {
 
   let result = await client.query(
     /* sql */ `SELECT *
-  FROM applied_post
+      FROM applied_post
       JOIN task on task.id = applied_post.task_id
       JOIN users on users.id = applied_post.user_id
           WHERE user_id = $1;`,
@@ -26,6 +26,7 @@ taskRoutes.get("/usertask/:userId", async function (req, res) {
 });
 
 //get all tasks created by a particular user
+// /tasks/creator/:userId
 taskRoutes.get("/create-task/:user", async (req, res) => {
   let creator_id = parseInt(req.params.user);
   let result = await client.query(
@@ -41,15 +42,16 @@ taskRoutes.get("/create-task/:user", async (req, res) => {
 taskRoutes.get("/task/:id", async (req, res) => {
   let id = parseInt(req.params.id);
   let result = await client.query(
-    /* sql */ `SELECT * FROM task WHERE id = $1`,
+    /* sql */ `SELECT * FROM task WHERE id = $1 limit 1`,
     [id]
   );
   let task: Task[] = result.rows;
-  res.json(task[0]);
   logger.debug(task[0]);
+  res.json(task[0]);
 });
 
 //get all applicants of a particular task
+// /applicants/task/:taskId
 taskRoutes.get("/task/applicants/:taskId", async (req, res) => {
   try {
     let id = parseInt(req.params.taskId);
@@ -85,6 +87,8 @@ taskRoutes.get("/task/accepted-applicant/:acceptedId", async (req, res) => {
 taskRoutes.get("/taskstatus", async (req, res) => {
   try {
     //get task id by req.header
+
+    // same as before
     const getTaskId = async (req) => {
       if (req.header && req.headers.referer) {
         return req.headers.referer.replace(
@@ -134,6 +138,7 @@ taskRoutes.put("/apply/:taskId", async function (req, res) {
 });
 
 //create task
+// RESTFUL API
 taskRoutes.post(
   "/create-task/:userId",
   upload.single("image"),
@@ -161,6 +166,7 @@ taskRoutes.post(
         [title, category, content, image, user_id, offered_amt]
       );
 
+      // beware of the json
       return res
         .status(201)
         .json(
@@ -174,6 +180,7 @@ taskRoutes.post(
 );
 
 //task submission
+// /submissions
 taskRoutes.post(
   "/submit-completed-task/",
   taskSubmission.array("uploaded_files", 10),
@@ -204,6 +211,7 @@ taskRoutes.post(
 
       const creatorId = await getCreatorId(taskId);
 
+      // not necessary
       const getMessageToCreator = async (req) => {
         return `There are new upload files for task, Please check the following link: *url*${req.headers.referer}`;
       };
