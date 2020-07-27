@@ -281,8 +281,6 @@ userRoutes.post("/signup", upload.single("image"), async function (req, res) {
       return checkResult;
     }
 
-    console.log("hahahahaaha");
-
     //insert user into sql
     await client.query(
       /*sql*/ `INSERT INTO users (username,password,email,remain_amt,google,github,gitlab,image_user,first_name,last_name,bank_name,bank_account,freelancer_intro,isAdmin,created_at,updated_at) 

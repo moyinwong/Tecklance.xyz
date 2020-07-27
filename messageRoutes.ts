@@ -48,7 +48,7 @@ messageRoutes.put("/message/read", async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 });
 

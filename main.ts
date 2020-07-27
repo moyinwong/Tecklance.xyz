@@ -115,7 +115,7 @@ app.get("/freelancers", async (req, res) => {
     let freelancers = result.rows;
     res.json(freelancers);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 });
 
@@ -137,7 +137,7 @@ app.get("/loginpage", async (req, res) => {
   try {
     res.sendFile(path.join(__dirname, "./public/login.html"));
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 });
 

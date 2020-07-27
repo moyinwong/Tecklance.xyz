@@ -8,7 +8,7 @@ export const isLoggedIn = (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  console.log(req.session);
+  logger.debug(req.session);
   if (req.session && req.session.userId) {
     //called Next here
     //console.log(req.session);
@@ -16,7 +16,7 @@ export const isLoggedIn = (
     next();
   } else {
     // redirect to index page
-    console.log("not logged in");
+    //console.log("not logged in");
     res.status(401).redirect("/");
   }
 };

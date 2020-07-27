@@ -46,7 +46,7 @@ taskRoutes.get("/task/:id", async (req, res) => {
   );
   let task: Task[] = result.rows;
   res.json(task[0]);
-  console.log(task[0]);
+  logger.debug(task[0]);
 });
 
 //get all applicants of a particular task
